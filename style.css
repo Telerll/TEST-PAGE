@@ -19,7 +19,7 @@ body{
   position:relative;
 }
 
-/* ORANGE LINE */
+/* BLUE LINE */
 .contact-form-box::after{
   content:"";
   position:absolute;
