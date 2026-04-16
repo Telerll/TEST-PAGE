@@ -1,3 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Test</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg,#070d18,#08111d);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+/* CARD */
+.contact-form-box{
+  width:100%;
+  max-width:420px;
+  padding:30px;
+  border-radius:20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  box-shadow:0 12px 34px rgba(0,0,0,0.3);
+  position:relative;
+}
+
+/* ORANGE LINE */
+.contact-form-box::after{
+  content:"";
+  position:absolute;
+  top:15px;
+  left:20px;
+  width:60px;
+  height:3px;
+  border-radius:999px;
+  background: linear-gradient(90deg,#ff8a00,transparent);
+}
+
+/* TITLE */
+.contact-form-box h3{
+  margin-bottom:15px;
+  font-size:26px;
+}
+
+/* TEXT */
+.contact-note{
+  color:#cbd5e1;
+  font-size:15px;
+  line-height:1.6;
+  margin-bottom:25px;
+}
+
+/* BUTTON GROUP */
+.contact-action-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* BUTTON BASE */
+.btn{
+  padding:14px;
+  border-radius:999px;
+  text-align:center;
+  font-weight:bold;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+/* PRIMARY */
+.btn-primary{
+  background:linear-gradient(90deg,#ff8a00,#ffb347);
+  color:white;
+  box-shadow:0 8px 18px rgba(255,138,0,0.3);
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+}
+
+/* SECONDARY */
+.btn-secondary{
+  border:1px solid rgba(255,255,255,0.3);
+  color:white;
+  background:rgba(255,255,255,0.05);
+}
+
+.btn-secondary:hover{
+  background:rgba(255,255,255,0.1);
+}
+</style>
+</head>
+
+<body>
+
 <div class="contact-form-box">
   <h3>Send Us Your Inquiry</h3>
 
@@ -6,7 +107,7 @@
   </p>
 
   <div class="contact-action-buttons">
-    <a href="YOUR_GOOGLE_FORM_LINK" target="_blank" class="btn btn-primary">
+    <a href="#" class="btn btn-primary">
       Open Inquiry Form
     </a>
 
@@ -15,3 +116,6 @@
     </a>
   </div>
 </div>
+
+</body>
+</html>
