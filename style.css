@@ -1,71 +1,86 @@
-<style>
-.contact-form-box{
-  position: relative;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
-  border: 1px solid rgba(255,255,255,0.07);
-  backdrop-filter: blur(12px);
-  border-radius: 24px;
-  box-shadow: 0 12px 34px rgba(0,0,0,0.22);
-  padding: 34px 28px;
-  text-align: left;
-  color: #ffffff;
-  background-color: #0b1424;
-  overflow: hidden;
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg,#070d18,#08111d);
+  color:white;
+  padding:40px;
 }
 
+/* CARD */
+.contact-form-box{
+  width:100%;
+  max-width:500px;
+  padding:30px;
+  border-radius:20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  box-shadow:0 12px 34px rgba(0,0,0,0.3);
+  position:relative;
+}
+
+/* ORANGE LINE */
 .contact-form-box::after{
   content:"";
   position:absolute;
-  top:16px;
-  left:18px;
-  width:58px;
+  top:15px;
+  left:20px;
+  width:60px;
   height:3px;
   border-radius:999px;
-  background: linear-gradient(90deg, #ff8a00, transparent);
+  background: linear-gradient(90deg,#ff8a00,transparent);
 }
 
+/* TITLE */
 .contact-form-box h3{
-  position: relative;
-  z-index: 1;
-  font-size: 30px;
-  margin-bottom: 20px;
+  margin-bottom:15px;
+  font-size:26px;
 }
 
+/* TEXT */
 .contact-note{
-  position: relative;
-  z-index: 1;
-  color: #cbd5e1;
-  font-size: 16px;
-  line-height: 1.8;
-  margin-bottom: 24px;
+  color:#cbd5e1;
+  font-size:15px;
+  line-height:1.6;
+  margin-bottom:25px;
 }
 
+/* BUTTON GROUP */
 .contact-action-buttons{
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
+/* BUTTON BASE */
 .btn{
-  padding: 14px 26px;
-  border-radius: 999px;
-  font-weight: 700;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
+  padding:14px;
+  border-radius:999px;
+  text-align:center;
+  font-weight:bold;
+  text-decoration:none;
+  display:block;
+  transition:0.3s;
 }
 
+/* PRIMARY BUTTON */
 .btn-primary{
-  background: linear-gradient(90deg, #ff8a00, #ffb347);
-  color: #ffffff;
-  box-shadow: 0 8px 20px rgba(255,138,0,0.30);
+  background:linear-gradient(90deg,#ff8a00,#ffb347);
+  color:white;
+  box-shadow:0 8px 18px rgba(255,138,0,0.3);
 }
 
-.btn-secondary{
-  border: 1px solid rgba(255,255,255,0.3);
-  color: white;
-  background: rgba(255,255,255,0.05);
+.btn-primary:hover{
+  transform:translateY(-2px);
 }
-</style>
+
+/* SECONDARY BUTTON */
+.btn-secondary{
+  border:1px solid rgba(255,255,255,0.3);
+  color:white;
+  background:rgba(255,255,255,0.05);
+}
+
+.btn-secondary:hover{
+  background:rgba(255,255,255,0.1);
+}
