@@ -6,280 +6,280 @@
   <title>Deliveries - Inventory Management System</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
     }
 
-    :root {
-      --blue-main: #1e3a8a;
-      --blue-dark: #172554;
-      --blue-light: #dbeafe;
-      --line: #cbd5e1;
-      --text: #1f2937;
-      --muted: #64748b;
-      --white: #ffffff;
-      --head-bg: #a9c0d7;
-      --head-text: #c00000;
-      --mrr: #0f766e;
-      --rms: #2563eb;
+    :root{
+      --blue-main:#1e3a8a;
+      --blue-dark:#172554;
+      --line:#cbd5e1;
+      --text:#1f2937;
+      --muted:#64748b;
+      --white:#ffffff;
+      --head-bg:#a9c0d7;
+      --head-text:#c00000;
+      --mrr:#0f766e;
+      --rms:#2563eb;
+      --bg:#f4f7fb;
     }
 
-    body {
-      background: #f4f7fb;
-      color: var(--text);
-      padding: 20px;
+    body{
+      background:var(--bg);
+      color:var(--text);
+      padding:20px;
     }
 
-    .container {
-      max-width: 1600px;
-      margin: auto;
+    .container{
+      max-width:1600px;
+      margin:auto;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
     }
 
-    .title-block small {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-      font-weight: bold;
+    .title-block small{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:5px;
+      font-weight:bold;
     }
 
-    .title-block h1 {
-      font-size: 28px;
-      color: var(--blue-dark);
+    .title-block h1{
+      font-size:28px;
+      color:var(--blue-dark);
     }
 
-    .nav-links {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .nav-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .nav-links a {
-      text-decoration: none;
-      background: #e5e7eb;
-      color: #111827;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: bold;
+    .nav-links a{
+      text-decoration:none;
+      background:#e5e7eb;
+      color:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:bold;
     }
 
-    .section {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    .section{
+      background:var(--white);
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:18px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.06);
     }
 
-    .section h2 {
-      font-size: 20px;
-      margin-bottom: 14px;
-      color: var(--blue-dark);
+    .section h2{
+      font-size:20px;
+      margin-bottom:14px;
+      color:var(--blue-dark);
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px;
     }
 
-    .card {
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
+    .card{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
     }
 
-    .card h3 {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
+    .card h3{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:8px;
     }
 
-    .card .value {
-      font-size: 28px;
-      font-weight: bold;
-      color: var(--blue-dark);
+    .card .value{
+      font-size:28px;
+      font-weight:bold;
+      color:var(--blue-dark);
     }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:12px;
     }
 
-    .field {
-      display: flex;
-      flex-direction: column;
+    .field{
+      display:flex;
+      flex-direction:column;
     }
 
-    .field label {
-      font-size: 13px;
-      font-weight: bold;
-      color: var(--muted);
-      margin-bottom: 6px;
+    .field label{
+      font-size:13px;
+      font-weight:bold;
+      color:var(--muted);
+      margin-bottom:6px;
     }
 
     .field input,
     .field select,
-    .field textarea {
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: 14px;
-      background: white;
+    .field textarea{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      font-size:14px;
+      background:white;
     }
 
-    .field textarea {
-      resize: vertical;
-      min-height: 90px;
+    .field textarea{
+      resize:vertical;
+      min-height:90px;
     }
 
-    .full {
-      grid-column: span 4;
+    .readonly{
+      background:#f1f5f9 !important;
+      font-weight:bold;
     }
 
-    .readonly {
-      background: #f1f5f9 !important;
-      font-weight: bold;
+    .full{
+      grid-column:span 4;
     }
 
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      font-weight: bold;
+    button{
+      border:none;
+      border-radius:10px;
+      padding:12px 16px;
+      font-size:14px;
+      cursor:pointer;
+      font-weight:bold;
     }
 
-    .btn-primary {
-      background: var(--blue-main);
-      color: white;
+    .btn-primary{
+      background:var(--blue-main);
+      color:white;
     }
 
-    .btn-primary:hover {
-      background: var(--blue-dark);
+    .btn-primary:hover{
+      background:var(--blue-dark);
     }
 
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #111827;
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
     }
 
-    .btn-danger {
-      background: #dc2626;
-      color: white;
+    .btn-danger{
+      background:#dc2626;
+      color:white;
     }
 
-    .note {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
     }
 
-    .table-wrap {
-      overflow-x: auto;
+    .table-wrap{
+      overflow-x:auto;
     }
 
-    table {
-      width: 100%;
-      min-width: 1600px;
-      border-collapse: collapse;
+    table{
+      width:100%;
+      min-width:1700px;
+      border-collapse:collapse;
     }
 
-    th, td {
-      border: 1px solid #334155;
-      padding: 8px 10px;
-      font-size: 13px;
-      vertical-align: top;
+    th, td{
+      border:1px solid #334155;
+      padding:8px 10px;
+      font-size:13px;
+      vertical-align:top;
     }
 
-    th {
-      background: var(--head-bg);
-      color: var(--head-text);
-      text-align: center;
+    th{
+      background:var(--head-bg);
+      color:var(--head-text);
+      text-align:center;
     }
 
-    tbody tr:nth-child(even) {
-      background: #f8fafc;
+    tbody tr:nth-child(even){
+      background:#f8fafc;
     }
 
-    .center {
-      text-align: center;
+    .center{
+      text-align:center;
     }
 
-    .right {
-      text-align: right;
+    .right{
+      text-align:right;
     }
 
-    .badge {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: bold;
-      color: white;
+    .badge{
+      display:inline-block;
+      border-radius:999px;
+      padding:4px 10px;
+      font-size:12px;
+      font-weight:bold;
+      color:white;
     }
 
-    .badge-mrr {
-      background: var(--mrr);
+    .badge-mrr{
+      background:var(--mrr);
     }
 
-    .badge-rms {
-      background: var(--rms);
+    .badge-rms{
+      background:var(--rms);
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width:1100px){
       .cards,
-      .form-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .form-grid{
+        grid-template-columns:repeat(2, 1fr);
       }
 
-      .full {
-        grid-column: span 2;
+      .full{
+        grid-column:span 2;
       }
     }
 
-    @media (max-width: 700px) {
-      body {
-        padding: 12px;
+    @media (max-width:700px){
+      body{
+        padding:12px;
       }
 
       .cards,
-      .form-grid {
-        grid-template-columns: 1fr;
+      .form-grid{
+        grid-template-columns:1fr;
       }
 
-      .full {
-        grid-column: span 1;
+      .full{
+        grid-column:span 1;
       }
 
-      .title-block h1 {
-        font-size: 22px;
+      .title-block h1{
+        font-size:22px;
       }
     }
   </style>
@@ -374,9 +374,16 @@
           <input type="text" id="supplier" placeholder="Supplier or source">
         </div>
 
+        <div class="field">
+          <label>Select Item</label>
+          <select id="itemSelect" onchange="fillItemDetails()">
+            <option value="">-- Select Item --</option>
+          </select>
+        </div>
+
         <div class="field full">
           <label>Item Description</label>
-          <textarea id="itemDescription" placeholder="Item description"></textarea>
+          <textarea id="itemDescription" class="readonly" readonly></textarea>
         </div>
 
         <div class="field">
@@ -386,7 +393,7 @@
 
         <div class="field">
           <label>UOM</label>
-          <input type="text" id="uom" placeholder="PCS / BOX / PAIRS">
+          <input type="text" id="uom" class="readonly" readonly>
         </div>
 
         <div class="field">
@@ -413,7 +420,7 @@
       </div>
 
       <div class="note">
-        This page is for <strong>IN / Receiving transactions only</strong>. It is a delivery log and not a master list.
+        This page is for <strong>IN / Receiving transactions only</strong>. MRR = supplier delivery. RMS = returned good items. Items come from the <strong>Master List</strong> and are selected through dropdown.
       </div>
     </div>
 
@@ -451,21 +458,58 @@
   <script>
     let deliveries = JSON.parse(localStorage.getItem("deliveriesData")) || [];
 
-    function num(value) {
+    let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [
+      { id: 1, name: "PROTECTIVE GLOVES, COTTON", uom: "PAIRS" },
+      { id: 2, name: "PROTECTIVE GLOVES, RUBBER BLACK, LARGE, NEOPRENE", uom: "PAIRS" },
+      { id: 3, name: "CEMENT, PORTLAND", uom: "BAGS" },
+      { id: 4, name: "BALL VALVE, KITZ 1/2", uom: "PIECES" },
+      { id: 5, name: "ABRASIVE PAPER, #220", uom: "PIECES" }
+    ];
+
+    localStorage.setItem("masterItems", JSON.stringify(masterItems));
+
+    function num(value){
       return Number(value) || 0;
     }
 
-    function saveData() {
+    function saveData(){
       localStorage.setItem("deliveriesData", JSON.stringify(deliveries));
     }
 
-    function autoComputeAmount() {
+    function loadItems(){
+      const select = document.getElementById("itemSelect");
+      if(!select) return;
+
+      select.innerHTML = '<option value="">-- Select Item --</option>';
+
+      masterItems.forEach(item => {
+        select.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+      });
+    }
+
+    function fillItemDetails(){
+      const id = document.getElementById("itemSelect").value;
+      const item = masterItems.find(i => i.id == id);
+
+      if(item){
+        document.getElementById("itemDescription").value = item.name;
+        document.getElementById("uom").value = item.uom;
+      } else {
+        document.getElementById("itemDescription").value = "";
+        document.getElementById("uom").value = "";
+      }
+    }
+
+    function autoComputeAmount(){
       const qty = num(document.getElementById("qty").value);
       const price = num(document.getElementById("price").value);
       document.getElementById("amount").value = qty * price;
     }
 
-    function addDelivery() {
+    function addDelivery(){
+      const selectedId = document.getElementById("itemSelect").value;
+      const selectedItem = masterItems.find(i => i.id == selectedId);
+
       const entry = {
         dateReceived: document.getElementById("dateReceived").value,
         type: document.getElementById("type").value,
@@ -476,6 +520,7 @@
         approvedBy: document.getElementById("approvedBy").value.trim(),
         drsiNo: document.getElementById("drsiNo").value.trim(),
         supplier: document.getElementById("supplier").value.trim(),
+        itemId: selectedId ? Number(selectedId) : null,
         itemDescription: document.getElementById("itemDescription").value.trim(),
         qty: num(document.getElementById("qty").value),
         uom: document.getElementById("uom").value.trim(),
@@ -484,7 +529,7 @@
         remarks: document.getElementById("remarks").value.trim()
       };
 
-      if (!entry.dateReceived || !entry.docNo || !entry.itemDescription || !entry.qty || !entry.uom) {
+      if(!entry.dateReceived || !entry.docNo || !entry.itemId || !entry.qty || !entry.uom){
         alert("Please fill in the required fields.");
         return;
       }
@@ -496,7 +541,7 @@
       clearForm();
     }
 
-    function renderDeliveries() {
+    function renderDeliveries(){
       const tbody = document.getElementById("deliveryTableBody");
       tbody.innerHTML = "";
 
@@ -525,7 +570,7 @@
       });
     }
 
-    function updateSummary() {
+    function updateSummary(){
       const totalTransactions = deliveries.length;
 
       const totalMrrQty = deliveries
@@ -544,7 +589,7 @@
       document.getElementById("totalAmount").textContent = totalAmount.toLocaleString();
     }
 
-    function clearForm() {
+    function clearForm(){
       document.getElementById("dateReceived").value = "";
       document.getElementById("type").value = "MRR";
       document.getElementById("docNo").value = "";
@@ -554,6 +599,7 @@
       document.getElementById("approvedBy").value = "";
       document.getElementById("drsiNo").value = "";
       document.getElementById("supplier").value = "";
+      document.getElementById("itemSelect").value = "";
       document.getElementById("itemDescription").value = "";
       document.getElementById("qty").value = "";
       document.getElementById("uom").value = "";
@@ -562,9 +608,9 @@
       document.getElementById("remarks").value = "";
     }
 
-    function clearAllDeliveries() {
+    function clearAllDeliveries(){
       const ok = confirm("Clear all delivery records?");
-      if (!ok) return;
+      if(!ok) return;
 
       deliveries = [];
       saveData();
@@ -572,7 +618,7 @@
       updateSummary();
     }
 
-    function loadSampleData() {
+    function loadSampleData(){
       deliveries = [
         {
           dateReceived: "2026-01-15",
@@ -584,7 +630,8 @@
           approvedBy: "Manager A",
           drsiNo: "DR-8891",
           supplier: "ABC Industrial Supply",
-          itemDescription: "PROTECTIVE GLOVES, COTTON W/ RUBBER COATED PALM",
+          itemId: 1,
+          itemDescription: "PROTECTIVE GLOVES, COTTON",
           qty: 36,
           uom: "PAIRS",
           price: 50,
@@ -601,6 +648,7 @@
           approvedBy: "Supervisor B",
           drsiNo: "",
           supplier: "Returned by CIVIL-WORK",
+          itemId: 2,
           itemDescription: "PROTECTIVE GLOVES, RUBBER BLACK, LARGE, NEOPRENE",
           qty: 10,
           uom: "PAIRS",
@@ -615,6 +663,7 @@
       updateSummary();
     }
 
+    loadItems();
     renderDeliveries();
     updateSummary();
   </script>
