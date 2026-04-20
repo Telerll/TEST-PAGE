@@ -1,1 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deliveries - Stock Control Department</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    :root {
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --line: #d7e0ea;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .title-block small {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .title-block h1 {
+      font-size: 28px;
+      color: var(--primary-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      background: #e5e7eb;
+      color: #111827;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .section {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .section h2 {
+      font-size: 20px;
+      color: var(--primary-dark);
+      margin-bottom: 14px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .card h3 {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .card .value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--green);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 14px;
+      background: white;
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .full {
+      grid-column: span 4;
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1300px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #334155;
+      padding: 8px 10px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #a9c0d7;
+      color: #c00000;
+      text-align: center;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--green-soft);
+      color: #166534;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 1100px) {
+      .cards, .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .full {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      .cards, .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: span 1;
+      }
+
+      .title-block h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="title-block">
+        <small>Property Management Office</small>
+        <h1>Stock Control Department - Deliveries</h1>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="master-list.html">Master List</a>
+        <a href="issuance.html">Issuance</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Deliveries Summary</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Total Delivery Transactions</h3>
+          <div class="value" id="totalTransactions">0</div>
+        </div>
+        <div class="card">
+          <h3>Total MRR Qty</h3>
+          <div class="value" id="totalMrrQty">0</div>
+        </div>
+        <div class="card">
+          <h3>Total RMS Qty</h3>
+          <div class="value" id="totalRmsQty">0</div>
+        </div>
+        <div class="card">
+          <h3>Total IN Qty</h3>
+          <div class="value" id="totalInQty">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Add Delivery Transaction</h2>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="date">
+        </div>
+
+        <div class="field">
+          <label>Document Type</label>
+          <select id="docType" onchange="toggleDocFields()">
+            <option value="MRR">MRR</option>
+            <option value="RMS">RMS</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>MRR No.</label>
+          <input type="text" id="mrrNo" placeholder="MRR-001">
+        </div>
+
+        <div class="field">
+          <label>RMS No.</label>
+          <input type="text" id="rmsNo" placeholder="RMS-001">
+        </div>
+
+        <div class="field">
+          <label>Classification</label>
+          <select id="classification">
+            <option value="FAST-MOVING">FAST-MOVING</option>
+            <option value="ON-NEED">ON-NEED</option>
+          </select>
+        </div>
+
+        <div class="field
