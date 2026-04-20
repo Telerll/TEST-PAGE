@@ -1,227 +1,543 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Master List - Inventory System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master List - Inventory Management System</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial,sans-serif;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
     }
 
-    body{
-      background:#f4f7fb;
-      padding:20px;
+    :root {
+      --blue-main: #1e3a8a;
+      --blue-dark: #172554;
+      --bg: #f4f7fb;
+      --white: #ffffff;
+      --line: #cbd5e1;
+      --muted: #64748b;
+      --head-bg: #a9c0d7;
+      --head-text: #c00000;
     }
 
-    .container{
-      max-width:1400px;
-      margin:auto;
+    body {
+      background: var(--bg);
+      padding: 20px;
+      color: #1f2937;
     }
 
-    h1{
-      margin-bottom:15px;
-      color:#1e3a8a;
+    .container {
+      max-width: 1600px;
+      margin: auto;
     }
 
-    .section{
-      background:white;
-      padding:15px;
-      border-radius:10px;
-      margin-bottom:20px;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    input{
-      padding:8px;
-      margin:5px;
-      border:1px solid #ccc;
-      border-radius:6px;
+    .title-block small {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    button{
-      padding:8px 12px;
-      margin:5px;
-      border:none;
-      border-radius:6px;
-      cursor:pointer;
-      font-weight:bold;
+    .title-block h1 {
+      font-size: 28px;
+      color: var(--blue-dark);
     }
 
-    .add{background:#1e3a8a;color:white;}
-    .delete{background:#dc2626;color:white;}
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:10px;
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    th,td{
-      border:1px solid #ccc;
-      padding:8px;
-      font-size:13px;
+    .nav-links a {
+      text-decoration: none;
+      background: #e5e7eb;
+      color: #111827;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 14px;
     }
 
-    th{
-      background:#a9c0d7;
-      color:#c00000;
+    .section {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
 
+    .section h2 {
+      color: var(--blue-dark);
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--blue-main);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1700px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #334155;
+      padding: 8px 10px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--head-bg);
+      color: var(--head-text);
+      text-align: center;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1100px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .title-block h1 {
+        font-size: 22px;
+      }
+    }
   </style>
 </head>
-
 <body>
 
 <div class="container">
 
-  <h1>MASTER LIST</h1>
+  <div class="topbar">
+    <div class="title-block">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>MASTER LIST</h1>
+    </div>
 
-  <!-- ADD ITEM -->
-  <div class="section">
-    <h3>Add Item</h3>
-
-    <input id="name" placeholder="Item Name">
-    <input id="uom" placeholder="UOM">
-
-    <button class="add" onclick="addItem()">Add</button>
-    <button class="delete" onclick="clearAll()">Clear All</button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="deliveries.html">Deliveries</a>
+      <a href="issuance.html">Issuance</a>
+    </div>
   </div>
 
-  <!-- TABLE -->
   <div class="section">
-    <h3>Items</h3>
+    <h2>Add Item</h2>
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Item Name</th>
-          <th>UOM</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+    <div class="form-grid">
+      <div class="field">
+        <label>Item Name</label>
+        <input id="name" placeholder="Item name">
+      </div>
+
+      <div class="field">
+        <label>UOM</label>
+        <input id="uom" placeholder="PIECES / BAGS / PAIRS">
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <select id="category">
+          <option value="Engineering">Engineering</option>
+          <option value="Office Supplies">Office Supplies</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Trade / Department</label>
+        <input id="trade" placeholder="Civil / Electrical / HR">
+      </div>
+
+      <div class="field">
+        <label>Classification</label>
+        <select id="classification">
+          <option value="FAST-MOVING">FAST-MOVING</option>
+          <option value="ON-NEED">ON-NEED</option>
+          <option value="TOOLS">TOOLS</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Hazardous</label>
+        <select id="hazard">
+          <option value="NO">NO</option>
+          <option value="YES">YES</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Location</label>
+        <input id="location" placeholder="P3T2-SCO">
+      </div>
+
+      <div class="field">
+        <label>Rack No.</label>
+        <input id="rack" placeholder="R17/L3">
+      </div>
+
+      <div class="field">
+        <label>Annual Forecast Qty</label>
+        <input type="number" id="forecast" placeholder="0">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="addItem()">Add Item</button>
+      <button class="btn-secondary" onclick="seedDefaults()">Load Default Items</button>
+      <button class="btn-danger" onclick="clearAll()">Clear All</button>
+    </div>
+
+    <div class="note">
+      Master List is the source of items for Deliveries and Issuance dropdowns.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Filter Items</h2>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Search Item</label>
+        <input id="searchInput" placeholder="Type item name..." oninput="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <select id="filterCategory" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Office Supplies">Office Supplies</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Trade / Department</label>
+        <input id="filterTrade" placeholder="Civil / HR..." oninput="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Classification</label>
+        <select id="filterClass" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="FAST-MOVING">FAST-MOVING</option>
+          <option value="ON-NEED">ON-NEED</option>
+          <option value="TOOLS">TOOLS</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Hazardous</label>
+        <select id="filterHazard" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Location</label>
+        <input id="filterLocation" placeholder="P3T2-SCO..." oninput="applyFilters()">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Item List</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Item Name</th>
+            <th>UOM</th>
+            <th>Category</th>
+            <th>Trade / Department</th>
+            <th>Classification</th>
+            <th>Hazardous</th>
+            <th>Location</th>
+            <th>Rack No.</th>
+            <th>Annual Forecast Qty</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
   </div>
 
 </div>
 
 <script>
+  const defaultItems = [
+    {id:1, name:"BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B2T2-1", rack:"", forecast:0},
+    {id:2, name:"ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom:"BAGS", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B3T1-C", rack:"", forecast:0},
+    {id:3, name:"ATTACK DRIVER #AN-112A, KOKEN (USED)", uom:"PIECES", category:"Engineering", trade:"TOOLS", classification:"TOOLS", hazard:"NO", location:"B4T1-A", rack:"", forecast:0},
+    {id:4, name:"BEARING, KM14 SWEDEN, SKF", uom:"PIECES", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B4T1-A", rack:"", forecast:0},
+    {id:5, name:"BREAKER, ELECTRONIC TRIP UNIT", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0},
+    {id:6, name:"BUSHING, PLASTIC", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:7, name:"DISC, CUTTING 16\" PREMIUM", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:8, name:"GUTTER, WIRE (TRIANGULAR)", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B4T2-A", rack:"", forecast:0},
+    {id:9, name:"MODULE, IDNET SIMPLEX", uom:"PIECES", category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:10, name:"MOTOR 15KW SIEMENS", uom:"UNITS", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0},
+    {id:11, name:"NUTS, STAINLESS", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:12, name:"PRESSURE GAUGE WIKA", uom:"PIECES", category:"Engineering", trade:"PLUMBING", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:13, name:"THERMOSTAT CONTROL", uom:"PIECES", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:14, name:"GRANITE TILES", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B6T1-C", rack:"", forecast:0},
+    {id:15, name:"ABRASIVE PAPER", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:16, name:"ACOUSTIC CEILING TILES", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B3T1-C", rack:"", forecast:0},
+    {id:17, name:"ACRYLIC PAINT BOYSEN", uom:"CANS", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"YES", location:"B4T1-C1", rack:"", forecast:0},
+    {id:18, name:"ACTUATOR MOTOR", uom:"UNITS", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0},
+    {id:19, name:"ADAPTOR POWER SUPPLY", uom:"PIECES", category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:20, name:"AIR CONDITIONER SPLIT TYPE", uom:"UNITS", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0},
+    {id:21, name:"ALARM FIRE SIMPLEX", uom:"PIECES", category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"B3T1-A", rack:"", forecast:0},
+    {id:22, name:"ALUMINUM ANGLE", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B2T2-1", rack:"", forecast:0},
+    {id:23, name:"ANGLE VALVE", uom:"PIECES", category:"Engineering", trade:"PLUMBING", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:24, name:"BATTERY SEALED LEAD ACID", uom:"PIECES", category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:25, name:"BALL VALVE KITZ", uom:"PIECES", category:"Engineering", trade:"PLUMBING", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:26, name:"BALLAST ELECTRONIC", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B4T1-A", rack:"", forecast:0},
+    {id:27, name:"BEARING SKF", uom:"PIECES", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:28, name:"V BELT", uom:"PIECES", category:"Engineering", trade:"HVAC", classification:"ON-NEED", hazard:"NO", location:"B6T1-A", rack:"", forecast:0},
+    {id:29, name:"BIDET AMERICAN STANDARD", uom:"PIECES", category:"Engineering", trade:"PLUMBING", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:30, name:"BOLT AND NUTS", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:31, name:"BREAKER CIRCUIT", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0},
+    {id:32, name:"BULB LED", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:33, name:"CABLE DATA", uom:"PACKS", category:"Office Supplies", trade:"I.T.", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:34, name:"CAMERA CCTV", uom:"UNITS", category:"Engineering", trade:"SECURITY", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:35, name:"CAPACITOR", uom:"PIECES", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B4T1-A", rack:"", forecast:0},
+    {id:36, name:"CASTER WHEELS", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0},
+    {id:37, name:"CEMENT PORTLAND", uom:"BAGS", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B3T1-C", rack:"", forecast:0},
+    {id:38, name:"CHAIN BLOCK", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B3T1-A", rack:"", forecast:0},
+    {id:39, name:"CHLORINE TABLET", uom:"PIECES", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"YES", location:"B4T1-C1", rack:"", forecast:0},
+    {id:40, name:"CIRCUIT BREAKER SIEMENS", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0}
+  ];
 
-// DEFAULT ITEMS (YOUR DATA)
-const defaultItems = [
-  {id:1, name:"BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom:"PIECES"},
-  {id:2, name:"ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom:"BAGS"},
-  {id:3, name:"ATTACK DRIVER #AN-112A, KOKEN (USED)", uom:"PIECES"},
-  {id:4, name:"BEARING, KM14 SWEDEN, SKF", uom:"PIECES"},
-  {id:5, name:"BREAKER, ELECTRONIC TRIP UNIT", uom:"PIECES"},
-  {id:6, name:"BUSHING, PLASTIC", uom:"PIECES"},
-  {id:7, name:"DISC, CUTTING 16\" PREMIUM", uom:"PIECES"},
-  {id:8, name:"GUTTER, WIRE (TRIANGULAR)", uom:"PIECES"},
-  {id:9, name:"MODULE, IDNET SIMPLEX", uom:"PIECES"},
-  {id:10, name:"MOTOR 15KW SIEMENS", uom:"UNITS"},
-  {id:11, name:"NUTS, STAINLESS", uom:"PIECES"},
-  {id:12, name:"PRESSURE GAUGE WIKA", uom:"PIECES"},
-  {id:13, name:"THERMOSTAT CONTROL", uom:"PIECES"},
-  {id:14, name:"GRANITE TILES", uom:"PIECES"},
-  {id:15, name:"ABRASIVE PAPER", uom:"PIECES"},
-  {id:16, name:"ACOUSTIC CEILING TILES", uom:"PIECES"},
-  {id:17, name:"ACRYLIC PAINT BOYSEN", uom:"CANS"},
-  {id:18, name:"ACTUATOR MOTOR", uom:"UNITS"},
-  {id:19, name:"ADAPTOR POWER SUPPLY", uom:"PIECES"},
-  {id:20, name:"AIR CONDITIONER SPLIT TYPE", uom:"UNITS"},
-  {id:21, name:"ALARM FIRE SIMPLEX", uom:"PIECES"},
-  {id:22, name:"ALUMINUM ANGLE", uom:"PIECES"},
-  {id:23, name:"ANGLE VALVE", uom:"PIECES"},
-  {id:24, name:"BATTERY SEALED LEAD ACID", uom:"PIECES"},
-  {id:25, name:"BALL VALVE KITZ", uom:"PIECES"},
-  {id:26, name:"BALLAST ELECTRONIC", uom:"PIECES"},
-  {id:27, name:"BEARING SKF", uom:"PIECES"},
-  {id:28, name:"V BELT", uom:"PIECES"},
-  {id:29, name:"BIDET AMERICAN STANDARD", uom:"PIECES"},
-  {id:30, name:"BOLT AND NUTS", uom:"PIECES"},
-  {id:31, name:"BREAKER CIRCUIT", uom:"PIECES"},
-  {id:32, name:"BULB LED", uom:"PIECES"},
-  {id:33, name:"CABLE DATA", uom:"PACKS"},
-  {id:34, name:"CAMERA CCTV", uom:"UNITS"},
-  {id:35, name:"CAPACITOR", uom:"PIECES"},
-  {id:36, name:"CASTER WHEELS", uom:"PIECES"},
-  {id:37, name:"CEMENT PORTLAND", uom:"BAGS"},
-  {id:38, name:"CHAIN BLOCK", uom:"PIECES"},
-  {id:39, name:"CHLORINE TABLET", uom:"PIECES"},
-  {id:40, name:"CIRCUIT BREAKER SIEMENS", uom:"PIECES"}
-];
+  let masterItems = JSON.parse(localStorage.getItem("masterItems"));
 
-// LOAD OR INIT
-let masterItems = JSON.parse(localStorage.getItem("masterItems"));
-
-if(!masterItems || masterItems.length === 0){
-  masterItems = defaultItems;
-  localStorage.setItem("masterItems", JSON.stringify(masterItems));
-}
-
-function save(){
-  localStorage.setItem("masterItems", JSON.stringify(masterItems));
-}
-
-function addItem(){
-  const item = {
-    id: Date.now(),
-    name: name.value.trim(),
-    uom: uom.value.trim()
-  };
-
-  if(!item.name || !item.uom){
-    alert("Fill required fields");
-    return;
-  }
-
-  masterItems.push(item);
-  save();
-  render();
-
-  name.value="";
-  uom.value="";
-}
-
-function render(){
-  tableBody.innerHTML="";
-
-  masterItems.forEach(item=>{
-    tableBody.innerHTML+=`
-    <tr>
-      <td>${item.id}</td>
-      <td>${item.name}</td>
-      <td>${item.uom}</td>
-      <td>
-        <button onclick="deleteItem(${item.id})">Delete</button>
-      </td>
-    </tr>`;
-  });
-}
-
-function deleteItem(id){
-  if(confirm("Delete item?")){
-    masterItems = masterItems.filter(i=>i.id !== id);
-    save();
-    render();
-  }
-}
-
-function clearAll(){
-  if(confirm("Reset to default items?")){
+  if (!masterItems || masterItems.length === 0) {
     masterItems = defaultItems;
+    localStorage.setItem("masterItems", JSON.stringify(masterItems));
+  }
+
+  function save() {
+    localStorage.setItem("masterItems", JSON.stringify(masterItems));
+  }
+
+  function addItem() {
+    const item = {
+      id: Date.now(),
+      name: document.getElementById("name").value.trim(),
+      uom: document.getElementById("uom").value.trim(),
+      category: document.getElementById("category").value,
+      trade: document.getElementById("trade").value.trim(),
+      classification: document.getElementById("classification").value,
+      hazard: document.getElementById("hazard").value,
+      location: document.getElementById("location").value.trim(),
+      rack: document.getElementById("rack").value.trim(),
+      forecast: Number(document.getElementById("forecast").value) || 0
+    };
+
+    if (!item.name || !item.uom) {
+      alert("Item Name and UOM are required.");
+      return;
+    }
+
+    masterItems.push(item);
     save();
     render();
+    clearFormFields();
   }
-}
 
-render();
+  function clearFormFields() {
+    document.getElementById("name").value = "";
+    document.getElementById("uom").value = "";
+    document.getElementById("category").value = "Engineering";
+    document.getElementById("trade").value = "";
+    document.getElementById("classification").value = "FAST-MOVING";
+    document.getElementById("hazard").value = "NO";
+    document.getElementById("location").value = "";
+    document.getElementById("rack").value = "";
+    document.getElementById("forecast").value = "";
+  }
 
+  function deleteItem(id) {
+    if (confirm("Delete item?")) {
+      masterItems = masterItems.filter(item => item.id !== id);
+      save();
+      applyFilters();
+    }
+  }
+
+  function clearAll() {
+    if (confirm("Clear all items from master list?")) {
+      masterItems = [];
+      save();
+      render();
+    }
+  }
+
+  function seedDefaults() {
+    if (confirm("Load default items? This will replace current master list.")) {
+      masterItems = [...defaultItems];
+      save();
+      render();
+    }
+  }
+
+  function renderFiltered(list) {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    list.forEach(item => {
+      tableBody.innerHTML += `
+        <tr>
+          <td class="center">${item.id}</td>
+          <td>${item.name}</td>
+          <td class="center">${item.uom || ""}</td>
+          <td class="center">${item.category || ""}</td>
+          <td class="center">${item.trade || ""}</td>
+          <td class="center">${item.classification || ""}</td>
+          <td class="center">${item.hazard || ""}</td>
+          <td class="center">${item.location || ""}</td>
+          <td class="center">${item.rack || ""}</td>
+          <td class="center">${item.forecast || 0}</td>
+          <td class="center">
+            <button class="btn-danger" onclick="deleteItem(${item.id})">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  function applyFilters() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const category = document.getElementById("filterCategory").value;
+    const trade = document.getElementById("filterTrade").value.toLowerCase();
+    const classification = document.getElementById("filterClass").value;
+    const hazard = document.getElementById("filterHazard").value;
+    const location = document.getElementById("filterLocation").value.toLowerCase();
+
+    const filtered = masterItems.filter(item => {
+      return (
+        item.name.toLowerCase().includes(search) &&
+        (category === "" || item.category === category) &&
+        (trade === "" || (item.trade || "").toLowerCase().includes(trade)) &&
+        (classification === "" || item.classification === classification) &&
+        (hazard === "" || item.hazard === hazard) &&
+        (location === "" || (item.location || "").toLowerCase().includes(location))
+      );
+    });
+
+    renderFiltered(filtered);
+  }
+
+  function render() {
+    renderFiltered(masterItems);
+  }
+
+  render();
 </script>
 
 </body>
