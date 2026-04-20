@@ -1,7 +1,119 @@
-<script>
-// AUTO GENERATED MASTER ITEMS (from your inventory list)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master List - Inventory System</title>
 
-let masterItems = [
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      padding:20px;
+    }
+
+    .container{
+      max-width:1400px;
+      margin:auto;
+    }
+
+    h1{
+      margin-bottom:15px;
+      color:#1e3a8a;
+    }
+
+    .section{
+      background:white;
+      padding:15px;
+      border-radius:10px;
+      margin-bottom:20px;
+    }
+
+    input{
+      padding:8px;
+      margin:5px;
+      border:1px solid #ccc;
+      border-radius:6px;
+    }
+
+    button{
+      padding:8px 12px;
+      margin:5px;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .add{background:#1e3a8a;color:white;}
+    .delete{background:#dc2626;color:white;}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+    }
+
+    th,td{
+      border:1px solid #ccc;
+      padding:8px;
+      font-size:13px;
+    }
+
+    th{
+      background:#a9c0d7;
+      color:#c00000;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>MASTER LIST</h1>
+
+  <!-- ADD ITEM -->
+  <div class="section">
+    <h3>Add Item</h3>
+
+    <input id="name" placeholder="Item Name">
+    <input id="uom" placeholder="UOM">
+
+    <button class="add" onclick="addItem()">Add</button>
+    <button class="delete" onclick="clearAll()">Clear All</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="section">
+    <h3>Items</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Item Name</th>
+          <th>UOM</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+
+// DEFAULT ITEMS (YOUR DATA)
+const defaultItems = [
   {id:1, name:"BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom:"PIECES"},
   {id:2, name:"ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom:"BAGS"},
   {id:3, name:"ATTACK DRIVER #AN-112A, KOKEN (USED)", uom:"PIECES"},
@@ -44,6 +156,73 @@ let masterItems = [
   {id:40, name:"CIRCUIT BREAKER SIEMENS", uom:"PIECES"}
 ];
 
-// SAVE
-localStorage.setItem("masterItems", JSON.stringify(masterItems));
+// LOAD OR INIT
+let masterItems = JSON.parse(localStorage.getItem("masterItems"));
+
+if(!masterItems || masterItems.length === 0){
+  masterItems = defaultItems;
+  localStorage.setItem("masterItems", JSON.stringify(masterItems));
+}
+
+function save(){
+  localStorage.setItem("masterItems", JSON.stringify(masterItems));
+}
+
+function addItem(){
+  const item = {
+    id: Date.now(),
+    name: name.value.trim(),
+    uom: uom.value.trim()
+  };
+
+  if(!item.name || !item.uom){
+    alert("Fill required fields");
+    return;
+  }
+
+  masterItems.push(item);
+  save();
+  render();
+
+  name.value="";
+  uom.value="";
+}
+
+function render(){
+  tableBody.innerHTML="";
+
+  masterItems.forEach(item=>{
+    tableBody.innerHTML+=`
+    <tr>
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>${item.uom}</td>
+      <td>
+        <button onclick="deleteItem(${item.id})">Delete</button>
+      </td>
+    </tr>`;
+  });
+}
+
+function deleteItem(id){
+  if(confirm("Delete item?")){
+    masterItems = masterItems.filter(i=>i.id !== id);
+    save();
+    render();
+  }
+}
+
+function clearAll(){
+  if(confirm("Reset to default items?")){
+    masterItems = defaultItems;
+    save();
+    render();
+  }
+}
+
+render();
+
 </script>
+
+</body>
+</html>
