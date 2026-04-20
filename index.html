@@ -2,742 +2,173 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inventory System Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inventory Management System</title>
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     :root {
-      --bg: #f4f7fb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #cfd8e3;
-      --primary: #0f766e;
-      --primary-dark: #115e59;
-      --head-bg: #a9c0d7;
-      --head-text: #c00000;
-      --green-dark: #2f8f2f;
-      --green-mid: #8bc34a;
-      --green-light: #00c853;
+      --blue-main: #1e3a8a;
+      --blue-dark: #172554;
+      --blue-light: #3b82f6;
+      --card: rgba(255,255,255,0.1);
+      --card-hover: rgba(255,255,255,0.2);
+      --text: #ffffff;
+      --muted: #c7d2fe;
     }
 
     body {
       font-family: Arial, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, var(--blue-dark), var(--blue-main));
       color: var(--text);
+      min-height: 100vh;
       padding: 20px;
     }
 
     .container {
-      max-width: 1700px;
+      max-width: 1000px;
       margin: auto;
     }
 
-    .page-title {
-      margin-bottom: 20px;
+    /* HEADER */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
     }
 
-    .office-label {
+    .header .office {
       font-size: 14px;
-      font-weight: bold;
       letter-spacing: 1px;
       color: var(--muted);
-      margin-bottom: 6px;
       text-transform: uppercase;
     }
 
-    .page-title h1 {
-      font-size: 32px;
-      margin-bottom: 6px;
-      color: var(--primary-dark);
+    .header .dept {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 6px 0;
     }
 
-    .page-title p {
-      color: var(--muted);
-      font-size: 15px;
+    .header .system {
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    .section {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-
-    .section h2 {
-      font-size: 20px;
-      margin-bottom: 14px;
-      color: var(--primary-dark);
-    }
-
-    .cards {
+    /* GRID */
+    .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
 
     .card {
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 35px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .card:hover {
+      background: var(--card-hover);
+      transform: translateY(-5px);
+    }
+
+    .icon {
+      font-size: 45px;
+      margin-bottom: 12px;
     }
 
     .card h3 {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .card .value {
-      font-size: 28px;
-      font-weight: bold;
-      color: var(--primary-dark);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .field label {
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 20px;
       margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 13px;
       color: var(--muted);
     }
 
-    .field input,
-    .field select {
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: 14px;
-      background: #fff;
-    }
-
-    .readonly-input {
-      background: #f1f5f9 !important;
-      font-weight: bold;
-    }
-
-    .form-actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .btn-secondary:hover {
-      background: #d1d5db;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 2000px;
-    }
-
-    th, td {
-      border: 1px solid #333;
-      padding: 8px 10px;
-      font-size: 13px;
-      vertical-align: middle;
-    }
-
-    thead th {
-      background: var(--head-bg);
-      color: var(--head-text);
+    /* FOOTER */
+    .footer {
+      margin-top: 40px;
       text-align: center;
-      font-weight: bold;
-    }
-
-    tbody tr:nth-child(even) {
-      background: #f8fafc;
-    }
-
-    .center {
-      text-align: center;
-    }
-
-    .right {
-      text-align: right;
-    }
-
-    .qty-book-col,
-    .adjusted-col,
-    .ending-col {
-      background: var(--green-dark);
-      color: #fff;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .in-col {
-      background: var(--green-mid);
-      text-align: center;
-    }
-
-    .out-col {
-      background: var(--green-light);
-      text-align: center;
-    }
-
-    .muted-note {
       font-size: 12px;
       color: var(--muted);
-      margin-top: 10px;
-      line-height: 1.5;
     }
 
-    @media (max-width: 1200px) {
-      .cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .form-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 700px) {
-      body {
-        padding: 12px;
-      }
-
-      .cards,
-      .form-grid {
+    /* MOBILE */
+    @media(max-width: 600px) {
+      .grid {
         grid-template-columns: 1fr;
       }
 
-      .page-title h1 {
-        font-size: 24px;
+      .header .system {
+        font-size: 20px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
 
-    <div class="page-title">
-      <div class="office-label">PROPERTY MANAGEMENT OFFICE</div>
-      <h1>STOCK CONTROL DEPARTMENT</h1>
-      <p>Inventory System Dashboard</p>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="office">PROPERTY MANAGEMENT OFFICE</div>
+      <div class="dept">STOCK CONTROL DEPARTMENT</div>
+      <div class="system">INVENTORY MANAGEMENT SYSTEM</div>
     </div>
 
-    <div class="section">
-      <h2>Dashboard Summary</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Total Items</h3>
-          <div class="value" id="totalItems">0</div>
-        </div>
-        <div class="card">
-          <h3>Total Stock On Hand</h3>
-          <div class="value" id="totalSOH">0</div>
-        </div>
-        <div class="card">
-          <h3>Total For PR</h3>
-          <div class="value" id="totalForPR">0</div>
-        </div>
-        <div class="card">
-          <h3>Total In Transit</h3>
-          <div class="value" id="totalTransit">0</div>
-        </div>
+    <!-- CARDS -->
+    <div class="grid">
+
+      <div class="card" onclick="go('deliveries.html')">
+        <div class="icon">📦</div>
+        <h3>Deliveries</h3>
+        <p>MRR / RMS Receiving</p>
       </div>
+
+      <div class="card" onclick="go('issuance.html')">
+        <div class="icon">📤</div>
+        <h3>Issuance</h3>
+        <p>MIS / AIF Transactions</p>
+      </div>
+
+      <div class="card" onclick="go('master-list.html')">
+        <div class="icon">📋</div>
+        <h3>Master List</h3>
+        <p>Inventory Records</p>
+      </div>
+
+      <div class="card" onclick="go('pr-monitoring.html')">
+        <div class="icon">🧾</div>
+        <h3>Purchase Requisition</h3>
+        <p>Reorder & PR Monitoring</p>
+      </div>
+
     </div>
 
-    <div class="section">
-      <h2>Add Item</h2>
-
-      <div class="form-grid">
-        <div class="field">
-          <label>Classification</label>
-          <select id="classification">
-            <option value="FAST-MOVING">FAST-MOVING</option>
-            <option value="ON-NEED">ON-NEED</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Trade/Department</label>
-          <input type="text" id="tradeDept" placeholder="CIVIL-WORK">
-        </div>
-
-        <div class="field">
-          <label>Location</label>
-          <input type="text" id="location" placeholder="P3T2-SCO">
-        </div>
-
-        <div class="field">
-          <label>Sub Location</label>
-          <input type="text" id="subLocation" placeholder="R17/L1">
-        </div>
-
-        <div class="field">
-          <label>Item Description</label>
-          <input type="text" id="itemDescription" placeholder="PROTECTIVE GLOVES, COTTON">
-        </div>
-
-        <div class="field">
-          <label>UOM</label>
-          <input type="text" id="uom" placeholder="PAIRS">
-        </div>
-
-        <div class="field">
-          <label>Qty. (Book)</label>
-          <input type="number" id="qtyBook" placeholder="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>Count Variance</label>
-          <input type="number" id="countVariance" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>Recon Adj</label>
-          <input type="number" id="reconAdj" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>Adjusted Balance</label>
-          <input type="number" id="adjustedBalance" class="readonly-input" readonly>
-        </div>
-
-        <div class="field">
-          <label>MRR No.</label>
-          <input type="text" id="mrrNo" placeholder="MRR-001">
-        </div>
-
-        <div class="field">
-          <label>MRR Qty</label>
-          <input type="number" id="mrrQty" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>RMS No.</label>
-          <input type="text" id="rmsNo" placeholder="RMS-001">
-        </div>
-
-        <div class="field">
-          <label>RMS Qty</label>
-          <input type="number" id="rmsQty" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>MIS No.</label>
-          <input type="text" id="misNo" placeholder="MIS-001">
-        </div>
-
-        <div class="field">
-          <label>MIS Qty</label>
-          <input type="number" id="misQty" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>AIF No.</label>
-          <input type="text" id="aifNo" placeholder="AIF-001">
-        </div>
-
-        <div class="field">
-          <label>AIF Qty</label>
-          <input type="number" id="aifQty" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>IN</label>
-          <input type="number" id="inQty" class="readonly-input" readonly>
-        </div>
-
-        <div class="field">
-          <label>OUT</label>
-          <input type="number" id="outQty" class="readonly-input" readonly>
-        </div>
-
-        <div class="field">
-          <label>Ending Balance</label>
-          <input type="number" id="endingBalance" class="readonly-input" readonly>
-        </div>
-
-        <div class="field">
-          <label>Annual Budget</label>
-          <input type="number" id="annualBudget" placeholder="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>Inventory Level</label>
-          <input type="number" id="inventoryLevel" placeholder="6 or 4" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>PO No. / Reference</label>
-          <input type="text" id="poRef" placeholder="PO-001">
-        </div>
-
-        <div class="field">
-          <label>Delivery In Transit</label>
-          <input type="number" id="deliveryInTransit" value="0" oninput="autoComputePreview()">
-        </div>
-
-        <div class="field">
-          <label>For PR</label>
-          <input type="number" id="forPR" class="readonly-input" readonly>
-        </div>
-
-        <div class="field">
-          <label>Usage %</label>
-          <input type="text" id="usagePercent" class="readonly-input" readonly>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button class="btn-primary" onclick="addItem()">Add Item</button>
-        <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
-        <button class="btn-secondary" onclick="loadSampleData()">Load Sample Data</button>
-      </div>
-
-      <div class="muted-note">
-        Upon upload: <strong>QTY. (BOOK) = Adjusted Balance = Ending Balance</strong>. <br>
-        Formula: <strong>Adjusted Balance = QTY. (BOOK) + Count Variance + Recon Adj</strong><br>
-        Formula: <strong>Ending Balance = Adjusted Balance + IN - OUT</strong><br>
-        Formula: <strong>FOR PR = max(((Annual Budget / 12) × Inventory Level) - Ending Balance - Delivery In Transit, 0)</strong>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Master List</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Classification</th>
-              <th>Trade/Department</th>
-              <th>Location</th>
-              <th>Sub Location</th>
-              <th>Item Description</th>
-              <th>UOM</th>
-              <th>Qty. (Book)</th>
-              <th>Count Variance</th>
-              <th>Recon Adj</th>
-              <th>Adjusted Balance</th>
-              <th>MRR No.</th>
-              <th>MRR Qty</th>
-              <th>RMS No.</th>
-              <th>RMS Qty</th>
-              <th>IN</th>
-              <th>MIS No.</th>
-              <th>MIS Qty</th>
-              <th>AIF No.</th>
-              <th>AIF Qty</th>
-              <th>OUT</th>
-              <th>Ending Balance</th>
-              <th>Annual Budget</th>
-              <th>Inventory Level</th>
-              <th>PO Ref</th>
-              <th>Delivery In Transit</th>
-              <th>For PR</th>
-              <th>Usage Percentage</th>
-            </tr>
-          </thead>
-          <tbody id="masterListBody"></tbody>
-        </table>
-      </div>
+    <div class="footer">
+      Inventory System © 2026
     </div>
 
   </div>
 
   <script>
-    let items = [];
-
-    function num(value) {
-      return Number(value) || 0;
-    }
-
-    function computeItem(item) {
-      const qtyBook = num(item.qtyBook);
-      const countVariance = num(item.countVariance);
-      const reconAdj = num(item.reconAdj);
-
-      const mrrQty = num(item.mrrQty);
-      const rmsQty = num(item.rmsQty);
-      const misQty = num(item.misQty);
-      const aifQty = num(item.aifQty);
-
-      const annualBudget = num(item.annualBudget);
-      const inventoryLevel = num(item.inventoryLevel);
-      const deliveryInTransit = num(item.deliveryInTransit);
-
-      const totalIn = mrrQty + rmsQty;
-      const totalOut = misQty + aifQty;
-
-      const adjustedBalance = qtyBook + countVariance + reconAdj;
-      const endingBalance = adjustedBalance + totalIn - totalOut;
-      const reorderPoint = (annualBudget > 0 && inventoryLevel > 0)
-        ? (annualBudget / 12) * inventoryLevel
-        : 0;
-      const forPR = Math.max(reorderPoint - endingBalance - deliveryInTransit, 0);
-      const usagePercent = annualBudget > 0
-        ? ((totalOut / annualBudget) * 100).toFixed(0) + "%"
-        : "";
-
-      return {
-        ...item,
-        totalIn,
-        totalOut,
-        adjustedBalance,
-        endingBalance,
-        reorderPoint,
-        forPR,
-        usagePercent
-      };
-    }
-
-    function autoComputePreview() {
-      const previewItem = {
-        qtyBook: document.getElementById("qtyBook").value,
-        countVariance: document.getElementById("countVariance").value,
-        reconAdj: document.getElementById("reconAdj").value,
-        mrrQty: document.getElementById("mrrQty").value,
-        rmsQty: document.getElementById("rmsQty").value,
-        misQty: document.getElementById("misQty").value,
-        aifQty: document.getElementById("aifQty").value,
-        annualBudget: document.getElementById("annualBudget").value,
-        inventoryLevel: document.getElementById("inventoryLevel").value,
-        deliveryInTransit: document.getElementById("deliveryInTransit").value
-      };
-
-      const computed = computeItem(previewItem);
-
-      document.getElementById("adjustedBalance").value = computed.adjustedBalance;
-      document.getElementById("inQty").value = computed.totalIn;
-      document.getElementById("outQty").value = computed.totalOut;
-      document.getElementById("endingBalance").value = computed.endingBalance;
-      document.getElementById("forPR").value = computed.forPR;
-      document.getElementById("usagePercent").value = computed.usagePercent;
-    }
-
-    function addItem() {
-      const item = {
-        classification: document.getElementById("classification").value,
-        tradeDept: document.getElementById("tradeDept").value.trim(),
-        location: document.getElementById("location").value.trim(),
-        subLocation: document.getElementById("subLocation").value.trim(),
-        itemDescription: document.getElementById("itemDescription").value.trim(),
-        uom: document.getElementById("uom").value.trim(),
-
-        qtyBook: num(document.getElementById("qtyBook").value),
-        countVariance: num(document.getElementById("countVariance").value),
-        reconAdj: num(document.getElementById("reconAdj").value),
-
-        mrrNo: document.getElementById("mrrNo").value.trim(),
-        mrrQty: num(document.getElementById("mrrQty").value),
-
-        rmsNo: document.getElementById("rmsNo").value.trim(),
-        rmsQty: num(document.getElementById("rmsQty").value),
-
-        misNo: document.getElementById("misNo").value.trim(),
-        misQty: num(document.getElementById("misQty").value),
-
-        aifNo: document.getElementById("aifNo").value.trim(),
-        aifQty: num(document.getElementById("aifQty").value),
-
-        annualBudget: num(document.getElementById("annualBudget").value),
-        inventoryLevel: num(document.getElementById("inventoryLevel").value),
-
-        poRef: document.getElementById("poRef").value.trim(),
-        deliveryInTransit: num(document.getElementById("deliveryInTransit").value)
-      };
-
-      if (!item.tradeDept || !item.location || !item.subLocation || !item.itemDescription || !item.uom) {
-        alert("Please fill in the required fields.");
-        return;
-      }
-
-      items.push(computeItem(item));
-      renderTable();
-      updateDashboard();
-      clearForm();
-    }
-
-    function renderTable() {
-      const tbody = document.getElementById("masterListBody");
-      tbody.innerHTML = "";
-
-      items.forEach(item => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td class="center">${item.classification}</td>
-          <td class="center">${item.tradeDept}</td>
-          <td class="center">${item.location}</td>
-          <td class="center">${item.subLocation}</td>
-          <td>${item.itemDescription}</td>
-          <td class="center">${item.uom}</td>
-          <td class="qty-book-col">${item.qtyBook}</td>
-          <td class="center">${item.countVariance}</td>
-          <td class="center">${item.reconAdj}</td>
-          <td class="adjusted-col">${item.adjustedBalance}</td>
-          <td class="center">${item.mrrNo || ""}</td>
-          <td class="center">${item.mrrQty || ""}</td>
-          <td class="center">${item.rmsNo || ""}</td>
-          <td class="center">${item.rmsQty || ""}</td>
-          <td class="in-col">${item.totalIn || ""}</td>
-          <td class="center">${item.misNo || ""}</td>
-          <td class="center">${item.misQty || ""}</td>
-          <td class="center">${item.aifNo || ""}</td>
-          <td class="center">${item.aifQty || ""}</td>
-          <td class="out-col">${item.totalOut || ""}</td>
-          <td class="ending-col">${item.endingBalance}</td>
-          <td class="center">${item.annualBudget || ""}</td>
-          <td class="center">${item.inventoryLevel || ""}</td>
-          <td class="center">${item.poRef || ""}</td>
-          <td class="center">${item.deliveryInTransit || ""}</td>
-          <td class="center">${item.forPR > 0 ? item.forPR : "-"}</td>
-          <td class="center">${item.usagePercent || ""}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function updateDashboard() {
-      const totalItems = items.length;
-      const totalSOH = items.reduce((sum, item) => sum + num(item.endingBalance), 0);
-      const totalForPR = items.reduce((sum, item) => sum + num(item.forPR), 0);
-      const totalTransit = items.reduce((sum, item) => sum + num(item.deliveryInTransit), 0);
-
-      document.getElementById("totalItems").textContent = totalItems;
-      document.getElementById("totalSOH").textContent = totalSOH;
-      document.getElementById("totalForPR").textContent = totalForPR;
-      document.getElementById("totalTransit").textContent = totalTransit;
-    }
-
-    function clearForm() {
-      document.getElementById("classification").value = "FAST-MOVING";
-      document.getElementById("tradeDept").value = "";
-      document.getElementById("location").value = "";
-      document.getElementById("subLocation").value = "";
-      document.getElementById("itemDescription").value = "";
-      document.getElementById("uom").value = "";
-
-      document.getElementById("qtyBook").value = "";
-      document.getElementById("countVariance").value = "0";
-      document.getElementById("reconAdj").value = "0";
-      document.getElementById("adjustedBalance").value = "";
-
-      document.getElementById("mrrNo").value = "";
-      document.getElementById("mrrQty").value = "0";
-      document.getElementById("rmsNo").value = "";
-      document.getElementById("rmsQty").value = "0";
-
-      document.getElementById("misNo").value = "";
-      document.getElementById("misQty").value = "0";
-      document.getElementById("aifNo").value = "";
-      document.getElementById("aifQty").value = "0";
-
-      document.getElementById("inQty").value = "";
-      document.getElementById("outQty").value = "";
-      document.getElementById("endingBalance").value = "";
-
-      document.getElementById("annualBudget").value = "";
-      document.getElementById("inventoryLevel").value = "";
-      document.getElementById("poRef").value = "";
-      document.getElementById("deliveryInTransit").value = "0";
-      document.getElementById("forPR").value = "";
-      document.getElementById("usagePercent").value = "";
-    }
-
-    function loadSampleData() {
-      items = [
-        computeItem({
-          classification: "ON-NEED",
-          tradeDept: "CIVIL-WORK",
-          location: "P3T2-SCO",
-          subLocation: "R17/L3",
-          itemDescription: "PROTECTIVE GLOVES, RUBBER BLACK, LARGE, NEOPRENE",
-          uom: "PAIRS",
-          qtyBook: 74,
-          countVariance: 0,
-          reconAdj: 0,
-          mrrNo: "",
-          mrrQty: 0,
-          rmsNo: "",
-          rmsQty: 0,
-          misNo: "",
-          misQty: 0,
-          aifNo: "",
-          aifQty: 0,
-          annualBudget: 0,
-          inventoryLevel: 0,
-          poRef: "",
-          deliveryInTransit: 0
-        }),
-        computeItem({
-          classification: "FAST-MOVING",
-          tradeDept: "CIVIL-WORK",
-          location: "P3T2-SCO",
-          subLocation: "R17/L2",
-          itemDescription: "PROTECTIVE GLOVES, COTTON W/ RUBBER COATED PALM",
-          uom: "PAIRS",
-          qtyBook: 36,
-          countVariance: 0,
-          reconAdj: 0,
-          mrrNo: "MRR-001",
-          mrrQty: 36,
-          rmsNo: "",
-          rmsQty: 0,
-          misNo: "MIS-001",
-          misQty: 32,
-          aifNo: "",
-          aifQty: 0,
-          annualBudget: 50,
-          inventoryLevel: 6,
-          poRef: "",
-          deliveryInTransit: 0
-        })
-      ];
-
-      renderTable();
-      updateDashboard();
+    function go(page) {
+      window.location.href = page;
     }
   </script>
+
 </body>
 </html>
