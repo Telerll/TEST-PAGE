@@ -2,173 +2,887 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inventory Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master List - Inventory Management System</title>
 
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: Arial, sans-serif;
     }
 
     :root {
       --blue-main: #1e3a8a;
       --blue-dark: #172554;
-      --blue-light: #3b82f6;
-      --card: rgba(255,255,255,0.1);
-      --card-hover: rgba(255,255,255,0.2);
-      --text: #ffffff;
-      --muted: #c7d2fe;
+      --bg: #f4f7fb;
+      --white: #ffffff;
+      --line: #cbd5e1;
+      --muted: #64748b;
+      --head-bg: #a9c0d7;
+      --head-text: #c00000;
+      --green-dark: #2f8f2f;
+      --green-mid: #8bc34a;
+      --green-light: #00c853;
+      --warn: #d97706;
+      --danger: #dc2626;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, var(--blue-dark), var(--blue-main));
-      color: var(--text);
-      min-height: 100vh;
+      background: var(--bg);
       padding: 20px;
+      color: #1f2937;
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1800px;
       margin: auto;
     }
 
-    /* HEADER */
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .header .office {
-      font-size: 14px;
-      letter-spacing: 1px;
+    .title-block small {
+      display: block;
+      font-size: 13px;
       color: var(--muted);
       text-transform: uppercase;
-    }
-
-    .header .dept {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 6px 0;
-    }
-
-    .header .system {
-      font-size: 26px;
+      margin-bottom: 4px;
       font-weight: bold;
       letter-spacing: 1px;
     }
 
-    /* GRID */
-    .grid {
+    .title-block h1 {
+      font-size: 28px;
+      color: var(--blue-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      background: #e5e7eb;
+      color: #111827;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .section {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      color: var(--blue-dark);
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .cards {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
     .card {
-      background: var(--card);
-      border-radius: 18px;
-      padding: 35px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.3s;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .card:hover {
-      background: var(--card-hover);
-      transform: translateY(-5px);
-    }
-
-    .icon {
-      font-size: 45px;
-      margin-bottom: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
     }
 
     .card h3 {
-      font-size: 20px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .card .value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--blue-dark);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--muted);
       margin-bottom: 6px;
     }
 
-    .card p {
-      font-size: 13px;
-      color: var(--muted);
+    .field input,
+    .field select {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
     }
 
-    /* FOOTER */
-    .footer {
-      margin-top: 40px;
+    .readonly {
+      background: #f1f5f9 !important;
+      font-weight: bold;
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--blue-main);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 2400px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #334155;
+      padding: 8px 10px;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: var(--head-bg);
+      color: var(--head-text);
       text-align: center;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .qty-book-col,
+    .adjusted-col,
+    .ending-col {
+      background: var(--green-dark);
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .in-col {
+      background: var(--green-mid);
+      text-align: center;
+    }
+
+    .out-col {
+      background: var(--green-light);
+      text-align: center;
+    }
+
+    .status-ok {
+      color: #166534;
+      font-weight: bold;
+    }
+
+    .status-pr {
+      color: var(--danger);
+      font-weight: bold;
+    }
+
+    .note {
+      margin-top: 10px;
       font-size: 12px;
       color: var(--muted);
+      line-height: 1.5;
     }
 
-    /* MOBILE */
-    @media(max-width: 600px) {
-      .grid {
+    @media (max-width: 1200px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      .cards,
+      .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .header .system {
-        font-size: 20px;
+      .title-block h1 {
+        font-size: 22px;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
-      <div class="office">PROPERTY MANAGEMENT OFFICE</div>
-      <div class="dept">STOCK CONTROL DEPARTMENT</div>
-      <div class="system">INVENTORY MANAGEMENT SYSTEM</div>
+<div class="container">
+
+  <div class="topbar">
+    <div class="title-block">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>MASTER LIST</h1>
     </div>
 
-    <!-- CARDS -->
-    <div class="grid">
-
-      <div class="card" onclick="go('deliveries.html')">
-        <div class="icon">📦</div>
-        <h3>Deliveries</h3>
-        <p>MRR / RMS Receiving</p>
-      </div>
-
-      <div class="card" onclick="go('issuance.html')">
-        <div class="icon">📤</div>
-        <h3>Issuance</h3>
-        <p>MIS / AIF Transactions</p>
-      </div>
-
-      <div class="card" onclick="go('master-list.html')">
-        <div class="icon">📋</div>
-        <h3>Master List</h3>
-        <p>Inventory Records</p>
-      </div>
-
-      <div class="card" onclick="go('pr-monitoring.html')">
-        <div class="icon">🧾</div>
-        <h3>Purchase Requisition</h3>
-        <p>Reorder & PR Monitoring</p>
-      </div>
-
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="deliveries.html">Deliveries</a>
+      <a href="issuance.html">Issuance</a>
     </div>
-
-    <div class="footer">
-      Inventory System © 2026
-    </div>
-
   </div>
 
-  <script>
-    function go(page) {
-      window.location.href = page;
+  <div class="section">
+    <h2>Dashboard Summary</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Total Items</h3>
+        <div class="value" id="dashTotalItems">0</div>
+      </div>
+      <div class="card">
+        <h3>Fast-Moving Items</h3>
+        <div class="value" id="dashFM">0</div>
+      </div>
+      <div class="card">
+        <h3>Total Stock On Hand</h3>
+        <div class="value" id="dashSOH">0</div>
+      </div>
+      <div class="card">
+        <h3>Total For PR</h3>
+        <div class="value" id="dashPR">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Add / Update Item</h2>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Category</label>
+        <select id="category" onchange="updateTradeOptions(); autoComputePreview();">
+          <option value="">-- Select Category --</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Office Supplies">Office Supplies</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Trade / Department</label>
+        <select id="trade">
+          <option value="">-- Select Trade --</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Classification</label>
+        <select id="classification" onchange="autoComputePreview()">
+          <option value="FAST-MOVING">FAST-MOVING</option>
+          <option value="ON-NEED">ON-NEED</option>
+          <option value="TOOLS">TOOLS</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Hazardous</label>
+        <select id="hazard">
+          <option value="NO">NO</option>
+          <option value="YES">YES</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Location</label>
+        <input id="location" placeholder="P3T2-SCO">
+      </div>
+
+      <div class="field">
+        <label>Rack No.</label>
+        <input id="rack" placeholder="R17/L3">
+      </div>
+
+      <div class="field">
+        <label>Item Name</label>
+        <input id="name" placeholder="Item description">
+      </div>
+
+      <div class="field">
+        <label>UOM</label>
+        <input id="uom" placeholder="PIECES / BAGS / PAIRS">
+      </div>
+
+      <div class="field">
+        <label>Qty. (Book)</label>
+        <input type="number" id="qtyBook" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>Count Variance</label>
+        <input type="number" id="countVariance" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>Recon Adj</label>
+        <input type="number" id="reconAdj" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>Adjusted Balance</label>
+        <input type="number" id="adjustedBalance" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>IN</label>
+        <input type="number" id="inQty" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>OUT</label>
+        <input type="number" id="outQty" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>Ending Balance</label>
+        <input type="number" id="endingBalance" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>Annual Forecast Qty</label>
+        <input type="number" id="forecast" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>Inventory Level</label>
+        <input type="number" id="inventoryLevel" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>Delivery In Transit</label>
+        <input type="number" id="deliveryInTransit" value="0" oninput="autoComputePreview()">
+      </div>
+
+      <div class="field">
+        <label>Reorder Point</label>
+        <input type="number" id="reorderPoint" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>For PR</label>
+        <input type="number" id="forPR" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>Usage %</label>
+        <input type="text" id="usagePercent" class="readonly" readonly>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="saveBtn" onclick="saveItem()">Add Item</button>
+      <button class="btn-secondary" onclick="seedDefaults()">Load Default Items</button>
+      <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
+      <button class="btn-danger" onclick="clearAll()">Clear All</button>
+    </div>
+
+    <div class="note">
+      Category controls Inventory Level automatically: <strong>Engineering = 6 months</strong>, <strong>Office Supplies = 4 months</strong>. <br>
+      Adjusted Balance = Qty. (Book) + Count Variance + Recon Adj. <br>
+      Ending Balance = Adjusted Balance + IN - OUT. <br>
+      Reorder Point = (Annual Forecast Qty / 12) × Inventory Level. <br>
+      For PR = max(Reorder Point - Ending Balance - Delivery In Transit, 0).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Filter Items</h2>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Search Item</label>
+        <input id="searchInput" placeholder="Type item name..." oninput="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <select id="filterCategory" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Office Supplies">Office Supplies</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Trade / Department</label>
+        <input id="filterTrade" placeholder="Civil / HR..." oninput="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Classification</label>
+        <select id="filterClass" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="FAST-MOVING">FAST-MOVING</option>
+          <option value="ON-NEED">ON-NEED</option>
+          <option value="TOOLS">TOOLS</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Hazardous</label>
+        <select id="filterHazard" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Location</label>
+        <input id="filterLocation" placeholder="P3T2-SCO..." oninput="applyFilters()">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Item List</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Trade / Department</th>
+            <th>Classification</th>
+            <th>Hazardous</th>
+            <th>Location</th>
+            <th>Rack No.</th>
+            <th>Item Name</th>
+            <th>UOM</th>
+            <th>Qty. (Book)</th>
+            <th>Count Variance</th>
+            <th>Recon Adj</th>
+            <th>Adjusted Balance</th>
+            <th>IN</th>
+            <th>OUT</th>
+            <th>Ending Balance</th>
+            <th>Annual Forecast Qty</th>
+            <th>Inventory Level</th>
+            <th>Delivery In Transit</th>
+            <th>Reorder Point</th>
+            <th>For PR</th>
+            <th>Usage %</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tradeMap = {
+    "Engineering": [
+      "CIVIL-WORK",
+      "PLUMBING",
+      "ELECTRICAL",
+      "ELECTRO-MECH",
+      "HVAC",
+      "FDAS",
+      "BMS",
+      "TOOLS"
+    ],
+    "Office Supplies": [
+      "HR",
+      "ACCOUNTING",
+      "ADMIN",
+      "I.T.",
+      "SECURITY",
+      "PARKING",
+      "HOUSEKEEPING"
+    ]
+  };
+
+  const defaultItems = [
+    {id:1, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B2T2-1", rack:"", name:"BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom:"PIECES", qtyBook:4, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:2, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B3T1-C", rack:"", name:"ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom:"BAGS", qtyBook:25, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:3, category:"Engineering", trade:"TOOLS", classification:"TOOLS", hazard:"NO", location:"B4T1-A", rack:"", name:"ATTACK DRIVER #AN-112A, KOKEN (USED)", uom:"PIECES", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:4, category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B4T1-A", rack:"", name:"BEARING, KM14 SWEDEN, SKF", uom:"PIECES", qtyBook:2, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:5, category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", name:"BREAKER, ELECTRONIC TRIP UNIT", uom:"PIECES", qtyBook:3, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:6, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"BUSHING, PLASTIC", uom:"PIECES", qtyBook:10, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:7, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"DISC, CUTTING 16\" PREMIUM", uom:"PIECES", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:8, category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B4T2-A", rack:"", name:"GUTTER, WIRE (TRIANGULAR)", uom:"PIECES", qtyBook:12, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:9, category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"MODULE, IDNET SIMPLEX", uom:"PIECES", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:10, category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", name:"MOTOR 15KW SIEMENS", uom:"UNITS", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:11, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"NUTS, STAINLESS", uom:"PIECES", qtyBook:200, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:12, category:"Engineering", trade:"PLUMBING", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"PRESSURE GAUGE WIKA", uom:"PIECES", qtyBook:6, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:13, category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"THERMOSTAT CONTROL", uom:"PIECES", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:14, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B6T1-C", rack:"", name:"GRANITE TILES", uom:"PIECES", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:15, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"ABRASIVE PAPER", uom:"PIECES", qtyBook:50, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:16, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B3T1-C", rack:"", name:"ACOUSTIC CEILING TILES", uom:"PIECES", qtyBook:356, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:17, category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"YES", location:"B4T1-C1", rack:"", name:"ACRYLIC PAINT BOYSEN", uom:"CANS", qtyBook:30, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:18, category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", name:"ACTUATOR MOTOR", uom:"UNITS", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:19, category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", name:"ADAPTOR POWER SUPPLY", uom:"PIECES", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0},
+    {id:20, category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", name:"AIR CONDITIONER SPLIT TYPE", uom:"UNITS", qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, forecast:0, deliveryInTransit:0}
+  ];
+
+  let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
+  let editingId = null;
+
+  function num(value) {
+    return Number(value) || 0;
+  }
+
+  function computeItem(item) {
+    const inventoryLevel = item.category === "Engineering" ? 6 :
+      item.category === "Office Supplies" ? 4 : 0;
+
+    const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
+    const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
+    const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
+    const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
+    const usagePercent = num(item.forecast) > 0 ? ((num(item.outQty) / num(item.forecast)) * 100).toFixed(0) + "%" : "";
+    const status = forPR > 0 ? "FOR REORDER" : "COVERED";
+
+    return {
+      ...item,
+      inventoryLevel,
+      adjustedBalance,
+      endingBalance,
+      reorderPoint,
+      forPR,
+      usagePercent,
+      status
+    };
+  }
+
+  function save() {
+    localStorage.setItem("masterItems", JSON.stringify(masterItems));
+  }
+
+  function updateTradeOptions(selectedValue = "") {
+    const category = document.getElementById("category").value;
+    const tradeSelect = document.getElementById("trade");
+
+    tradeSelect.innerHTML = '<option value="">-- Select Trade --</option>';
+
+    if (!category || !tradeMap[category]) return;
+
+    tradeMap[category].forEach(trade => {
+      tradeSelect.innerHTML += `<option value="${trade}">${trade}</option>`;
+    });
+
+    if (selectedValue) {
+      tradeSelect.value = selectedValue;
     }
-  </script>
+  }
+
+  function autoComputePreview() {
+    const category = document.getElementById("category").value;
+    const qtyBook = num(document.getElementById("qtyBook").value);
+    const countVariance = num(document.getElementById("countVariance").value);
+    const reconAdj = num(document.getElementById("reconAdj").value);
+    const inQty = num(document.getElementById("inQty").value);
+    const outQty = num(document.getElementById("outQty").value);
+    const forecast = num(document.getElementById("forecast").value);
+    const deliveryInTransit = num(document.getElementById("deliveryInTransit").value);
+
+    const inventoryLevel = category === "Engineering" ? 6 :
+      category === "Office Supplies" ? 4 : 0;
+
+    const adjustedBalance = qtyBook + countVariance + reconAdj;
+    const endingBalance = adjustedBalance + inQty - outQty;
+    const reorderPoint = inventoryLevel > 0 ? (forecast / 12) * inventoryLevel : 0;
+    const forPR = Math.max(reorderPoint - endingBalance - deliveryInTransit, 0);
+    const usagePercent = forecast > 0 ? ((outQty / forecast) * 100).toFixed(0) + "%" : "";
+
+    document.getElementById("inventoryLevel").value = inventoryLevel;
+    document.getElementById("adjustedBalance").value = adjustedBalance;
+    document.getElementById("endingBalance").value = endingBalance;
+    document.getElementById("reorderPoint").value = reorderPoint ? reorderPoint.toFixed(2) : "";
+    document.getElementById("forPR").value = forPR ? forPR.toFixed(2) : "0";
+    document.getElementById("usagePercent").value = usagePercent;
+  }
+
+  function getFormData() {
+    return {
+      id: editingId || Date.now(),
+      category: document.getElementById("category").value,
+      trade: document.getElementById("trade").value,
+      classification: document.getElementById("classification").value,
+      hazard: document.getElementById("hazard").value,
+      location: document.getElementById("location").value.trim(),
+      rack: document.getElementById("rack").value.trim(),
+      name: document.getElementById("name").value.trim(),
+      uom: document.getElementById("uom").value.trim(),
+      qtyBook: num(document.getElementById("qtyBook").value),
+      countVariance: num(document.getElementById("countVariance").value),
+      reconAdj: num(document.getElementById("reconAdj").value),
+      inQty: num(document.getElementById("inQty").value),
+      outQty: num(document.getElementById("outQty").value),
+      forecast: num(document.getElementById("forecast").value),
+      deliveryInTransit: num(document.getElementById("deliveryInTransit").value)
+    };
+  }
+
+  function saveItem() {
+    const item = computeItem(getFormData());
+
+    if (!item.category || !item.trade || !item.name || !item.uom) {
+      alert("Category, Trade / Department, Item Name, and UOM are required.");
+      return;
+    }
+
+    if (editingId) {
+      masterItems = masterItems.map(existing => existing.id === editingId ? item : existing);
+    } else {
+      masterItems.push(item);
+    }
+
+    save();
+    render();
+    updateDashboard();
+    clearForm();
+  }
+
+  function editItem(id) {
+    const item = masterItems.find(row => row.id === id);
+    if (!item) return;
+
+    editingId = id;
+    document.getElementById("saveBtn").textContent = "Update Item";
+
+    document.getElementById("category").value = item.category || "";
+    updateTradeOptions(item.trade || "");
+    document.getElementById("classification").value = item.classification || "FAST-MOVING";
+    document.getElementById("hazard").value = item.hazard || "NO";
+    document.getElementById("location").value = item.location || "";
+    document.getElementById("rack").value = item.rack || "";
+    document.getElementById("name").value = item.name || "";
+    document.getElementById("uom").value = item.uom || "";
+    document.getElementById("qtyBook").value = item.qtyBook || 0;
+    document.getElementById("countVariance").value = item.countVariance || 0;
+    document.getElementById("reconAdj").value = item.reconAdj || 0;
+    document.getElementById("inQty").value = item.inQty || 0;
+    document.getElementById("outQty").value = item.outQty || 0;
+    document.getElementById("forecast").value = item.forecast || 0;
+    document.getElementById("deliveryInTransit").value = item.deliveryInTransit || 0;
+
+    autoComputePreview();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function deleteItem(id) {
+    if (confirm("Delete item?")) {
+      masterItems = masterItems.filter(item => item.id !== id);
+      save();
+      render();
+      updateDashboard();
+    }
+  }
+
+  function clearForm() {
+    editingId = null;
+    document.getElementById("saveBtn").textContent = "Add Item";
+
+    document.getElementById("category").value = "";
+    updateTradeOptions();
+    document.getElementById("classification").value = "FAST-MOVING";
+    document.getElementById("hazard").value = "NO";
+    document.getElementById("location").value = "";
+    document.getElementById("rack").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("uom").value = "";
+    document.getElementById("qtyBook").value = "0";
+    document.getElementById("countVariance").value = "0";
+    document.getElementById("reconAdj").value = "0";
+    document.getElementById("inQty").value = "0";
+    document.getElementById("outQty").value = "0";
+    document.getElementById("forecast").value = "0";
+    document.getElementById("deliveryInTransit").value = "0";
+    document.getElementById("inventoryLevel").value = "";
+    document.getElementById("adjustedBalance").value = "";
+    document.getElementById("endingBalance").value = "";
+    document.getElementById("reorderPoint").value = "";
+    document.getElementById("forPR").value = "";
+    document.getElementById("usagePercent").value = "";
+  }
+
+  function clearAll() {
+    if (confirm("Clear all items from master list?")) {
+      masterItems = [];
+      save();
+      render();
+      updateDashboard();
+      clearForm();
+    }
+  }
+
+  function seedDefaults() {
+    if (confirm("Load default items? This will replace current master list.")) {
+      masterItems = defaultItems.map(item => computeItem(item));
+      save();
+      render();
+      updateDashboard();
+      clearForm();
+    }
+  }
+
+  function renderFiltered(list) {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+
+    list.forEach(item => {
+      const computed = computeItem(item);
+
+      tableBody.innerHTML += `
+        <tr>
+          <td class="center">${computed.id}</td>
+          <td class="center">${computed.category || ""}</td>
+          <td class="center">${computed.trade || ""}</td>
+          <td class="center">${computed.classification || ""}</td>
+          <td class="center">${computed.hazard || ""}</td>
+          <td class="center">${computed.location || ""}</td>
+          <td class="center">${computed.rack || ""}</td>
+          <td>${computed.name || ""}</td>
+          <td class="center">${computed.uom || ""}</td>
+          <td class="qty-book-col">${computed.qtyBook || 0}</td>
+          <td class="center">${computed.countVariance || 0}</td>
+          <td class="center">${computed.reconAdj || 0}</td>
+          <td class="adjusted-col">${computed.adjustedBalance}</td>
+          <td class="in-col">${computed.inQty || 0}</td>
+          <td class="out-col">${computed.outQty || 0}</td>
+          <td class="ending-col">${computed.endingBalance}</td>
+          <td class="center">${computed.forecast || 0}</td>
+          <td class="center">${computed.inventoryLevel || ""}</td>
+          <td class="center">${computed.deliveryInTransit || 0}</td>
+          <td class="center">${computed.reorderPoint ? computed.reorderPoint.toFixed(2) : "0"}</td>
+          <td class="center">${computed.forPR ? computed.forPR.toFixed(2) : "-"}</td>
+          <td class="center">${computed.usagePercent || ""}</td>
+          <td class="center ${computed.forPR > 0 ? 'status-pr' : 'status-ok'}">${computed.status}</td>
+          <td class="center">
+            <button class="btn-secondary" onclick="editItem(${computed.id})">Edit</button>
+            <button class="btn-danger" onclick="deleteItem(${computed.id})">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  function applyFilters() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const category = document.getElementById("filterCategory").value;
+    const trade = document.getElementById("filterTrade").value.toLowerCase();
+    const classification = document.getElementById("filterClass").value;
+    const hazard = document.getElementById("filterHazard").value;
+    const location = document.getElementById("filterLocation").value.toLowerCase();
+
+    const filtered = masterItems.filter(item => {
+      return (
+        (item.name || "").toLowerCase().includes(search) &&
+        (category === "" || item.category === category) &&
+        (trade === "" || (item.trade || "").toLowerCase().includes(trade)) &&
+        (classification === "" || item.classification === classification) &&
+        (hazard === "" || item.hazard === hazard) &&
+        (location === "" || (item.location || "").toLowerCase().includes(location))
+      );
+    });
+
+    renderFiltered(filtered);
+  }
+
+  function render() {
+    renderFiltered(masterItems);
+  }
+
+  function updateDashboard() {
+    const computedItems = masterItems.map(item => computeItem(item));
+
+    document.getElementById("dashTotalItems").textContent = computedItems.length;
+    document.getElementById("dashFM").textContent = computedItems.filter(item => item.classification === "FAST-MOVING").length;
+    document.getElementById("dashSOH").textContent = computedItems.reduce((sum, item) => sum + num(item.endingBalance), 0).toLocaleString();
+    document.getElementById("dashPR").textContent = computedItems.reduce((sum, item) => sum + num(item.forPR), 0).toFixed(2);
+  }
+
+  if (!masterItems || masterItems.length === 0) {
+    masterItems = defaultItems.map(item => computeItem(item));
+    save();
+  } else {
+    masterItems = masterItems.map(item => computeItem(item));
+    save();
+  }
+
+  updateTradeOptions();
+  autoComputePreview();
+  render();
+  updateDashboard();
+</script>
 
 </body>
 </html>
