@@ -17,9 +17,14 @@
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
-      --line: #dbe3ea;
+      --line: #cfd8e3;
       --primary: #0f766e;
       --primary-dark: #115e59;
+      --head-bg: #a9c0d7;
+      --head-text: #c00000;
+      --green-dark: #2f8f2f;
+      --green-mid: #8bc34a;
+      --green-light: #00c853;
     }
 
     body {
@@ -30,7 +35,7 @@
     }
 
     .container {
-      max-width: 1500px;
+      max-width: 1700px;
       margin: auto;
     }
 
@@ -124,6 +129,11 @@
       background: #fff;
     }
 
+    .readonly-input {
+      background: #f1f5f9 !important;
+      font-weight: bold;
+    }
+
     .form-actions {
       margin-top: 14px;
       display: flex;
@@ -154,6 +164,10 @@
       color: #111827;
     }
 
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
     .table-wrap {
       overflow-x: auto;
     }
@@ -161,38 +175,25 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1800px;
+      min-width: 2000px;
     }
 
     th, td {
       border: 1px solid #333;
       padding: 8px 10px;
       font-size: 13px;
-      vertical-align: top;
+      vertical-align: middle;
     }
 
     thead th {
-      background: #a9c0d7;
-      color: #d10000;
+      background: var(--head-bg);
+      color: var(--head-text);
       text-align: center;
-    }
-
-    .qty-book-col,
-    .ending-col {
-      background: #43a52b;
-      color: #fff;
       font-weight: bold;
-      text-align: center;
     }
 
-    .in-col {
-      background: #8bc34a;
-      text-align: center;
-    }
-
-    .out-col {
-      background: #00c853;
-      text-align: center;
+    tbody tr:nth-child(even) {
+      background: #f8fafc;
     }
 
     .center {
@@ -203,7 +204,33 @@
       text-align: right;
     }
 
-    @media (max-width: 1100px) {
+    .qty-book-col,
+    .adjusted-col,
+    .ending-col {
+      background: var(--green-dark);
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .in-col {
+      background: var(--green-mid);
+      text-align: center;
+    }
+
+    .out-col {
+      background: var(--green-light);
+      text-align: center;
+    }
+
+    .muted-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1200px) {
       .cards {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -304,32 +331,72 @@
 
         <div class="field">
           <label>Count Variance</label>
-          <input type="number" id="countVariance" placeholder="0" oninput="autoComputePreview()">
+          <input type="number" id="countVariance" value="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>Recon Adj</label>
-          <input type="number" id="reconAdj" placeholder="0" oninput="autoComputePreview()">
+          <input type="number" id="reconAdj" value="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>Adjusted Balance</label>
-          <input type="number" id="adjustedBalance" placeholder="0" readonly>
+          <input type="number" id="adjustedBalance" class="readonly-input" readonly>
+        </div>
+
+        <div class="field">
+          <label>MRR No.</label>
+          <input type="text" id="mrrNo" placeholder="MRR-001">
+        </div>
+
+        <div class="field">
+          <label>MRR Qty</label>
+          <input type="number" id="mrrQty" value="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>RMS No.</label>
+          <input type="text" id="rmsNo" placeholder="RMS-001">
+        </div>
+
+        <div class="field">
+          <label>RMS Qty</label>
+          <input type="number" id="rmsQty" value="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>MIS No.</label>
+          <input type="text" id="misNo" placeholder="MIS-001">
+        </div>
+
+        <div class="field">
+          <label>MIS Qty</label>
+          <input type="number" id="misQty" value="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>AIF No.</label>
+          <input type="text" id="aifNo" placeholder="AIF-001">
+        </div>
+
+        <div class="field">
+          <label>AIF Qty</label>
+          <input type="number" id="aifQty" value="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>IN</label>
-          <input type="number" id="inQty" placeholder="0" oninput="autoComputePreview()">
+          <input type="number" id="inQty" class="readonly-input" readonly>
         </div>
 
         <div class="field">
           <label>OUT</label>
-          <input type="number" id="outQty" placeholder="0" oninput="autoComputePreview()">
+          <input type="number" id="outQty" class="readonly-input" readonly>
         </div>
 
         <div class="field">
           <label>Ending Balance</label>
-          <input type="number" id="endingBalance" placeholder="0" readonly>
+          <input type="number" id="endingBalance" class="readonly-input" readonly>
         </div>
 
         <div class="field">
@@ -343,18 +410,23 @@
         </div>
 
         <div class="field">
+          <label>PO No. / Reference</label>
+          <input type="text" id="poRef" placeholder="PO-001">
+        </div>
+
+        <div class="field">
           <label>Delivery In Transit</label>
-          <input type="number" id="deliveryInTransit" placeholder="0" oninput="autoComputePreview()">
+          <input type="number" id="deliveryInTransit" value="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>For PR</label>
-          <input type="number" id="forPR" placeholder="0" readonly>
+          <input type="number" id="forPR" class="readonly-input" readonly>
         </div>
 
         <div class="field">
           <label>Usage %</label>
-          <input type="text" id="usagePercent" placeholder="0%" readonly>
+          <input type="text" id="usagePercent" class="readonly-input" readonly>
         </div>
       </div>
 
@@ -362,6 +434,13 @@
         <button class="btn-primary" onclick="addItem()">Add Item</button>
         <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
         <button class="btn-secondary" onclick="loadSampleData()">Load Sample Data</button>
+      </div>
+
+      <div class="muted-note">
+        Upon upload: <strong>QTY. (BOOK) = Adjusted Balance = Ending Balance</strong>. <br>
+        Formula: <strong>Adjusted Balance = QTY. (BOOK) + Count Variance + Recon Adj</strong><br>
+        Formula: <strong>Ending Balance = Adjusted Balance + IN - OUT</strong><br>
+        Formula: <strong>FOR PR = max(((Annual Budget / 12) × Inventory Level) - Ending Balance - Delivery In Transit, 0)</strong>
       </div>
     </div>
 
@@ -381,11 +460,20 @@
               <th>Count Variance</th>
               <th>Recon Adj</th>
               <th>Adjusted Balance</th>
+              <th>MRR No.</th>
+              <th>MRR Qty</th>
+              <th>RMS No.</th>
+              <th>RMS Qty</th>
               <th>IN</th>
+              <th>MIS No.</th>
+              <th>MIS Qty</th>
+              <th>AIF No.</th>
+              <th>AIF Qty</th>
               <th>OUT</th>
               <th>Ending Balance</th>
               <th>Annual Budget</th>
               <th>Inventory Level</th>
+              <th>PO Ref</th>
               <th>Delivery In Transit</th>
               <th>For PR</th>
               <th>Usage Percentage</th>
@@ -409,24 +497,33 @@
       const qtyBook = num(item.qtyBook);
       const countVariance = num(item.countVariance);
       const reconAdj = num(item.reconAdj);
-      const inQty = num(item.inQty);
-      const outQty = num(item.outQty);
+
+      const mrrQty = num(item.mrrQty);
+      const rmsQty = num(item.rmsQty);
+      const misQty = num(item.misQty);
+      const aifQty = num(item.aifQty);
+
       const annualBudget = num(item.annualBudget);
       const inventoryLevel = num(item.inventoryLevel);
       const deliveryInTransit = num(item.deliveryInTransit);
 
+      const totalIn = mrrQty + rmsQty;
+      const totalOut = misQty + aifQty;
+
       const adjustedBalance = qtyBook + countVariance + reconAdj;
-      const endingBalance = adjustedBalance + inQty - outQty;
-      const reorderPoint = annualBudget > 0 && inventoryLevel > 0
+      const endingBalance = adjustedBalance + totalIn - totalOut;
+      const reorderPoint = (annualBudget > 0 && inventoryLevel > 0)
         ? (annualBudget / 12) * inventoryLevel
         : 0;
       const forPR = Math.max(reorderPoint - endingBalance - deliveryInTransit, 0);
       const usagePercent = annualBudget > 0
-        ? ((outQty / annualBudget) * 100).toFixed(0) + "%"
+        ? ((totalOut / annualBudget) * 100).toFixed(0) + "%"
         : "";
 
       return {
         ...item,
+        totalIn,
+        totalOut,
         adjustedBalance,
         endingBalance,
         reorderPoint,
@@ -440,8 +537,10 @@
         qtyBook: document.getElementById("qtyBook").value,
         countVariance: document.getElementById("countVariance").value,
         reconAdj: document.getElementById("reconAdj").value,
-        inQty: document.getElementById("inQty").value,
-        outQty: document.getElementById("outQty").value,
+        mrrQty: document.getElementById("mrrQty").value,
+        rmsQty: document.getElementById("rmsQty").value,
+        misQty: document.getElementById("misQty").value,
+        aifQty: document.getElementById("aifQty").value,
         annualBudget: document.getElementById("annualBudget").value,
         inventoryLevel: document.getElementById("inventoryLevel").value,
         deliveryInTransit: document.getElementById("deliveryInTransit").value
@@ -450,6 +549,8 @@
       const computed = computeItem(previewItem);
 
       document.getElementById("adjustedBalance").value = computed.adjustedBalance;
+      document.getElementById("inQty").value = computed.totalIn;
+      document.getElementById("outQty").value = computed.totalOut;
       document.getElementById("endingBalance").value = computed.endingBalance;
       document.getElementById("forPR").value = computed.forPR;
       document.getElementById("usagePercent").value = computed.usagePercent;
@@ -463,13 +564,27 @@
         subLocation: document.getElementById("subLocation").value.trim(),
         itemDescription: document.getElementById("itemDescription").value.trim(),
         uom: document.getElementById("uom").value.trim(),
+
         qtyBook: num(document.getElementById("qtyBook").value),
         countVariance: num(document.getElementById("countVariance").value),
         reconAdj: num(document.getElementById("reconAdj").value),
-        inQty: num(document.getElementById("inQty").value),
-        outQty: num(document.getElementById("outQty").value),
+
+        mrrNo: document.getElementById("mrrNo").value.trim(),
+        mrrQty: num(document.getElementById("mrrQty").value),
+
+        rmsNo: document.getElementById("rmsNo").value.trim(),
+        rmsQty: num(document.getElementById("rmsQty").value),
+
+        misNo: document.getElementById("misNo").value.trim(),
+        misQty: num(document.getElementById("misQty").value),
+
+        aifNo: document.getElementById("aifNo").value.trim(),
+        aifQty: num(document.getElementById("aifQty").value),
+
         annualBudget: num(document.getElementById("annualBudget").value),
         inventoryLevel: num(document.getElementById("inventoryLevel").value),
+
+        poRef: document.getElementById("poRef").value.trim(),
         deliveryInTransit: num(document.getElementById("deliveryInTransit").value)
       };
 
@@ -500,12 +615,21 @@
           <td class="qty-book-col">${item.qtyBook}</td>
           <td class="center">${item.countVariance}</td>
           <td class="center">${item.reconAdj}</td>
-          <td class="center">${item.adjustedBalance}</td>
-          <td class="in-col">${item.inQty}</td>
-          <td class="out-col">${item.outQty}</td>
+          <td class="adjusted-col">${item.adjustedBalance}</td>
+          <td class="center">${item.mrrNo || ""}</td>
+          <td class="center">${item.mrrQty || ""}</td>
+          <td class="center">${item.rmsNo || ""}</td>
+          <td class="center">${item.rmsQty || ""}</td>
+          <td class="in-col">${item.totalIn || ""}</td>
+          <td class="center">${item.misNo || ""}</td>
+          <td class="center">${item.misQty || ""}</td>
+          <td class="center">${item.aifNo || ""}</td>
+          <td class="center">${item.aifQty || ""}</td>
+          <td class="out-col">${item.totalOut || ""}</td>
           <td class="ending-col">${item.endingBalance}</td>
           <td class="center">${item.annualBudget || ""}</td>
           <td class="center">${item.inventoryLevel || ""}</td>
+          <td class="center">${item.poRef || ""}</td>
           <td class="center">${item.deliveryInTransit || ""}</td>
           <td class="center">${item.forPR > 0 ? item.forPR : "-"}</td>
           <td class="center">${item.usagePercent || ""}</td>
@@ -533,15 +657,29 @@
       document.getElementById("subLocation").value = "";
       document.getElementById("itemDescription").value = "";
       document.getElementById("uom").value = "";
+
       document.getElementById("qtyBook").value = "";
       document.getElementById("countVariance").value = "0";
       document.getElementById("reconAdj").value = "0";
       document.getElementById("adjustedBalance").value = "";
-      document.getElementById("inQty").value = "0";
-      document.getElementById("outQty").value = "0";
+
+      document.getElementById("mrrNo").value = "";
+      document.getElementById("mrrQty").value = "0";
+      document.getElementById("rmsNo").value = "";
+      document.getElementById("rmsQty").value = "0";
+
+      document.getElementById("misNo").value = "";
+      document.getElementById("misQty").value = "0";
+      document.getElementById("aifNo").value = "";
+      document.getElementById("aifQty").value = "0";
+
+      document.getElementById("inQty").value = "";
+      document.getElementById("outQty").value = "";
       document.getElementById("endingBalance").value = "";
+
       document.getElementById("annualBudget").value = "";
       document.getElementById("inventoryLevel").value = "";
+      document.getElementById("poRef").value = "";
       document.getElementById("deliveryInTransit").value = "0";
       document.getElementById("forPR").value = "";
       document.getElementById("usagePercent").value = "";
@@ -559,10 +697,17 @@
           qtyBook: 74,
           countVariance: 0,
           reconAdj: 0,
-          inQty: 0,
-          outQty: 0,
+          mrrNo: "",
+          mrrQty: 0,
+          rmsNo: "",
+          rmsQty: 0,
+          misNo: "",
+          misQty: 0,
+          aifNo: "",
+          aifQty: 0,
           annualBudget: 0,
           inventoryLevel: 0,
+          poRef: "",
           deliveryInTransit: 0
         }),
         computeItem({
@@ -575,10 +720,17 @@
           qtyBook: 36,
           countVariance: 0,
           reconAdj: 0,
-          inQty: 36,
-          outQty: 32,
+          mrrNo: "MRR-001",
+          mrrQty: 36,
+          rmsNo: "",
+          rmsQty: 0,
+          misNo: "MIS-001",
+          misQty: 32,
+          aifNo: "",
+          aifQty: 0,
           annualBudget: 50,
           inventoryLevel: 6,
+          poRef: "",
           deliveryInTransit: 0
         })
       ];
