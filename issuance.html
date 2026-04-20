@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Issuance - Inventory Management System</title>
 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    :root {
+      --blue-main: #1e3a8a;
+      --blue-dark: #172554;
+      --line: #cbd5e1;
+      --text: #1f2937;
+      --muted: #64748b;
+      --white: #ffffff;
+      --head-bg: #a9c0d7;
+      --head-text: #c00000;
+      --mis: #dc2626;
+      --aif: #ea580c;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .title-block small {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .title-block h1 {
+      font-size: 28px;
+      color: var(--blue-dark);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      background: #e5e7eb;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-left: 8px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .section {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      margin-bottom: 14px;
+      color: var(--blue-dark);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+    .card h3 {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .card .value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--blue-dark);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+
+    .full {
+      grid-column: span 4;
+    }
+
+    .actions {
+      margin-top: 12px;
+    }
+
+    button {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--blue-main);
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1400px;
+    }
+
+    th, td {
+      border: 1px solid #334155;
+      padding: 8px;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--head-bg);
+      color: var(--head-text);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .mis { background: var(--mis); }
+    .aif { background: var(--aif); }
+
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="topbar">
+    <div class="title-block">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>STOCK CONTROL - ISSUANCE</h1>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="deliveries.html">Deliveries</a>
+      <a href="master-list.html">Master List</a>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="section">
+    <h2>Summary</h2>
+    <div class="cards">
+      <div class="card"><h3>Total Transactions</h3><div class="value" id="total">0</div></div>
+      <div class="card"><h3>Total MIS Qty</h3><div class="value" id="misTotal">0</div></div>
+      <div class="card"><h3>Total AIF Qty</h3><div class="value" id="aifTotal">0</div></div>
+      <div class="card"><h3>Total OUT</h3><div class="value" id="outTotal">0</div></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="section">
+    <h2>Add Issuance</h2>
+
+    <div class="form-grid">
+      <div class="field"><label>Date</label><input type="date" id="date"></div>
+      <div class="field"><label>Type</label>
+        <select id="type">
+          <option value="MIS">MIS</option>
+          <option value="AIF">AIF</option>
+        </select>
+      </div>
+
+      <div class="field"><label>Doc No.</label><input id="doc"></div>
+      <div class="field"><label>Requested By</label><input id="req"></div>
+
+      <div class="field"><label>Approved By</label><input id="app"></div>
+      <div class="field"><label>Issued By</label><input id="iss"></div>
+
+      <div class="field"><label>Department</label><input id="dept"></div>
+      <div class="field"><label>Qty</label><input type="number" id="qty"></div>
+
+      <div class="field"><label>UOM</label><input id="uom"></div>
+
+      <div class="field full">
+        <label>Item Description</label>
+        <textarea id="desc"></textarea>
+      </div>
+
+      <div class="field full">
+        <label>Remarks</label>
+        <textarea id="remarks"></textarea>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="add()">Add</button>
+      <button class="btn-danger" onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="section">
+    <h2>Issuance Log</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Doc</th>
+            <th>Requested</th>
+            <th>Approved</th>
+            <th>Issued</th>
+            <th>Dept</th>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>UOM</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody id="body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("issuance")) || [];
+
+function num(x){ return Number(x)||0 }
+
+function save(){
+  localStorage.setItem("issuance", JSON.stringify(data));
+}
+
+function add(){
+  const item = {
+    date: date.value,
+    type: type.value,
+    doc: doc.value,
+    req: req.value,
+    app: app.value,
+    iss: iss.value,
+    dept: dept.value,
+    desc: desc.value,
+    qty: num(qty.value),
+    uom: uom.value,
+    remarks: remarks.value
+  };
+
+  if(!item.date || !item.doc || !item.qty){
+    alert("Fill required fields");
+    return;
+  }
+
+  data.push(item);
+  save();
+  render();
+}
+
+function render(){
+  body.innerHTML="";
+  let mis=0,aif=0,total=0;
+
+  data.forEach(d=>{
+    if(d.type==="MIS") mis+=d.qty;
+    if(d.type==="AIF") aif+=d.qty;
+    total+=d.qty;
+
+    body.innerHTML+=`
+    <tr>
+      <td>${d.date}</td>
+      <td><span class="badge ${d.type.toLowerCase()}">${d.type}</span></td>
+      <td>${d.doc}</td>
+      <td>${d.req}</td>
+      <td>${d.app}</td>
+      <td>${d.iss}</td>
+      <td>${d.dept}</td>
+      <td>${d.desc}</td>
+      <td>${d.qty}</td>
+      <td>${d.uom}</td>
+      <td>${d.remarks}</td>
+    </tr>`;
+  });
+
+  total.innerText = data.length;
+  misTotal.innerText = mis;
+  aifTotal.innerText = aif;
+  outTotal.innerText = total;
+}
+
+function clearAll(){
+  if(confirm("Clear all data?")){
+    data=[];
+    save();
+    render();
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
