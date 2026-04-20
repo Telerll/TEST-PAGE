@@ -20,9 +20,6 @@
       --line: #dbe3ea;
       --primary: #0f766e;
       --primary-dark: #115e59;
-      --danger: #dc2626;
-      --warning: #d97706;
-      --success: #16a34a;
     }
 
     body {
@@ -33,7 +30,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1500px;
       margin: auto;
     }
 
@@ -41,9 +38,19 @@
       margin-bottom: 20px;
     }
 
+    .office-label {
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
     .page-title h1 {
       font-size: 32px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      color: var(--primary-dark);
     }
 
     .page-title p {
@@ -154,56 +161,46 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1300px;
-    }
-
-    thead {
-      background: var(--primary);
-      color: white;
+      min-width: 1800px;
     }
 
     th, td {
-      border: 1px solid var(--line);
-      padding: 10px 12px;
-      text-align: left;
-      font-size: 14px;
+      border: 1px solid #333;
+      padding: 8px 10px;
+      font-size: 13px;
+      vertical-align: top;
     }
 
-    tbody tr:nth-child(even) {
-      background: #f8fafc;
-    }
-
-    .charts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .chart-box {
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-      min-height: 260px;
-    }
-
-    .chart-box h3 {
-      margin-bottom: 10px;
-      color: var(--primary-dark);
-      font-size: 16px;
-    }
-
-    .chart-placeholder {
-      border: 2px dashed var(--line);
-      border-radius: 12px;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 14px;
+    thead th {
+      background: #a9c0d7;
+      color: #d10000;
       text-align: center;
-      padding: 12px;
+    }
+
+    .qty-book-col,
+    .ending-col {
+      background: #43a52b;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .in-col {
+      background: #8bc34a;
+      text-align: center;
+    }
+
+    .out-col {
+      background: #00c853;
+      text-align: center;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
     }
 
     @media (max-width: 1100px) {
@@ -213,10 +210,6 @@
 
       .form-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-
-      .charts {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -231,7 +224,7 @@
       }
 
       .page-title h1 {
-        font-size: 26px;
+        font-size: 24px;
       }
     }
   </style>
@@ -240,8 +233,9 @@
   <div class="container">
 
     <div class="page-title">
-      <h1>Inventory System Dashboard</h1>
-      <p>Master List, stock movement, reorder planning, and dashboard charts.</p>
+      <div class="office-label">PROPERTY MANAGEMENT OFFICE</div>
+      <h1>STOCK CONTROL DEPARTMENT</h1>
+      <p>Inventory System Dashboard</p>
     </div>
 
     <div class="section">
@@ -249,94 +243,125 @@
       <div class="cards">
         <div class="card">
           <h3>Total Items</h3>
-          <div class="value">0</div>
+          <div class="value" id="totalItems">0</div>
         </div>
         <div class="card">
           <h3>Total Stock On Hand</h3>
-          <div class="value">0</div>
+          <div class="value" id="totalSOH">0</div>
         </div>
         <div class="card">
           <h3>Total For PR</h3>
-          <div class="value">0</div>
+          <div class="value" id="totalForPR">0</div>
         </div>
         <div class="card">
-          <h3>Items For Reorder</h3>
-          <div class="value">0</div>
+          <h3>Total In Transit</h3>
+          <div class="value" id="totalTransit">0</div>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <h2>Add / Edit Item</h2>
+      <h2>Add Item</h2>
 
       <div class="form-grid">
         <div class="field">
-          <label>Location</label>
-          <input type="text" placeholder="P3T2SCO">
-        </div>
-
-        <div class="field">
           <label>Classification</label>
-          <select>
-            <option>FAST-MOVING</option>
-            <option>ON-NEED</option>
+          <select id="classification">
+            <option value="FAST-MOVING">FAST-MOVING</option>
+            <option value="ON-NEED">ON-NEED</option>
           </select>
         </div>
 
         <div class="field">
-          <label>Trade/Dept</label>
-          <input type="text" placeholder="CIVIL-WORK">
+          <label>Trade/Department</label>
+          <input type="text" id="tradeDept" placeholder="CIVIL-WORK">
         </div>
 
         <div class="field">
-          <label>Locator</label>
-          <input type="text" placeholder="R17/L1">
+          <label>Location</label>
+          <input type="text" id="location" placeholder="P3T2-SCO">
+        </div>
+
+        <div class="field">
+          <label>Sub Location</label>
+          <input type="text" id="subLocation" placeholder="R17/L1">
         </div>
 
         <div class="field">
           <label>Item Description</label>
-          <input type="text" placeholder="PROTECTIVE GLOVES, COTTON">
+          <input type="text" id="itemDescription" placeholder="PROTECTIVE GLOVES, COTTON">
         </div>
 
         <div class="field">
           <label>UOM</label>
-          <input type="text" placeholder="PAIRS">
+          <input type="text" id="uom" placeholder="PAIRS">
+        </div>
+
+        <div class="field">
+          <label>Qty. (Book)</label>
+          <input type="number" id="qtyBook" placeholder="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>Count Variance</label>
+          <input type="number" id="countVariance" placeholder="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>Recon Adj</label>
+          <input type="number" id="reconAdj" placeholder="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>Adjusted Balance</label>
+          <input type="number" id="adjustedBalance" placeholder="0" readonly>
         </div>
 
         <div class="field">
           <label>IN</label>
-          <input type="number" placeholder="0">
+          <input type="number" id="inQty" placeholder="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>OUT</label>
-          <input type="number" placeholder="0">
+          <input type="number" id="outQty" placeholder="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>Ending Balance</label>
-          <input type="number" placeholder="0">
+          <input type="number" id="endingBalance" placeholder="0" readonly>
         </div>
 
         <div class="field">
           <label>Annual Budget</label>
-          <input type="number" placeholder="0">
+          <input type="number" id="annualBudget" placeholder="0" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>Inventory Level</label>
-          <input type="number" placeholder="6 or 4">
+          <input type="number" id="inventoryLevel" placeholder="6 or 4" oninput="autoComputePreview()">
         </div>
 
         <div class="field">
           <label>Delivery In Transit</label>
-          <input type="number" placeholder="0">
+          <input type="number" id="deliveryInTransit" placeholder="0" oninput="autoComputePreview()">
+        </div>
+
+        <div class="field">
+          <label>For PR</label>
+          <input type="number" id="forPR" placeholder="0" readonly>
+        </div>
+
+        <div class="field">
+          <label>Usage %</label>
+          <input type="text" id="usagePercent" placeholder="0%" readonly>
         </div>
       </div>
 
       <div class="form-actions">
-        <button class="btn-primary">Add Item</button>
-        <button class="btn-secondary">Clear Form</button>
+        <button class="btn-primary" onclick="addItem()">Add Item</button>
+        <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
+        <button class="btn-secondary" onclick="loadSampleData()">Load Sample Data</button>
       </div>
     </div>
 
@@ -346,12 +371,16 @@
         <table>
           <thead>
             <tr>
-              <th>Location</th>
               <th>Classification</th>
-              <th>Trade/Dept</th>
-              <th>Locator</th>
+              <th>Trade/Department</th>
+              <th>Location</th>
+              <th>Sub Location</th>
               <th>Item Description</th>
               <th>UOM</th>
+              <th>Qty. (Book)</th>
+              <th>Count Variance</th>
+              <th>Recon Adj</th>
+              <th>Adjusted Balance</th>
               <th>IN</th>
               <th>OUT</th>
               <th>Ending Balance</th>
@@ -359,43 +388,204 @@
               <th>Inventory Level</th>
               <th>Delivery In Transit</th>
               <th>For PR</th>
+              <th>Usage Percentage</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>P3T2SCO</td>
-              <td>FAST-MOVING</td>
-              <td>CIVIL-WORK</td>
-              <td>R17/L1</td>
-              <td>PROTECTIVE GLOVES, COTTON</td>
-              <td>PAIRS</td>
-              <td>36</td>
-              <td>124</td>
-              <td>163</td>
-              <td>500</td>
-              <td>6</td>
-              <td>0</td>
-              <td>87</td>
-            </tr>
-          </tbody>
+          <tbody id="masterListBody"></tbody>
         </table>
       </div>
     </div>
 
-    <div class="section">
-      <h2>Dashboard Charts</h2>
-      <div class="charts">
-        <div class="chart-box">
-          <h3>Stock by Classification</h3>
-          <div class="chart-placeholder">Chart will go here later</div>
-        </div>
-        <div class="chart-box">
-          <h3>For PR by Trade/Dept</h3>
-          <div class="chart-placeholder">Chart will go here later</div>
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <script>
+    let items = [];
+
+    function num(value) {
+      return Number(value) || 0;
+    }
+
+    function computeItem(item) {
+      const qtyBook = num(item.qtyBook);
+      const countVariance = num(item.countVariance);
+      const reconAdj = num(item.reconAdj);
+      const inQty = num(item.inQty);
+      const outQty = num(item.outQty);
+      const annualBudget = num(item.annualBudget);
+      const inventoryLevel = num(item.inventoryLevel);
+      const deliveryInTransit = num(item.deliveryInTransit);
+
+      const adjustedBalance = qtyBook + countVariance + reconAdj;
+      const endingBalance = adjustedBalance + inQty - outQty;
+      const reorderPoint = annualBudget > 0 && inventoryLevel > 0
+        ? (annualBudget / 12) * inventoryLevel
+        : 0;
+      const forPR = Math.max(reorderPoint - endingBalance - deliveryInTransit, 0);
+      const usagePercent = annualBudget > 0
+        ? ((outQty / annualBudget) * 100).toFixed(0) + "%"
+        : "";
+
+      return {
+        ...item,
+        adjustedBalance,
+        endingBalance,
+        reorderPoint,
+        forPR,
+        usagePercent
+      };
+    }
+
+    function autoComputePreview() {
+      const previewItem = {
+        qtyBook: document.getElementById("qtyBook").value,
+        countVariance: document.getElementById("countVariance").value,
+        reconAdj: document.getElementById("reconAdj").value,
+        inQty: document.getElementById("inQty").value,
+        outQty: document.getElementById("outQty").value,
+        annualBudget: document.getElementById("annualBudget").value,
+        inventoryLevel: document.getElementById("inventoryLevel").value,
+        deliveryInTransit: document.getElementById("deliveryInTransit").value
+      };
+
+      const computed = computeItem(previewItem);
+
+      document.getElementById("adjustedBalance").value = computed.adjustedBalance;
+      document.getElementById("endingBalance").value = computed.endingBalance;
+      document.getElementById("forPR").value = computed.forPR;
+      document.getElementById("usagePercent").value = computed.usagePercent;
+    }
+
+    function addItem() {
+      const item = {
+        classification: document.getElementById("classification").value,
+        tradeDept: document.getElementById("tradeDept").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        subLocation: document.getElementById("subLocation").value.trim(),
+        itemDescription: document.getElementById("itemDescription").value.trim(),
+        uom: document.getElementById("uom").value.trim(),
+        qtyBook: num(document.getElementById("qtyBook").value),
+        countVariance: num(document.getElementById("countVariance").value),
+        reconAdj: num(document.getElementById("reconAdj").value),
+        inQty: num(document.getElementById("inQty").value),
+        outQty: num(document.getElementById("outQty").value),
+        annualBudget: num(document.getElementById("annualBudget").value),
+        inventoryLevel: num(document.getElementById("inventoryLevel").value),
+        deliveryInTransit: num(document.getElementById("deliveryInTransit").value)
+      };
+
+      if (!item.tradeDept || !item.location || !item.subLocation || !item.itemDescription || !item.uom) {
+        alert("Please fill in the required fields.");
+        return;
+      }
+
+      items.push(computeItem(item));
+      renderTable();
+      updateDashboard();
+      clearForm();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("masterListBody");
+      tbody.innerHTML = "";
+
+      items.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="center">${item.classification}</td>
+          <td class="center">${item.tradeDept}</td>
+          <td class="center">${item.location}</td>
+          <td class="center">${item.subLocation}</td>
+          <td>${item.itemDescription}</td>
+          <td class="center">${item.uom}</td>
+          <td class="qty-book-col">${item.qtyBook}</td>
+          <td class="center">${item.countVariance}</td>
+          <td class="center">${item.reconAdj}</td>
+          <td class="center">${item.adjustedBalance}</td>
+          <td class="in-col">${item.inQty}</td>
+          <td class="out-col">${item.outQty}</td>
+          <td class="ending-col">${item.endingBalance}</td>
+          <td class="center">${item.annualBudget || ""}</td>
+          <td class="center">${item.inventoryLevel || ""}</td>
+          <td class="center">${item.deliveryInTransit || ""}</td>
+          <td class="center">${item.forPR > 0 ? item.forPR : "-"}</td>
+          <td class="center">${item.usagePercent || ""}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateDashboard() {
+      const totalItems = items.length;
+      const totalSOH = items.reduce((sum, item) => sum + num(item.endingBalance), 0);
+      const totalForPR = items.reduce((sum, item) => sum + num(item.forPR), 0);
+      const totalTransit = items.reduce((sum, item) => sum + num(item.deliveryInTransit), 0);
+
+      document.getElementById("totalItems").textContent = totalItems;
+      document.getElementById("totalSOH").textContent = totalSOH;
+      document.getElementById("totalForPR").textContent = totalForPR;
+      document.getElementById("totalTransit").textContent = totalTransit;
+    }
+
+    function clearForm() {
+      document.getElementById("classification").value = "FAST-MOVING";
+      document.getElementById("tradeDept").value = "";
+      document.getElementById("location").value = "";
+      document.getElementById("subLocation").value = "";
+      document.getElementById("itemDescription").value = "";
+      document.getElementById("uom").value = "";
+      document.getElementById("qtyBook").value = "";
+      document.getElementById("countVariance").value = "0";
+      document.getElementById("reconAdj").value = "0";
+      document.getElementById("adjustedBalance").value = "";
+      document.getElementById("inQty").value = "0";
+      document.getElementById("outQty").value = "0";
+      document.getElementById("endingBalance").value = "";
+      document.getElementById("annualBudget").value = "";
+      document.getElementById("inventoryLevel").value = "";
+      document.getElementById("deliveryInTransit").value = "0";
+      document.getElementById("forPR").value = "";
+      document.getElementById("usagePercent").value = "";
+    }
+
+    function loadSampleData() {
+      items = [
+        computeItem({
+          classification: "ON-NEED",
+          tradeDept: "CIVIL-WORK",
+          location: "P3T2-SCO",
+          subLocation: "R17/L3",
+          itemDescription: "PROTECTIVE GLOVES, RUBBER BLACK, LARGE, NEOPRENE",
+          uom: "PAIRS",
+          qtyBook: 74,
+          countVariance: 0,
+          reconAdj: 0,
+          inQty: 0,
+          outQty: 0,
+          annualBudget: 0,
+          inventoryLevel: 0,
+          deliveryInTransit: 0
+        }),
+        computeItem({
+          classification: "FAST-MOVING",
+          tradeDept: "CIVIL-WORK",
+          location: "P3T2-SCO",
+          subLocation: "R17/L2",
+          itemDescription: "PROTECTIVE GLOVES, COTTON W/ RUBBER COATED PALM",
+          uom: "PAIRS",
+          qtyBook: 36,
+          countVariance: 0,
+          reconAdj: 0,
+          inQty: 36,
+          outQty: 32,
+          annualBudget: 50,
+          inventoryLevel: 6,
+          deliveryInTransit: 0
+        })
+      ];
+
+      renderTable();
+      updateDashboard();
+    }
+  </script>
 </body>
 </html>
