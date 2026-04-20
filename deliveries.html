@@ -2,31 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deliveries - Stock Control Department</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deliveries - Inventory Management System</title>
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
     }
 
     :root {
-      --bg: #f4f7fb;
-      --card: #ffffff;
+      --blue-main: #1e3a8a;
+      --blue-dark: #172554;
+      --blue-light: #dbeafe;
+      --line: #cbd5e1;
       --text: #1f2937;
-      --muted: #6b7280;
-      --line: #dbe3ea;
-      --primary: #0f766e;
-      --primary-dark: #115e59;
+      --muted: #64748b;
+      --white: #ffffff;
       --head-bg: #a9c0d7;
       --head-text: #c00000;
+      --mrr: #0f766e;
+      --rms: #2563eb;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
+      background: #f4f7fb;
       color: var(--text);
       padding: 20px;
     }
@@ -40,7 +42,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
@@ -49,15 +51,15 @@
       display: block;
       font-size: 13px;
       color: var(--muted);
-      font-weight: bold;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
+      font-weight: bold;
     }
 
     .title-block h1 {
       font-size: 28px;
-      color: var(--primary-dark);
+      color: var(--blue-dark);
     }
 
     .nav-links {
@@ -77,7 +79,7 @@
     }
 
     .section {
-      background: var(--card);
+      background: var(--white);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 18px;
@@ -87,7 +89,7 @@
     .section h2 {
       font-size: 20px;
       margin-bottom: 14px;
-      color: var(--primary-dark);
+      color: var(--blue-dark);
     }
 
     .cards {
@@ -104,7 +106,7 @@
     }
 
     .card h3 {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       margin-bottom: 8px;
     }
@@ -112,7 +114,7 @@
     .card .value {
       font-size: 28px;
       font-weight: bold;
-      color: var(--primary-dark);
+      color: var(--blue-dark);
     }
 
     .form-grid {
@@ -129,8 +131,8 @@
     .field label {
       font-size: 13px;
       font-weight: bold;
-      margin-bottom: 6px;
       color: var(--muted);
+      margin-bottom: 6px;
     }
 
     .field input,
@@ -144,12 +146,17 @@
     }
 
     .field textarea {
-      min-height: 90px;
       resize: vertical;
+      min-height: 90px;
     }
 
     .full {
       grid-column: span 4;
+    }
+
+    .readonly {
+      background: #f1f5f9 !important;
+      font-weight: bold;
     }
 
     .actions {
@@ -169,12 +176,12 @@
     }
 
     .btn-primary {
-      background: var(--primary);
+      background: var(--blue-main);
       color: white;
     }
 
     .btn-primary:hover {
-      background: var(--primary-dark);
+      background: var(--blue-dark);
     }
 
     .btn-secondary {
@@ -187,14 +194,21 @@
       color: white;
     }
 
+    .note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .table-wrap {
       overflow-x: auto;
     }
 
     table {
       width: 100%;
-      border-collapse: collapse;
       min-width: 1600px;
+      border-collapse: collapse;
     }
 
     th, td {
@@ -222,28 +236,21 @@
       text-align: right;
     }
 
-    .type-badge {
+    .badge {
       display: inline-block;
-      padding: 4px 10px;
       border-radius: 999px;
+      padding: 4px 10px;
       font-size: 12px;
       font-weight: bold;
       color: white;
     }
 
-    .mrr {
-      background: #0f766e;
+    .badge-mrr {
+      background: var(--mrr);
     }
 
-    .rms {
-      background: #2563eb;
-    }
-
-    .note {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
+    .badge-rms {
+      background: var(--rms);
     }
 
     @media (max-width: 1100px) {
@@ -297,8 +304,8 @@
       <h2>Dashboard Summary</h2>
       <div class="cards">
         <div class="card">
-          <h3>Total Deliveries</h3>
-          <div class="value" id="totalDeliveries">0</div>
+          <h3>Total Delivery Transactions</h3>
+          <div class="value" id="totalTransactions">0</div>
         </div>
         <div class="card">
           <h3>Total MRR Qty</h3>
@@ -334,7 +341,7 @@
 
         <div class="field">
           <label>MRR# / RMS#</label>
-          <input type="text" id="docNo" placeholder="MRR-001 or RMS-001">
+          <input type="text" id="docNo" placeholder="MRR-001 / RMS-001">
         </div>
 
         <div class="field">
@@ -359,7 +366,7 @@
 
         <div class="field">
           <label>DR/SI No.</label>
-          <input type="text" id="drsiNo" placeholder="DR/SI Number">
+          <input type="text" id="drsiNo" placeholder="DR/SI number">
         </div>
 
         <div class="field">
@@ -379,7 +386,7 @@
 
         <div class="field">
           <label>UOM</label>
-          <input type="text" id="uom" placeholder="PCS / PAIRS / BOX">
+          <input type="text" id="uom" placeholder="PCS / BOX / PAIRS">
         </div>
 
         <div class="field">
@@ -389,7 +396,7 @@
 
         <div class="field">
           <label>Amount</label>
-          <input type="number" id="amount" readonly>
+          <input type="number" id="amount" class="readonly" readonly>
         </div>
 
         <div class="field full">
@@ -406,7 +413,7 @@
       </div>
 
       <div class="note">
-        MRR = normal supplier delivery. RMS = return of good items. Both are part of <strong>IN / Deliveries</strong>.
+        This page is for <strong>IN / Receiving transactions only</strong>. It is a delivery log and not a master list.
       </div>
     </div>
 
@@ -494,12 +501,12 @@
       tbody.innerHTML = "";
 
       deliveries.forEach(entry => {
-        const typeClass = entry.type === "MRR" ? "mrr" : "rms";
+        const badgeClass = entry.type === "MRR" ? "badge-mrr" : "badge-rms";
 
         const row = document.createElement("tr");
         row.innerHTML = `
           <td class="center">${entry.dateReceived || ""}</td>
-          <td class="center"><span class="type-badge ${typeClass}">${entry.type}</span></td>
+          <td class="center"><span class="badge ${badgeClass}">${entry.type}</span></td>
           <td class="center">${entry.docNo || ""}</td>
           <td class="center">${entry.prpo || ""}</td>
           <td class="center">${entry.prBy || ""}</td>
@@ -519,7 +526,7 @@
     }
 
     function updateSummary() {
-      document.getElementById("totalDeliveries").textContent = deliveries.length;
+      const totalTransactions = deliveries.length;
 
       const totalMrrQty = deliveries
         .filter(entry => entry.type === "MRR")
@@ -531,6 +538,7 @@
 
       const totalAmount = deliveries.reduce((sum, entry) => sum + num(entry.amount), 0);
 
+      document.getElementById("totalTransactions").textContent = totalTransactions.toLocaleString();
       document.getElementById("totalMrrQty").textContent = totalMrrQty.toLocaleString();
       document.getElementById("totalRmsQty").textContent = totalRmsQty.toLocaleString();
       document.getElementById("totalAmount").textContent = totalAmount.toLocaleString();
