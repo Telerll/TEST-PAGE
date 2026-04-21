@@ -453,7 +453,7 @@
     <div class="note">
       This page is for <strong>IN / receiving transactions only</strong>.  
       Items are selected from the <strong>Master List</strong>.  
-      MRR = supplier delivery, RMS = returned good items.
+      Every saved delivery automatically adds qty to the matching item's <strong>IN</strong> in the master list.
     </div>
   </div>
 
@@ -610,9 +610,20 @@
 
     deliveriesData.push(entry);
     saveDeliveries();
+
+    // AUTO-UPDATE MASTER LIST (IN)
+    let masterItemsRaw = JSON.parse(localStorage.getItem("masterItems")) || [];
+    const itemIndex = masterItemsRaw.findIndex(item => Number(item.id) === entry.itemId);
+
+    if (itemIndex !== -1) {
+      masterItemsRaw[itemIndex].inQty = (Number(masterItemsRaw[itemIndex].inQty) || 0) + entry.qty;
+      localStorage.setItem("masterItems", JSON.stringify(masterItemsRaw));
+    }
+
     renderDeliveries();
     updateSummary();
     clearForm();
+    loadItems();
   }
 
   function renderDeliveries() {
