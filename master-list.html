@@ -26,7 +26,6 @@
       --green-mid: #8bc34a;
       --green-light: #00c853;
       --danger: #dc2626;
-      --warn: #d97706;
     }
 
     body {
@@ -36,7 +35,7 @@
     }
 
     .container {
-      max-width: 1900px;
+      max-width: 2000px;
       margin: auto;
     }
 
@@ -188,7 +187,7 @@
 
     table {
       width: 100%;
-      min-width: 2600px;
+      min-width: 2800px;
       border-collapse: collapse;
     }
 
@@ -321,40 +320,22 @@
     <div class="form-grid">
       <div class="field">
         <label>Category</label>
-        <select id="category" onchange="updateTradeOptions(); autoComputePreview();">
-          <option value="">-- Select Category --</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Office Supplies">Office Supplies</option>
-        </select>
+        <select id="category" onchange="autoComputePreview()"></select>
       </div>
 
       <div class="field">
         <label>Trade / Department</label>
-        <select id="trade">
-          <option value="">-- Select Trade --</option>
-        </select>
+        <select id="trade"></select>
       </div>
 
       <div class="field">
-        <label>Classification</label>
-        <select id="classification" onchange="autoComputePreview()">
-          <option value="FAST-MOVING">FAST-MOVING</option>
-          <option value="ON-NEED">ON-NEED</option>
-          <option value="TOOLS">TOOLS</option>
-        </select>
+        <label>Storage Code</label>
+        <select id="locationCode" onchange="fillLocationName()"></select>
       </div>
 
       <div class="field">
-        <label>Hazardous</label>
-        <select id="hazard">
-          <option value="NO">NO</option>
-          <option value="YES">YES</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Location</label>
-        <input id="location" placeholder="P3T2-SCO">
+        <label>Location Name</label>
+        <input type="text" id="locationName" class="readonly" readonly>
       </div>
 
       <div class="field">
@@ -446,13 +427,14 @@
     </div>
 
     <div class="note">
-      Inventory logic:
-      <strong>Adjusted Balance = Qty. (Book) + Count Variance + Recon Adj</strong><br>
-      <strong>Ending Balance = Adjusted Balance + IN - OUT</strong><br>
-      <strong>Engineering = 6 months inventory level</strong><br>
-      <strong>Office Supplies = 4 months inventory level</strong><br>
-      <strong>Reorder Point = (Forecast / 12) × Inventory Level</strong><br>
-      <strong>For PR = max(Reorder Point - Ending Balance - Delivery In Transit, 0)</strong>
+      Adjusted Balance = Qty. (Book) + Count Variance + Recon Adj.<br>
+      Ending Balance = Adjusted Balance + IN - OUT.<br>
+      Inventory Level:
+      <strong>FAST-MOVING = 6</strong>,
+      <strong>OFFICE SUPPLY / PANTRY SUPPLY / OFFICE TOOLS / OFFICE FURNITURES / MEDICINE / UNIFORM / GIVEAWAY / RAFFLE ITEMS = 4</strong>,
+      others default to <strong>0</strong> unless you revise logic later.<br>
+      Reorder Point = (Forecast / 12) × Inventory Level.<br>
+      For PR = max(Reorder Point - Ending Balance - Delivery In Transit, 0).
     </div>
   </div>
 
@@ -467,40 +449,22 @@
 
       <div class="field">
         <label>Category</label>
-        <select id="filterCategory" onchange="applyFilters()">
-          <option value="">ALL</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Office Supplies">Office Supplies</option>
-        </select>
+        <select id="filterCategory" onchange="applyFilters()"></select>
       </div>
 
       <div class="field">
         <label>Trade / Department</label>
-        <input id="filterTrade" placeholder="Civil / HR..." oninput="applyFilters()">
+        <select id="filterTrade" onchange="applyFilters()"></select>
       </div>
 
       <div class="field">
-        <label>Classification</label>
-        <select id="filterClass" onchange="applyFilters()">
-          <option value="">ALL</option>
-          <option value="FAST-MOVING">FAST-MOVING</option>
-          <option value="ON-NEED">ON-NEED</option>
-          <option value="TOOLS">TOOLS</option>
-        </select>
+        <label>Storage Code</label>
+        <select id="filterLocationCode" onchange="applyFilters()"></select>
       </div>
 
       <div class="field">
-        <label>Hazardous</label>
-        <select id="filterHazard" onchange="applyFilters()">
-          <option value="">ALL</option>
-          <option value="YES">YES</option>
-          <option value="NO">NO</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Location</label>
-        <input id="filterLocation" placeholder="P3T2-SCO..." oninput="applyFilters()">
+        <label>Rack No.</label>
+        <input id="filterRack" placeholder="R17/L3..." oninput="applyFilters()">
       </div>
     </div>
   </div>
@@ -515,9 +479,8 @@
             <th>ID</th>
             <th>Category</th>
             <th>Trade / Department</th>
-            <th>Classification</th>
-            <th>Hazardous</th>
-            <th>Location</th>
+            <th>Storage Code</th>
+            <th>Location Name</th>
             <th>Rack No.</th>
             <th>Item Name</th>
             <th>UOM</th>
@@ -546,39 +509,102 @@
 </div>
 
 <script>
-  const tradeMap = {
-    "Engineering": [
-      "CIVIL-WORK",
-      "PLUMBING",
-      "ELECTRICAL",
-      "ELECTRO-MECH",
-      "HVAC",
-      "FDAS",
-      "BMS",
-      "TOOLS"
-    ],
-    "Office Supplies": [
-      "HR",
-      "ACCOUNTING",
-      "ADMIN",
-      "I.T.",
-      "SECURITY",
-      "PARKING",
-      "HOUSEKEEPING"
-    ]
-  };
+  const categoryOptions = [
+    "FAST-MOVING",
+    "ON-NEED",
+    "SEQUESTERED",
+    "RETURNS",
+    "HAZARDOUS",
+    "SAFEKEEPING",
+    "TOOLS",
+    "EQUIPMENT",
+    "PROJECT",
+    "OFFICE SUPPLY",
+    "UNIFORM",
+    "OFFICE TOOLS",
+    "GIVEAWAY",
+    "PANTRY SUPPLY",
+    "RAFFLE ITEMS",
+    "MEDICINE",
+    "OFFICE FURNITURES"
+  ];
+
+  const tradeOptions = [
+    "ENGINEERING",
+    "ELECTRICAL",
+    "CIVIL-WORK",
+    "PLUMBING",
+    "HVAC",
+    "ELECTRO-MECH",
+    "FDAS",
+    "PLAN ATTENDANT",
+    "BMS",
+    "TREASURY",
+    "TRD",
+    "HOUSEKEEPING",
+    "CPR",
+    "IT DEPARTMENT",
+    "PARKING",
+    "PURCHASING",
+    "SAFETY",
+    "HUMAN RESOURCE",
+    "OFFICE OF THE GENERAL MANAGER",
+    "OFFICE OF THE ASSISTANT GENERAL MANAGER",
+    "STOCK CONTROL"
+  ];
+
+  const defaultStorageList = [
+    { id: 1, location: "PODIUM 3- STOCK CONTROL OFFICE", code: "P3T2-SCO" },
+    { id: 2, location: "BASEMENT 2, TOWER 2", code: "B2T2" },
+    { id: 3, location: "BASEMENT 2, TOWER 2, 1", code: "B2T2-1" },
+    { id: 4, location: "BASEMENT 2, TOWER 2, 2", code: "B2T2-2" },
+    { id: 5, location: "BASEMENT 3, TOWER 1 AHU", code: "B3T1-A" },
+    { id: 6, location: "BASEMENT 3, TOWER 1 CYCLONE", code: "B3T1-C" },
+    { id: 7, location: "BASEMENT 3, TOWER 2 AHU", code: "B3T2-A" },
+    { id: 8, location: "BASEMENT 4, TOWER 1 AHU", code: "B4T1-A" },
+    { id: 9, location: "BASEMENT 4, TOWER 1 CYCLONE 1", code: "B4T1-C1" },
+    { id: 10, location: "BASEMENT 4, TOWER 1 CYCLONE 2", code: "B4T1-C2" },
+    { id: 11, location: "BASEMENT 4, TOWER 2 AHU", code: "B4T2-A" },
+    { id: 12, location: "BASEMENT 4, TOWER 2 CYCLONE", code: "B4T2-C" },
+    { id: 13, location: "BASEMENT 5, TOWER 1 AHU", code: "B5T1-A" },
+    { id: 14, location: "BASEMENT 5, TOWER 1 CYCLONE", code: "B5T1-C" },
+    { id: 15, location: "BASEMENT 5, TOWER 2 AHU", code: "B5T2-A" },
+    { id: 16, location: "BASEMENT 5, TOWER 2 CYCLONE", code: "B5T2-C" },
+    { id: 17, location: "BASEMENT 2- GLOBE ROOM", code: "GLOBE ROOM" },
+    { id: 18, location: "BASEMENT 1, TOWER 2", code: "B1T2" },
+    { id: 19, location: "BASEMENT 6, TOWER 1 AHU", code: "B6T1-A" },
+    { id: 20, location: "BASEMENT 6, TOWER 1 CYCLONE", code: "B6T1-C" },
+    { id: 21, location: "BASEMENT 6, TOWER 2 CYCLONE", code: "B6T2-C" },
+    { id: 22, location: "BASEMENT 6, TOWER 2 AHU", code: "B6T2-A" },
+    { id: 23, location: "BASEMENT 7, TOWER 1 AHU", code: "B7T1-A" },
+    { id: 24, location: "BASEMENT 7, TOWER 1 CYCLONE", code: "B7T1-C" },
+    { id: 25, location: "BASEMENT 7, TOWER 2 AHU", code: "B7T2-A" },
+    { id: 26, location: "BASEMENT 7, TOWER 2 CYCLONE", code: "B7T2-C" },
+    { id: 27, location: "LEVEL 19, TOWER 1", code: "L19-T1" },
+    { id: 28, location: "LEVEL 11, TOWER 2", code: "L11-T2" },
+    { id: 29, location: "PODIUM 3 LIBRIRARY 1, TOWER 1", code: "P3T1-L1" },
+    { id: 30, location: "PODIUM 3 LIBRIRARY 2, TOWER 1", code: "P3T1-L2" },
+    { id: 31, location: "PODIUM 3 LIBRIRARY 2, TOWER 1", code: "P3T1-L3" },
+    { id: 32, location: "DELIVERED DIRECTLY", code: "DIRECT" }
+  ];
+
+  let storageList = JSON.parse(localStorage.getItem("storageList")) || [];
+  if (!storageList.length) {
+    storageList = defaultStorageList;
+    localStorage.setItem("storageList", JSON.stringify(storageList));
+  }
 
   const defaultItems = [
-    {id:1, name:"BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B2T2-1", rack:"", forecast:0, qtyBook:4, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:2, name:"ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom:"BAGS", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"B3T1-C", rack:"", forecast:0, qtyBook:25, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:3, name:"ATTACK DRIVER #AN-112A, KOKEN (USED)", uom:"PIECES", category:"Engineering", trade:"TOOLS", classification:"TOOLS", hazard:"NO", location:"B4T1-A", rack:"", forecast:0, qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:4, name:"BEARING, KM14 SWEDEN, SKF", uom:"PIECES", category:"Engineering", trade:"ELECTRO-MECH", classification:"ON-NEED", hazard:"NO", location:"B4T1-A", rack:"", forecast:0, qtyBook:2, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:5, name:"BREAKER, ELECTRONIC TRIP UNIT", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0, qtyBook:3, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:6, name:"BUSHING, PLASTIC", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0, qtyBook:10, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:7, name:"DISC, CUTTING 16\" PREMIUM", uom:"PIECES", category:"Engineering", trade:"CIVIL-WORK", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0, qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:8, name:"GUTTER, WIRE (TRIANGULAR)", uom:"PIECES", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B4T2-A", rack:"", forecast:0, qtyBook:12, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:9, name:"MODULE, IDNET SIMPLEX", uom:"PIECES", category:"Engineering", trade:"FDAS", classification:"ON-NEED", hazard:"NO", location:"P3T2-SCO", rack:"", forecast:0, qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0},
-    {id:10, name:"MOTOR 15KW SIEMENS", uom:"UNITS", category:"Engineering", trade:"ELECTRICAL", classification:"ON-NEED", hazard:"NO", location:"B5T2-A", rack:"", forecast:0, qtyBook:1, countVariance:0, reconAdj:0, inQty:0, outQty:0, deliveryInTransit:0}
+    { id: 1, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "B2T2-1", locationName: "BASEMENT 2, TOWER 2, 1", rack: "", name: "BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom: "PIECES", qtyBook: 4, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 2, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "B3T1-C", locationName: "BASEMENT 3, TOWER 1 CYCLONE", rack: "", name: "ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom: "BAGS", qtyBook: 25, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 3, category: "TOOLS", trade: "ENGINEERING", locationCode: "B4T1-A", locationName: "BASEMENT 4, TOWER 1 AHU", rack: "", name: "ATTACK DRIVER #AN-112A, KOKEN (USED)", uom: "PIECES", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 4, category: "ON-NEED", trade: "ELECTRO-MECH", locationCode: "B4T1-A", locationName: "BASEMENT 4, TOWER 1 AHU", rack: "", name: "BEARING, KM14 SWEDEN, SKF", uom: "PIECES", qtyBook: 2, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 5, category: "ON-NEED", trade: "ELECTRICAL", locationCode: "B5T2-A", locationName: "BASEMENT 5, TOWER 2 AHU", rack: "", name: "BREAKER, ELECTRONIC TRIP UNIT", uom: "PIECES", qtyBook: 3, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 6, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "P3T2-SCO", locationName: "PODIUM 3- STOCK CONTROL OFFICE", rack: "", name: "BUSHING, PLASTIC", uom: "PIECES", qtyBook: 10, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 7, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "P3T2-SCO", locationName: "PODIUM 3- STOCK CONTROL OFFICE", rack: "", name: "DISC, CUTTING 16\" PREMIUM", uom: "PIECES", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 8, category: "ON-NEED", trade: "ELECTRICAL", locationCode: "B4T2-C", locationName: "BASEMENT 4, TOWER 2 CYCLONE", rack: "", name: "GUTTER, WIRE (TRIANGULAR)", uom: "PIECES", qtyBook: 12, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 9, category: "ON-NEED", trade: "FDAS", locationCode: "P3T2-SCO", locationName: "PODIUM 3- STOCK CONTROL OFFICE", rack: "", name: "MODULE, IDNET SIMPLEX", uom: "PIECES", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
+    { id: 10, category: "ON-NEED", trade: "ELECTRICAL", locationCode: "B5T2-A", locationName: "BASEMENT 5, TOWER 2 AHU", rack: "", name: "MOTOR 15KW SIEMENS", uom: "UNITS", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 }
   ];
 
   let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
@@ -586,6 +612,23 @@
 
   function num(value) {
     return Number(value) || 0;
+  }
+
+  function getInventoryLevelByCategory(category) {
+    const officeFourMonth = [
+      "OFFICE SUPPLY",
+      "PANTRY SUPPLY",
+      "OFFICE TOOLS",
+      "OFFICE FURNITURES",
+      "MEDICINE",
+      "UNIFORM",
+      "GIVEAWAY",
+      "RAFFLE ITEMS"
+    ];
+
+    if (category === "FAST-MOVING") return 6;
+    if (officeFourMonth.includes(category)) return 4;
+    return 0;
   }
 
   function normalizeItems(items) {
@@ -597,14 +640,14 @@
       inQty: num(item.inQty),
       outQty: num(item.outQty),
       forecast: num(item.forecast),
-      deliveryInTransit: num(item.deliveryInTransit)
+      deliveryInTransit: num(item.deliveryInTransit),
+      locationCode: item.locationCode || "",
+      locationName: item.locationName || ""
     }));
   }
 
   function computeItem(item) {
-    const inventoryLevel = item.category === "Engineering" ? 6 :
-      item.category === "Office Supplies" ? 4 : 0;
-
+    const inventoryLevel = getInventoryLevelByCategory(item.category);
     const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
     const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
     const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
@@ -628,19 +671,70 @@
     localStorage.setItem("masterItems", JSON.stringify(masterItems));
   }
 
-  function updateTradeOptions(selectedValue = "") {
-    const category = document.getElementById("category").value;
-    const tradeSelect = document.getElementById("trade");
+  function loadCategoryOptions(selectedValue = "") {
+    const select = document.getElementById("category");
+    const filterSelect = document.getElementById("filterCategory");
 
-    tradeSelect.innerHTML = '<option value="">-- Select Trade --</option>';
+    if (select) {
+      select.innerHTML = '<option value="">-- Select Category --</option>';
+      categoryOptions.forEach(item => {
+        select.innerHTML += `<option value="${item}">${item}</option>`;
+      });
+      if (selectedValue) select.value = selectedValue;
+    }
 
-    if (!category || !tradeMap[category]) return;
+    if (filterSelect) {
+      filterSelect.innerHTML = '<option value="">ALL</option>';
+      categoryOptions.forEach(item => {
+        filterSelect.innerHTML += `<option value="${item}">${item}</option>`;
+      });
+    }
+  }
 
-    tradeMap[category].forEach(trade => {
-      tradeSelect.innerHTML += `<option value="${trade}">${trade}</option>`;
-    });
+  function loadTradeOptions(selectedValue = "") {
+    const select = document.getElementById("trade");
+    const filterSelect = document.getElementById("filterTrade");
 
-    if (selectedValue) tradeSelect.value = selectedValue;
+    if (select) {
+      select.innerHTML = '<option value="">-- Select Trade / Department --</option>';
+      tradeOptions.forEach(item => {
+        select.innerHTML += `<option value="${item}">${item}</option>`;
+      });
+      if (selectedValue) select.value = selectedValue;
+    }
+
+    if (filterSelect) {
+      filterSelect.innerHTML = '<option value="">ALL</option>';
+      tradeOptions.forEach(item => {
+        filterSelect.innerHTML += `<option value="${item}">${item}</option>`;
+      });
+    }
+  }
+
+  function loadStorageOptions(selectedValue = "") {
+    const select = document.getElementById("locationCode");
+    const filterSelect = document.getElementById("filterLocationCode");
+
+    if (select) {
+      select.innerHTML = '<option value="">-- Select Location --</option>';
+      storageList.forEach(item => {
+        select.innerHTML += `<option value="${item.code}">${item.code} - ${item.location}</option>`;
+      });
+      if (selectedValue) select.value = selectedValue;
+    }
+
+    if (filterSelect) {
+      filterSelect.innerHTML = '<option value="">ALL</option>';
+      storageList.forEach(item => {
+        filterSelect.innerHTML += `<option value="${item.code}">${item.code}</option>`;
+      });
+    }
+  }
+
+  function fillLocationName() {
+    const code = document.getElementById("locationCode").value;
+    const found = storageList.find(item => item.code === code);
+    document.getElementById("locationName").value = found ? found.location : "";
   }
 
   function autoComputePreview() {
@@ -653,9 +747,7 @@
     const forecast = num(document.getElementById("forecast").value);
     const deliveryInTransit = num(document.getElementById("deliveryInTransit").value);
 
-    const inventoryLevel = category === "Engineering" ? 6 :
-      category === "Office Supplies" ? 4 : 0;
-
+    const inventoryLevel = getInventoryLevelByCategory(category);
     const adjustedBalance = qtyBook + countVariance + reconAdj;
     const endingBalance = adjustedBalance + inQty - outQty;
     const reorderPoint = inventoryLevel > 0 ? (forecast / 12) * inventoryLevel : 0;
@@ -675,9 +767,8 @@
       id: editingId || Date.now(),
       category: document.getElementById("category").value,
       trade: document.getElementById("trade").value,
-      classification: document.getElementById("classification").value,
-      hazard: document.getElementById("hazard").value,
-      location: document.getElementById("location").value.trim(),
+      locationCode: document.getElementById("locationCode").value,
+      locationName: document.getElementById("locationName").value,
       rack: document.getElementById("rack").value.trim(),
       name: document.getElementById("name").value.trim(),
       uom: document.getElementById("uom").value.trim(),
@@ -694,8 +785,8 @@
   function saveItem() {
     const item = computeItem(getFormData());
 
-    if (!item.category || !item.trade || !item.name || !item.uom) {
-      alert("Category, Trade / Department, Item Name, and UOM are required.");
+    if (!item.category || !item.trade || !item.locationCode || !item.name || !item.uom) {
+      alert("Category, Trade / Department, Storage Location, Item Name, and UOM are required.");
       return;
     }
 
@@ -718,11 +809,10 @@
     editingId = id;
     document.getElementById("saveBtn").textContent = "Update Item";
 
-    document.getElementById("category").value = item.category || "";
-    updateTradeOptions(item.trade || "");
-    document.getElementById("classification").value = item.classification || "FAST-MOVING";
-    document.getElementById("hazard").value = item.hazard || "NO";
-    document.getElementById("location").value = item.location || "";
+    loadCategoryOptions(item.category || "");
+    loadTradeOptions(item.trade || "");
+    loadStorageOptions(item.locationCode || "");
+    document.getElementById("locationName").value = item.locationName || "";
     document.getElementById("rack").value = item.rack || "";
     document.getElementById("name").value = item.name || "";
     document.getElementById("uom").value = item.uom || "";
@@ -751,11 +841,11 @@
     editingId = null;
     document.getElementById("saveBtn").textContent = "Add Item";
 
-    document.getElementById("category").value = "";
-    updateTradeOptions();
-    document.getElementById("classification").value = "FAST-MOVING";
-    document.getElementById("hazard").value = "NO";
-    document.getElementById("location").value = "";
+    loadCategoryOptions();
+    loadTradeOptions();
+    loadStorageOptions();
+
+    document.getElementById("locationName").value = "";
     document.getElementById("rack").value = "";
     document.getElementById("name").value = "";
     document.getElementById("uom").value = "";
@@ -806,9 +896,8 @@
           <td class="center">${computed.id}</td>
           <td class="center">${computed.category || ""}</td>
           <td class="center">${computed.trade || ""}</td>
-          <td class="center">${computed.classification || ""}</td>
-          <td class="center">${computed.hazard || ""}</td>
-          <td class="center">${computed.location || ""}</td>
+          <td class="center">${computed.locationCode || ""}</td>
+          <td class="center">${computed.locationName || ""}</td>
           <td class="center">${computed.rack || ""}</td>
           <td>${computed.name || ""}</td>
           <td class="center">${computed.uom || ""}</td>
@@ -820,7 +909,7 @@
           <td class="out-col">${computed.outQty || 0}</td>
           <td class="ending-col">${computed.endingBalance}</td>
           <td class="center">${computed.forecast || 0}</td>
-          <td class="center">${computed.inventoryLevel || ""}</td>
+          <td class="center">${computed.inventoryLevel || 0}</td>
           <td class="center">${computed.deliveryInTransit || 0}</td>
           <td class="center">${computed.reorderPoint ? computed.reorderPoint.toFixed(2) : "0"}</td>
           <td class="center">${computed.forPR ? computed.forPR.toFixed(2) : "-"}</td>
@@ -838,19 +927,17 @@
   function applyFilters() {
     const search = document.getElementById("searchInput").value.toLowerCase();
     const category = document.getElementById("filterCategory").value;
-    const trade = document.getElementById("filterTrade").value.toLowerCase();
-    const classification = document.getElementById("filterClass").value;
-    const hazard = document.getElementById("filterHazard").value;
-    const location = document.getElementById("filterLocation").value.toLowerCase();
+    const trade = document.getElementById("filterTrade").value;
+    const locationCode = document.getElementById("filterLocationCode").value;
+    const rack = document.getElementById("filterRack").value.toLowerCase();
 
     const filtered = masterItems.filter(item => {
       return (
         (item.name || "").toLowerCase().includes(search) &&
         (category === "" || item.category === category) &&
-        (trade === "" || (item.trade || "").toLowerCase().includes(trade)) &&
-        (classification === "" || item.classification === classification) &&
-        (hazard === "" || item.hazard === hazard) &&
-        (location === "" || (item.location || "").toLowerCase().includes(location))
+        (trade === "" || item.trade === trade) &&
+        (locationCode === "" || item.locationCode === locationCode) &&
+        (rack === "" || (item.rack || "").toLowerCase().includes(rack))
       );
     });
 
@@ -863,21 +950,22 @@
 
   function updateDashboard() {
     const computedItems = masterItems.map(item => computeItem(item));
-
     document.getElementById("dashTotalItems").textContent = computedItems.length;
-    document.getElementById("dashFM").textContent = computedItems.filter(item => item.classification === "FAST-MOVING").length;
+    document.getElementById("dashFM").textContent = computedItems.filter(item => item.category === "FAST-MOVING").length;
     document.getElementById("dashSOH").textContent = computedItems.reduce((sum, item) => sum + num(item.endingBalance), 0).toLocaleString();
     document.getElementById("dashPR").textContent = computedItems.reduce((sum, item) => sum + num(item.forPR), 0).toFixed(2);
   }
 
   masterItems = normalizeItems(masterItems);
 
-  if (!masterItems || masterItems.length === 0) {
+  if (!masterItems.length) {
     masterItems = normalizeItems(defaultItems);
     save();
   }
 
-  updateTradeOptions();
+  loadCategoryOptions();
+  loadTradeOptions();
+  loadStorageOptions();
   autoComputePreview();
   render();
   updateDashboard();
