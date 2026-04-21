@@ -35,7 +35,7 @@
     }
 
     .container {
-      max-width: 2000px;
+      max-width: 2100px;
       margin: auto;
     }
 
@@ -187,7 +187,7 @@
 
     table {
       width: 100%;
-      min-width: 2800px;
+      min-width: 2900px;
       border-collapse: collapse;
     }
 
@@ -210,10 +210,6 @@
 
     .center {
       text-align: center;
-    }
-
-    .right {
-      text-align: right;
     }
 
     .qty-book-col,
@@ -320,7 +316,12 @@
     <div class="form-grid">
       <div class="field">
         <label>Category</label>
-        <select id="category" onchange="autoComputePreview()"></select>
+        <select id="category" onchange="loadClassification(); autoComputePreview();"></select>
+      </div>
+
+      <div class="field">
+        <label>Classification</label>
+        <select id="classification" onchange="autoComputePreview()"></select>
       </div>
 
       <div class="field">
@@ -429,10 +430,10 @@
     <div class="note">
       Adjusted Balance = Qty. (Book) + Count Variance + Recon Adj.<br>
       Ending Balance = Adjusted Balance + IN - OUT.<br>
-      Inventory Level:
+      Inventory Level rule:
       <strong>FAST-MOVING = 6</strong>,
       <strong>OFFICE SUPPLY / PANTRY SUPPLY / OFFICE TOOLS / OFFICE FURNITURES / MEDICINE / UNIFORM / GIVEAWAY / RAFFLE ITEMS = 4</strong>,
-      others default to <strong>0</strong> unless you revise logic later.<br>
+      all other categories default to <strong>0</strong>.<br>
       Reorder Point = (Forecast / 12) × Inventory Level.<br>
       For PR = max(Reorder Point - Ending Balance - Delivery In Transit, 0).
     </div>
@@ -450,6 +451,11 @@
       <div class="field">
         <label>Category</label>
         <select id="filterCategory" onchange="applyFilters()"></select>
+      </div>
+
+      <div class="field">
+        <label>Classification</label>
+        <select id="filterClassification" onchange="applyFilters()"></select>
       </div>
 
       <div class="field">
@@ -478,6 +484,7 @@
           <tr>
             <th>ID</th>
             <th>Category</th>
+            <th>Classification</th>
             <th>Trade / Department</th>
             <th>Storage Code</th>
             <th>Location Name</th>
@@ -509,25 +516,23 @@
 </div>
 
 <script>
-  const categoryOptions = [
-    "FAST-MOVING",
-    "ON-NEED",
-    "SEQUESTERED",
-    "RETURNS",
-    "HAZARDOUS",
-    "SAFEKEEPING",
-    "TOOLS",
-    "EQUIPMENT",
-    "PROJECT",
-    "OFFICE SUPPLY",
-    "UNIFORM",
-    "OFFICE TOOLS",
-    "GIVEAWAY",
-    "PANTRY SUPPLY",
-    "RAFFLE ITEMS",
-    "MEDICINE",
-    "OFFICE FURNITURES"
-  ];
+  const categoryMap = {
+    "FAST-MOVING": ["HAZARDOUS"],
+    "ON-NEED": ["SAFEKEEPING"],
+    "TOOLS": ["TOOLS"],
+    "GENERAL": [
+      "EQUIPMENT",
+      "PROJECT",
+      "OFFICE SUPPLY",
+      "UNIFORM",
+      "OFFICE TOOLS",
+      "GIVEAWAY",
+      "PANTRY SUPPLY",
+      "RAFFLE ITEMS",
+      "MEDICINE",
+      "OFFICE FURNITURES"
+    ]
+  };
 
   const tradeOptions = [
     "ENGINEERING",
@@ -595,16 +600,60 @@
   }
 
   const defaultItems = [
-    { id: 1, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "B2T2-1", locationName: "BASEMENT 2, TOWER 2, 1", rack: "", name: "BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8", uom: "PIECES", qtyBook: 4, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 2, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "B3T1-C", locationName: "BASEMENT 3, TOWER 1 CYCLONE", rack: "", name: "ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)", uom: "BAGS", qtyBook: 25, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 3, category: "TOOLS", trade: "ENGINEERING", locationCode: "B4T1-A", locationName: "BASEMENT 4, TOWER 1 AHU", rack: "", name: "ATTACK DRIVER #AN-112A, KOKEN (USED)", uom: "PIECES", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 4, category: "ON-NEED", trade: "ELECTRO-MECH", locationCode: "B4T1-A", locationName: "BASEMENT 4, TOWER 1 AHU", rack: "", name: "BEARING, KM14 SWEDEN, SKF", uom: "PIECES", qtyBook: 2, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 5, category: "ON-NEED", trade: "ELECTRICAL", locationCode: "B5T2-A", locationName: "BASEMENT 5, TOWER 2 AHU", rack: "", name: "BREAKER, ELECTRONIC TRIP UNIT", uom: "PIECES", qtyBook: 3, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 6, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "P3T2-SCO", locationName: "PODIUM 3- STOCK CONTROL OFFICE", rack: "", name: "BUSHING, PLASTIC", uom: "PIECES", qtyBook: 10, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 7, category: "ON-NEED", trade: "CIVIL-WORK", locationCode: "P3T2-SCO", locationName: "PODIUM 3- STOCK CONTROL OFFICE", rack: "", name: "DISC, CUTTING 16\" PREMIUM", uom: "PIECES", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 8, category: "ON-NEED", trade: "ELECTRICAL", locationCode: "B4T2-C", locationName: "BASEMENT 4, TOWER 2 CYCLONE", rack: "", name: "GUTTER, WIRE (TRIANGULAR)", uom: "PIECES", qtyBook: 12, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 9, category: "ON-NEED", trade: "FDAS", locationCode: "P3T2-SCO", locationName: "PODIUM 3- STOCK CONTROL OFFICE", rack: "", name: "MODULE, IDNET SIMPLEX", uom: "PIECES", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 },
-    { id: 10, category: "ON-NEED", trade: "ELECTRICAL", locationCode: "B5T2-A", locationName: "BASEMENT 5, TOWER 2 AHU", rack: "", name: "MOTOR 15KW SIEMENS", uom: "UNITS", qtyBook: 1, countVariance: 0, reconAdj: 0, inQty: 0, outQty: 0, forecast: 0, deliveryInTransit: 0 }
+    {
+      id: 1,
+      category: "ON-NEED",
+      classification: "SAFEKEEPING",
+      trade: "CIVIL-WORK",
+      locationCode: "B2T2-1",
+      locationName: "BASEMENT 2, TOWER 2, 1",
+      rack: "",
+      name: "BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8",
+      uom: "PIECES",
+      qtyBook: 4,
+      countVariance: 0,
+      reconAdj: 0,
+      inQty: 0,
+      outQty: 0,
+      forecast: 0,
+      deliveryInTransit: 0
+    },
+    {
+      id: 2,
+      category: "ON-NEED",
+      classification: "SAFEKEEPING",
+      trade: "CIVIL-WORK",
+      locationCode: "B3T1-C",
+      locationName: "BASEMENT 3, TOWER 1 CYCLONE",
+      rack: "",
+      name: "ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)",
+      uom: "BAGS",
+      qtyBook: 25,
+      countVariance: 0,
+      reconAdj: 0,
+      inQty: 0,
+      outQty: 0,
+      forecast: 0,
+      deliveryInTransit: 0
+    },
+    {
+      id: 3,
+      category: "TOOLS",
+      classification: "TOOLS",
+      trade: "ENGINEERING",
+      locationCode: "B4T1-A",
+      locationName: "BASEMENT 4, TOWER 1 AHU",
+      rack: "",
+      name: "ATTACK DRIVER #AN-112A, KOKEN (USED)",
+      uom: "PIECES",
+      qtyBook: 1,
+      countVariance: 0,
+      reconAdj: 0,
+      inQty: 0,
+      outQty: 0,
+      forecast: 0,
+      deliveryInTransit: 0
+    }
   ];
 
   let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
@@ -615,7 +664,7 @@
   }
 
   function getInventoryLevelByCategory(category) {
-    const officeFourMonth = [
+    const fourMonthCategories = [
       "OFFICE SUPPLY",
       "PANTRY SUPPLY",
       "OFFICE TOOLS",
@@ -627,7 +676,7 @@
     ];
 
     if (category === "FAST-MOVING") return 6;
-    if (officeFourMonth.includes(category)) return 4;
+    if (fourMonthCategories.includes(category)) return 4;
     return 0;
   }
 
@@ -642,7 +691,8 @@
       forecast: num(item.forecast),
       deliveryInTransit: num(item.deliveryInTransit),
       locationCode: item.locationCode || "",
-      locationName: item.locationName || ""
+      locationName: item.locationName || "",
+      classification: item.classification || ""
     }));
   }
 
@@ -671,42 +721,66 @@
     localStorage.setItem("masterItems", JSON.stringify(masterItems));
   }
 
-  function loadCategoryOptions(selectedValue = "") {
-    const select = document.getElementById("category");
-    const filterSelect = document.getElementById("filterCategory");
+  function loadCategory() {
+    const cat = document.getElementById("category");
+    const filterCat = document.getElementById("filterCategory");
 
-    if (select) {
-      select.innerHTML = '<option value="">-- Select Category --</option>';
-      categoryOptions.forEach(item => {
-        select.innerHTML += `<option value="${item}">${item}</option>`;
+    if (cat) {
+      cat.innerHTML = '<option value="">Select Category</option>';
+      Object.keys(categoryMap).forEach(c => {
+        cat.innerHTML += `<option value="${c}">${c}</option>`;
       });
-      if (selectedValue) select.value = selectedValue;
     }
 
-    if (filterSelect) {
-      filterSelect.innerHTML = '<option value="">ALL</option>';
-      categoryOptions.forEach(item => {
-        filterSelect.innerHTML += `<option value="${item}">${item}</option>`;
+    if (filterCat) {
+      filterCat.innerHTML = '<option value="">ALL</option>';
+      Object.keys(categoryMap).forEach(c => {
+        filterCat.innerHTML += `<option value="${c}">${c}</option>`;
       });
     }
   }
 
-  function loadTradeOptions(selectedValue = "") {
-    const select = document.getElementById("trade");
-    const filterSelect = document.getElementById("filterTrade");
+  function loadClassification(selectedValue = "") {
+    const category = document.getElementById("category").value;
+    const cls = document.getElementById("classification");
 
-    if (select) {
-      select.innerHTML = '<option value="">-- Select Trade / Department --</option>';
-      tradeOptions.forEach(item => {
-        select.innerHTML += `<option value="${item}">${item}</option>`;
+    cls.innerHTML = '<option value="">Select Classification</option>';
+
+    if (!categoryMap[category]) return;
+
+    categoryMap[category].forEach(c => {
+      cls.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+
+    if (selectedValue) cls.value = selectedValue;
+  }
+
+  function loadFilterClassification() {
+    const filterCls = document.getElementById("filterClassification");
+    filterCls.innerHTML = '<option value="">ALL</option>';
+
+    const allClassifications = [...new Set(Object.values(categoryMap).flat())];
+    allClassifications.forEach(c => {
+      filterCls.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+  }
+
+  function loadTrade(selectedValue = "") {
+    const trade = document.getElementById("trade");
+    const filterTrade = document.getElementById("filterTrade");
+
+    if (trade) {
+      trade.innerHTML = '<option value="">Select Trade</option>';
+      tradeOptions.forEach(t => {
+        trade.innerHTML += `<option value="${t}">${t}</option>`;
       });
-      if (selectedValue) select.value = selectedValue;
+      if (selectedValue) trade.value = selectedValue;
     }
 
-    if (filterSelect) {
-      filterSelect.innerHTML = '<option value="">ALL</option>';
-      tradeOptions.forEach(item => {
-        filterSelect.innerHTML += `<option value="${item}">${item}</option>`;
+    if (filterTrade) {
+      filterTrade.innerHTML = '<option value="">ALL</option>';
+      tradeOptions.forEach(t => {
+        filterTrade.innerHTML += `<option value="${t}">${t}</option>`;
       });
     }
   }
@@ -766,6 +840,7 @@
     return {
       id: editingId || Date.now(),
       category: document.getElementById("category").value,
+      classification: document.getElementById("classification").value,
       trade: document.getElementById("trade").value,
       locationCode: document.getElementById("locationCode").value,
       locationName: document.getElementById("locationName").value,
@@ -785,8 +860,8 @@
   function saveItem() {
     const item = computeItem(getFormData());
 
-    if (!item.category || !item.trade || !item.locationCode || !item.name || !item.uom) {
-      alert("Category, Trade / Department, Storage Location, Item Name, and UOM are required.");
+    if (!item.category || !item.classification || !item.trade || !item.locationCode || !item.name || !item.uom) {
+      alert("Category, Classification, Trade / Department, Storage Location, Item Name, and UOM are required.");
       return;
     }
 
@@ -809,9 +884,12 @@
     editingId = id;
     document.getElementById("saveBtn").textContent = "Update Item";
 
-    loadCategoryOptions(item.category || "");
-    loadTradeOptions(item.trade || "");
+    loadCategory();
+    document.getElementById("category").value = item.category || "";
+    loadClassification(item.classification || "");
+    loadTrade(item.trade || "");
     loadStorageOptions(item.locationCode || "");
+
     document.getElementById("locationName").value = item.locationName || "";
     document.getElementById("rack").value = item.rack || "";
     document.getElementById("name").value = item.name || "";
@@ -841,8 +919,9 @@
     editingId = null;
     document.getElementById("saveBtn").textContent = "Add Item";
 
-    loadCategoryOptions();
-    loadTradeOptions();
+    loadCategory();
+    loadClassification();
+    loadTrade();
     loadStorageOptions();
 
     document.getElementById("locationName").value = "";
@@ -895,6 +974,7 @@
         <tr>
           <td class="center">${computed.id}</td>
           <td class="center">${computed.category || ""}</td>
+          <td class="center">${computed.classification || ""}</td>
           <td class="center">${computed.trade || ""}</td>
           <td class="center">${computed.locationCode || ""}</td>
           <td class="center">${computed.locationName || ""}</td>
@@ -927,6 +1007,7 @@
   function applyFilters() {
     const search = document.getElementById("searchInput").value.toLowerCase();
     const category = document.getElementById("filterCategory").value;
+    const classification = document.getElementById("filterClassification").value;
     const trade = document.getElementById("filterTrade").value;
     const locationCode = document.getElementById("filterLocationCode").value;
     const rack = document.getElementById("filterRack").value.toLowerCase();
@@ -935,6 +1016,7 @@
       return (
         (item.name || "").toLowerCase().includes(search) &&
         (category === "" || item.category === category) &&
+        (classification === "" || item.classification === classification) &&
         (trade === "" || item.trade === trade) &&
         (locationCode === "" || item.locationCode === locationCode) &&
         (rack === "" || (item.rack || "").toLowerCase().includes(rack))
@@ -963,8 +1045,10 @@
     save();
   }
 
-  loadCategoryOptions();
-  loadTradeOptions();
+  loadCategory();
+  loadClassification();
+  loadFilterClassification();
+  loadTrade();
   loadStorageOptions();
   autoComputePreview();
   render();
