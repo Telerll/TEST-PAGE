@@ -431,8 +431,9 @@
     </div>
 
     <div class="note">
-      This page is for <strong>OUT / issuance transactions only</strong>. Items are selected from the <strong>Master List</strong>.  
-      Reference stock is shown for checking only.
+      This page is for <strong>OUT / issuance transactions only</strong>.  
+      Items are selected from the <strong>Master List</strong>.  
+      Every saved issuance automatically adds qty to the matching item's <strong>OUT</strong> in the master list.
     </div>
   </div>
 
@@ -469,182 +470,69 @@
 
 </div>
 
-  <script>
-    let issuanceData = JSON.parse(localStorage.getItem("issuanceData")) || [];
-    let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
+<script>
+  let issuanceData = JSON.parse(localStorage.getItem("issuanceData")) || [];
+  let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-    function num(value) {
-      return Number(value) || 0;
-    }
+  function num(value) {
+    return Number(value) || 0;
+  }
 
-    function computeMasterItem(item) {
-      const inventoryLevel = item.category === "Engineering" ? 6 :
-        item.category === "Office Supplies" ? 4 : 0;
+  function computeMasterItem(item) {
+    const inventoryLevel = item.category === "Engineering" ? 6 :
+      item.category === "Office Supplies" ? 4 : 0;
 
-      const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
-      const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
-      const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
-      const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
+    const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
+    const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
+    const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
+    const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
 
-      return {
-        ...item,
-        inventoryLevel,
-        adjustedBalance,
-        endingBalance,
-        reorderPoint,
-        forPR
-      };
-    }
+    return {
+      ...item,
+      inventoryLevel,
+      adjustedBalance,
+      endingBalance,
+      reorderPoint,
+      forPR
+    };
+  }
 
-    function refreshMasterItems() {
-      masterItems = (JSON.parse(localStorage.getItem("masterItems")) || []).map(item => computeMasterItem(item));
-    }
+  function refreshMasterItems() {
+    masterItems = (JSON.parse(localStorage.getItem("masterItems")) || []).map(item => computeMasterItem(item));
+  }
 
-    function saveIssuance() {
-      localStorage.setItem("issuanceData", JSON.stringify(issuanceData));
-    }
+  function saveIssuance() {
+    localStorage.setItem("issuanceData", JSON.stringify(issuanceData));
+  }
 
-    function loadItems() {
-      refreshMasterItems();
+  function loadItems() {
+    refreshMasterItems();
 
-      const select = document.getElementById("itemSelect");
-      if (!select) return;
+    const select = document.getElementById("itemSelect");
+    if (!select) return;
 
-      select.innerHTML = '<option value="">-- Select Item --</option>';
+    select.innerHTML = '<option value="">-- Select Item --</option>';
 
-      masterItems.forEach(item => {
-        select.innerHTML += `<option value="${item.id}">${item.name}</option>`;
-      });
-    }
+    masterItems.forEach(item => {
+      select.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+    });
+  }
 
-    function fillItemDetails() {
-      const id = Number(document.getElementById("itemSelect").value);
-      const item = masterItems.find(i => i.id === id);
+  function fillItemDetails() {
+    const id = Number(document.getElementById("itemSelect").value);
+    const item = masterItems.find(i => i.id === id);
 
-      if (item) {
-        document.getElementById("category").value = item.category || "";
-        document.getElementById("trade").value = item.trade || "";
-        document.getElementById("classification").value = item.classification || "";
-        document.getElementById("hazard").value = item.hazard || "";
-        document.getElementById("location").value = item.location || "";
-        document.getElementById("rack").value = item.rack || "";
-        document.getElementById("itemDescription").value = item.name || "";
-        document.getElementById("uom").value = item.uom || "";
-        document.getElementById("availableStock").value = item.endingBalance || 0;
-      } else {
-        document.getElementById("category").value = "";
-        document.getElementById("trade").value = "";
-        document.getElementById("classification").value = "";
-        document.getElementById("hazard").value = "";
-        document.getElementById("location").value = "";
-        document.getElementById("rack").value = "";
-        document.getElementById("itemDescription").value = "";
-        document.getElementById("uom").value = "";
-        document.getElementById("availableStock").value = "";
-      }
-    }
-
-    function addIssuance() {
-      const itemId = Number(document.getElementById("itemSelect").value);
-      const item = masterItems.find(i => i.id === itemId);
-
-      const entry = {
-        dateIssued: document.getElementById("dateIssued").value,
-        type: document.getElementById("type").value,
-        docNo: document.getElementById("docNo").value.trim(),
-        department: document.getElementById("department").value.trim(),
-        requestedBy: document.getElementById("requestedBy").value.trim(),
-        approvedBy: document.getElementById("approvedBy").value.trim(),
-        issuedBy: document.getElementById("issuedBy").value.trim(),
-        itemId,
-        category: document.getElementById("category").value,
-        trade: document.getElementById("trade").value,
-        classification: document.getElementById("classification").value,
-        hazard: document.getElementById("hazard").value,
-        location: document.getElementById("location").value,
-        rack: document.getElementById("rack").value,
-        itemDescription: document.getElementById("itemDescription").value,
-        qty: num(document.getElementById("qty").value),
-        uom: document.getElementById("uom").value,
-        remarks: document.getElementById("remarks").value.trim()
-      };
-
-      if (!entry.dateIssued || !entry.docNo || !entry.itemId || !entry.qty || !entry.uom) {
-        alert("Please fill in the required fields.");
-        return;
-      }
-
-      if (item && entry.qty > num(item.endingBalance)) {
-        const proceed = confirm("Issued quantity is higher than available stock. Continue?");
-        if (!proceed) return;
-      }
-
-      issuanceData.push(entry);
-      saveIssuance();
-      renderIssuance();
-      updateSummary();
-      clearForm();
-    }
-
-    function renderIssuance() {
-      const tbody = document.getElementById("issuanceTableBody");
-      tbody.innerHTML = "";
-
-      issuanceData.forEach(entry => {
-        const badgeClass = entry.type === "MIS" ? "badge-mis" : "badge-aif";
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td class="center">${entry.dateIssued || ""}</td>
-          <td class="center"><span class="badge ${badgeClass}">${entry.type}</span></td>
-          <td class="center">${entry.docNo || ""}</td>
-          <td class="center">${entry.department || ""}</td>
-          <td class="center">${entry.requestedBy || ""}</td>
-          <td class="center">${entry.approvedBy || ""}</td>
-          <td class="center">${entry.issuedBy || ""}</td>
-          <td class="center">${entry.category || ""}</td>
-          <td class="center">${entry.trade || ""}</td>
-          <td class="center">${entry.classification || ""}</td>
-          <td class="center">${entry.hazard || ""}</td>
-          <td class="center">${entry.location || ""}</td>
-          <td class="center">${entry.rack || ""}</td>
-          <td>${entry.itemDescription || ""}</td>
-          <td class="right">${entry.qty || ""}</td>
-          <td class="center">${entry.uom || ""}</td>
-          <td>${entry.remarks || ""}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function updateSummary() {
-      const totalTransactions = issuanceData.length;
-
-      const totalMisQty = issuanceData
-        .filter(entry => entry.type === "MIS")
-        .reduce((sum, entry) => sum + num(entry.qty), 0);
-
-      const totalAifQty = issuanceData
-        .filter(entry => entry.type === "AIF")
-        .reduce((sum, entry) => sum + num(entry.qty), 0);
-
-      const totalOutQty = issuanceData.reduce((sum, entry) => sum + num(entry.qty), 0);
-
-      document.getElementById("totalTransactions").textContent = totalTransactions.toLocaleString();
-      document.getElementById("totalMisQty").textContent = totalMisQty.toLocaleString();
-      document.getElementById("totalAifQty").textContent = totalAifQty.toLocaleString();
-      document.getElementById("totalOutQty").textContent = totalOutQty.toLocaleString();
-    }
-
-    function clearForm() {
-      document.getElementById("dateIssued").value = "";
-      document.getElementById("type").value = "MIS";
-      document.getElementById("docNo").value = "";
-      document.getElementById("department").value = "";
-      document.getElementById("requestedBy").value = "";
-      document.getElementById("approvedBy").value = "";
-      document.getElementById("issuedBy").value = "";
-      document.getElementById("itemSelect").value = "";
+    if (item) {
+      document.getElementById("category").value = item.category || "";
+      document.getElementById("trade").value = item.trade || "";
+      document.getElementById("classification").value = item.classification || "";
+      document.getElementById("hazard").value = item.hazard || "";
+      document.getElementById("location").value = item.location || "";
+      document.getElementById("rack").value = item.rack || "";
+      document.getElementById("itemDescription").value = item.name || "";
+      document.getElementById("uom").value = item.uom || "";
+      document.getElementById("availableStock").value = item.endingBalance || 0;
+    } else {
       document.getElementById("category").value = "";
       document.getElementById("trade").value = "";
       document.getElementById("classification").value = "";
@@ -654,78 +542,202 @@
       document.getElementById("itemDescription").value = "";
       document.getElementById("uom").value = "";
       document.getElementById("availableStock").value = "";
-      document.getElementById("qty").value = "0";
-      document.getElementById("remarks").value = "";
+    }
+  }
+
+  function addIssuance() {
+    const itemId = Number(document.getElementById("itemSelect").value);
+    const item = masterItems.find(i => i.id === itemId);
+
+    const entry = {
+      dateIssued: document.getElementById("dateIssued").value,
+      type: document.getElementById("type").value,
+      docNo: document.getElementById("docNo").value.trim(),
+      department: document.getElementById("department").value.trim(),
+      requestedBy: document.getElementById("requestedBy").value.trim(),
+      approvedBy: document.getElementById("approvedBy").value.trim(),
+      issuedBy: document.getElementById("issuedBy").value.trim(),
+      itemId,
+      category: document.getElementById("category").value,
+      trade: document.getElementById("trade").value,
+      classification: document.getElementById("classification").value,
+      hazard: document.getElementById("hazard").value,
+      location: document.getElementById("location").value,
+      rack: document.getElementById("rack").value,
+      itemDescription: document.getElementById("itemDescription").value,
+      qty: num(document.getElementById("qty").value),
+      uom: document.getElementById("uom").value,
+      remarks: document.getElementById("remarks").value.trim()
+    };
+
+    if (!entry.dateIssued || !entry.docNo || !entry.itemId || !entry.qty || !entry.uom) {
+      alert("Please fill in the required fields.");
+      return;
     }
 
-    function clearAllIssuance() {
-      const ok = confirm("Clear all issuance records?");
-      if (!ok) return;
-
-      issuanceData = [];
-      saveIssuance();
-      renderIssuance();
-      updateSummary();
+    if (item && entry.qty > num(item.endingBalance)) {
+      const proceed = confirm("Issued quantity is higher than available stock. Continue?");
+      if (!proceed) return;
     }
 
-    function loadSampleData() {
-      refreshMasterItems();
+    issuanceData.push(entry);
+    saveIssuance();
 
-      const sampleItem1 = masterItems[0];
-      const sampleItem2 = masterItems[1];
+    // AUTO-UPDATE MASTER LIST (OUT)
+    let masterItemsRaw = JSON.parse(localStorage.getItem("masterItems")) || [];
+    const itemIndex = masterItemsRaw.findIndex(row => Number(row.id) === entry.itemId);
 
-      issuanceData = [
-        {
-          dateIssued: "2026-04-01",
-          type: "MIS",
-          docNo: "MIS-001",
-          department: "CIVIL-WORK",
-          requestedBy: "Engineer A",
-          approvedBy: "Manager A",
-          issuedBy: "Stock Clerk",
-          itemId: sampleItem1 ? sampleItem1.id : null,
-          category: sampleItem1 ? sampleItem1.category : "Engineering",
-          trade: sampleItem1 ? sampleItem1.trade : "CIVIL-WORK",
-          classification: sampleItem1 ? sampleItem1.classification : "ON-NEED",
-          hazard: sampleItem1 ? sampleItem1.hazard : "NO",
-          location: sampleItem1 ? sampleItem1.location : "B2T2-1",
-          rack: sampleItem1 ? sampleItem1.rack : "",
-          itemDescription: sampleItem1 ? sampleItem1.name : "BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8",
-          qty: 1,
-          uom: sampleItem1 ? sampleItem1.uom : "PIECES",
-          remarks: "For repair use"
-        },
-        {
-          dateIssued: "2026-04-02",
-          type: "AIF",
-          docNo: "AIF-001",
-          department: "I.T.",
-          requestedBy: "Supervisor B",
-          approvedBy: "Manager B",
-          issuedBy: "Stock Clerk",
-          itemId: sampleItem2 ? sampleItem2.id : null,
-          category: sampleItem2 ? sampleItem2.category : "Engineering",
-          trade: sampleItem2 ? sampleItem2.trade : "CIVIL-WORK",
-          classification: sampleItem2 ? sampleItem2.classification : "ON-NEED",
-          hazard: sampleItem2 ? sampleItem2.hazard : "NO",
-          location: sampleItem2 ? sampleItem2.location : "B3T1-C",
-          rack: sampleItem2 ? sampleItem2.rack : "",
-          itemDescription: sampleItem2 ? sampleItem2.name : "ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)",
-          qty: 2,
-          uom: sampleItem2 ? sampleItem2.uom : "BAGS",
-          remarks: "Issued for maintenance"
-        }
-      ];
-
-      saveIssuance();
-      renderIssuance();
-      updateSummary();
+    if (itemIndex !== -1) {
+      masterItemsRaw[itemIndex].outQty = (Number(masterItemsRaw[itemIndex].outQty) || 0) + entry.qty;
+      localStorage.setItem("masterItems", JSON.stringify(masterItemsRaw));
     }
 
-    loadItems();
     renderIssuance();
     updateSummary();
-  </script>
+    clearForm();
+    loadItems();
+  }
+
+  function renderIssuance() {
+    const tbody = document.getElementById("issuanceTableBody");
+    tbody.innerHTML = "";
+
+    issuanceData.forEach(entry => {
+      const badgeClass = entry.type === "MIS" ? "badge-mis" : "badge-aif";
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="center">${entry.dateIssued || ""}</td>
+        <td class="center"><span class="badge ${badgeClass}">${entry.type}</span></td>
+        <td class="center">${entry.docNo || ""}</td>
+        <td class="center">${entry.department || ""}</td>
+        <td class="center">${entry.requestedBy || ""}</td>
+        <td class="center">${entry.approvedBy || ""}</td>
+        <td class="center">${entry.issuedBy || ""}</td>
+        <td class="center">${entry.category || ""}</td>
+        <td class="center">${entry.trade || ""}</td>
+        <td class="center">${entry.classification || ""}</td>
+        <td class="center">${entry.hazard || ""}</td>
+        <td class="center">${entry.location || ""}</td>
+        <td class="center">${entry.rack || ""}</td>
+        <td>${entry.itemDescription || ""}</td>
+        <td class="right">${entry.qty || ""}</td>
+        <td class="center">${entry.uom || ""}</td>
+        <td>${entry.remarks || ""}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function updateSummary() {
+    const totalTransactions = issuanceData.length;
+
+    const totalMisQty = issuanceData
+      .filter(entry => entry.type === "MIS")
+      .reduce((sum, entry) => sum + num(entry.qty), 0);
+
+    const totalAifQty = issuanceData
+      .filter(entry => entry.type === "AIF")
+      .reduce((sum, entry) => sum + num(entry.qty), 0);
+
+    const totalOutQty = issuanceData.reduce((sum, entry) => sum + num(entry.qty), 0);
+
+    document.getElementById("totalTransactions").textContent = totalTransactions.toLocaleString();
+    document.getElementById("totalMisQty").textContent = totalMisQty.toLocaleString();
+    document.getElementById("totalAifQty").textContent = totalAifQty.toLocaleString();
+    document.getElementById("totalOutQty").textContent = totalOutQty.toLocaleString();
+  }
+
+  function clearForm() {
+    document.getElementById("dateIssued").value = "";
+    document.getElementById("type").value = "MIS";
+    document.getElementById("docNo").value = "";
+    document.getElementById("department").value = "";
+    document.getElementById("requestedBy").value = "";
+    document.getElementById("approvedBy").value = "";
+    document.getElementById("issuedBy").value = "";
+    document.getElementById("itemSelect").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("trade").value = "";
+    document.getElementById("classification").value = "";
+    document.getElementById("hazard").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("rack").value = "";
+    document.getElementById("itemDescription").value = "";
+    document.getElementById("uom").value = "";
+    document.getElementById("availableStock").value = "";
+    document.getElementById("qty").value = "0";
+    document.getElementById("remarks").value = "";
+  }
+
+  function clearAllIssuance() {
+    const ok = confirm("Clear all issuance records?");
+    if (!ok) return;
+
+    issuanceData = [];
+    saveIssuance();
+    renderIssuance();
+    updateSummary();
+  }
+
+  function loadSampleData() {
+    refreshMasterItems();
+
+    const sampleItem1 = masterItems[0];
+    const sampleItem2 = masterItems[1];
+
+    issuanceData = [
+      {
+        dateIssued: "2026-04-01",
+        type: "MIS",
+        docNo: "MIS-001",
+        department: "CIVIL-WORK",
+        requestedBy: "Engineer A",
+        approvedBy: "Manager A",
+        issuedBy: "Stock Clerk",
+        itemId: sampleItem1 ? sampleItem1.id : null,
+        category: sampleItem1 ? sampleItem1.category : "Engineering",
+        trade: sampleItem1 ? sampleItem1.trade : "CIVIL-WORK",
+        classification: sampleItem1 ? sampleItem1.classification : "ON-NEED",
+        hazard: sampleItem1 ? sampleItem1.hazard : "NO",
+        location: sampleItem1 ? sampleItem1.location : "B2T2-1",
+        rack: sampleItem1 ? sampleItem1.rack : "",
+        itemDescription: sampleItem1 ? sampleItem1.name : "BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8",
+        qty: 1,
+        uom: sampleItem1 ? sampleItem1.uom : "PIECES",
+        remarks: "For repair use"
+      },
+      {
+        dateIssued: "2026-04-02",
+        type: "AIF",
+        docNo: "AIF-001",
+        department: "I.T.",
+        requestedBy: "Supervisor B",
+        approvedBy: "Manager B",
+        issuedBy: "Stock Clerk",
+        itemId: sampleItem2 ? sampleItem2.id : null,
+        category: sampleItem2 ? sampleItem2.category : "Engineering",
+        trade: sampleItem2 ? sampleItem2.trade : "CIVIL-WORK",
+        classification: sampleItem2 ? sampleItem2.classification : "ON-NEED",
+        hazard: sampleItem2 ? sampleItem2.hazard : "NO",
+        location: sampleItem2 ? sampleItem2.location : "B3T1-C",
+        rack: sampleItem2 ? sampleItem2.rack : "",
+        itemDescription: sampleItem2 ? sampleItem2.name : "ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)",
+        qty: 2,
+        uom: sampleItem2 ? sampleItem2.uom : "BAGS",
+        remarks: "Issued for maintenance"
+      }
+    ];
+
+    saveIssuance();
+    renderIssuance();
+    updateSummary();
+  }
+
+  loadItems();
+  renderIssuance();
+  updateSummary();
+</script>
 
 </body>
 </html>
