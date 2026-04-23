@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports - Inventory System</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+    body{background:#f4f7fb;padding:20px}
+    .container{max-width:1600px;margin:auto}
+
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:20px;flex-wrap:wrap
+    }
+
+    .title h1{color:#172554}
+    .nav a{
+      text-decoration:none;background:#e5e7eb;
+      padding:10px;border-radius:8px;margin-right:6px;font-weight:bold
+    }
+
+    .section{
+      background:#fff;padding:18px;border-radius:14px;
+      margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.05)
+    }
+
+    .cards{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+    }
+
+    .card{
+      background:#f8fafc;padding:14px;border-radius:10px;border:1px solid #cbd5e1
+    }
+
+    .card h3{font-size:12px;color:#64748b}
+    .card .value{font-size:24px;font-weight:bold;color:#172554}
+
+    .filters{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:10px
+    }
+
+    select,input{
+      padding:10px;border-radius:8px;border:1px solid #cbd5e1
+    }
+
+    table{
+      width:100%;border-collapse:collapse;margin-top:10px
+    }
+
+    th,td{
+      border:1px solid #334155;padding:8px;font-size:13px
+    }
+
+    th{background:#a9c0d7;color:#c00000}
+    tbody tr:nth-child(even){background:#f8fafc}
+
+    .pr{color:#dc2626;font-weight:bold}
+    .ok{color:#166534;font-weight:bold}
+
+    @media(max-width:900px){
+      .cards,.filters{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div class="title">
+      <h1>REPORTS</h1>
+    </div>
+
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+      <a href="./deliveries.html">Deliveries</a>
+      <a href="./issuance.html">Issuance</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>PR Summary (FAST-MOVING)</h2>
+
+    <div class="cards">
+      <div class="card">
+        <h3>FM Items for PR</h3>
+        <div class="value" id="fmItemsPR">0</div>
+      </div>
+
+      <div class="card">
+        <h3>FM Qty for PR</h3>
+        <div class="value" id="fmQtyPR">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Total FM Items</h3>
+        <div class="value" id="totalFM">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Filters</h2>
+
+    <div class="filters">
+      <select id="filterGroup">
+        <option value="">ALL GROUP</option>
+        <option>ENGINEERING</option>
+        <option>OFFICE</option>
+      </select>
+
+      <select id="filterCategory">
+        <option value="">ALL CATEGORY</option>
+        <option>FAST-MOVING</option>
+        <option>ON-NEED</option>
+        <option>TOOLS</option>
+      </select>
+
+      <select id="filterHazard">
+        <option value="">ALL</option>
+        <option>HAZARDOUS</option>
+      </select>
+
+      <input id="search" placeholder="Search item...">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Report Table</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Group</th>
+          <th>Trade</th>
+          <th>Category</th>
+          <th>Classification</th>
+          <th>Ending</th>
+          <th>Reorder</th>
+          <th>For PR</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
+
+  function num(v){ return Number(v) || 0 }
+
+  function getInventoryLevel(category, group){
+    if(category==="FAST-MOVING" && group==="ENGINEERING") return 6
+    if(category==="FAST-MOVING" && group==="OFFICE") return 4
+    return 0
+  }
+
+  function compute(item){
+    const inv = getInventoryLevel(item.category,item.group)
+    const adj = num(item.qtyBook)+num(item.countVariance)+num(item.reconAdj)
+    const ending = adj + num(item.inQty) - num(item.outQty)
+    const reorder = inv>0 ? (num(item.forecast)/12)*inv : 0
+    const forPR = Math.max(reorder - ending - num(item.deliveryInTransit),0)
+
+    return {...item,ending,reorder,forPR}
+  }
+
+  function render(){
+    const group = document.getElementById("filterGroup").value
+    const cat = document.getElementById("filterCategory").value
+    const hazard = document.getElementById("filterHazard").value
+    const search = document.getElementById("search").value.toLowerCase()
+
+    let items = masterItems.map(compute)
+
+    items = items.filter(i =>
+      (group=="" || i.group===group) &&
+      (cat=="" || i.category===cat) &&
+      (hazard=="" || i.classification==="HAZARDOUS") &&
+      i.name.toLowerCase().includes(search)
+    )
+
+    const tbody = document.getElementById("tableBody")
+    tbody.innerHTML=""
+
+    items.forEach(i=>{
+      tbody.innerHTML+=`
+        <tr>
+          <td>${i.name}</td>
+          <td>${i.group}</td>
+          <td>${i.trade}</td>
+          <td>${i.category}</td>
+          <td>${i.classification}</td>
+          <td>${i.ending}</td>
+          <td>${i.reorder.toFixed(2)}</td>
+          <td>${i.forPR>0 ? i.forPR.toFixed(2):"-"}</td>
+          <td class="${i.forPR>0?'pr':'ok'}">
+            ${i.forPR>0?'FOR PR':'OK'}
+          </td>
+        </tr>
+      `
+    })
+
+    updateSummary()
+  }
+
+  function updateSummary(){
+    const items = masterItems.map(compute)
+
+    const fm = items.filter(i=>i.category==="FAST-MOVING")
+    const fmPR = fm.filter(i=>i.forPR>0)
+
+    document.getElementById("totalFM").textContent = fm.length
+    document.getElementById("fmItemsPR").textContent = fmPR.length
+    document.getElementById("fmQtyPR").textContent =
+      fmPR.reduce((s,x)=>s+num(x.forPR),0).toFixed(2)
+  }
+
+  document.querySelectorAll("select,input").forEach(el=>{
+    el.addEventListener("input",render)
+  })
+
+  render()
+</script>
+
+</body>
+</html>
