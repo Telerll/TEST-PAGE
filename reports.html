@@ -1,351 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reports - Inventory System</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reports - Inventory System</title>
 
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-    body{background:#f4f7fb;padding:20px}
-    .container{max-width:1600px;margin:auto}
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f4f7fb;padding:20px}
+.container{max-width:1700px;margin:auto}
 
-    .topbar{
-      display:flex;justify-content:space-between;align-items:center;
-      margin-bottom:20px;flex-wrap:wrap
-    }
+.topbar{
+display:flex;justify-content:space-between;align-items:center;
+margin-bottom:20px;flex-wrap:wrap
+}
 
-    .title h1{color:#172554}
-    .nav a{
-      text-decoration:none;background:#e5e7eb;
-      padding:10px;border-radius:8px;margin-right:6px;font-weight:bold;color:#111827
-    }
+.title h1{color:#172554}
 
-    .section{
-      background:#fff;padding:18px;border-radius:14px;
-      margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.05)
-    }
+.nav a{
+text-decoration:none;background:#e5e7eb;
+padding:10px;border-radius:8px;margin-right:6px;font-weight:bold;color:#111827
+}
 
-    .cards{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px
-    }
+.section{
+background:#fff;padding:18px;border-radius:14px;
+margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.05)
+}
 
-    .card{
-      background:#f8fafc;padding:14px;border-radius:10px;border:1px solid #cbd5e1
-    }
+.cards{
+display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+}
 
-    .card h3{font-size:12px;color:#64748b}
-    .card .value{font-size:24px;font-weight:bold;color:#172554}
+.card{
+background:#f8fafc;padding:14px;border-radius:10px;border:1px solid #cbd5e1
+}
 
-    .filters{
-      display:grid;grid-template-columns:repeat(4,1fr);gap:10px
-    }
+.card h3{font-size:12px;color:#64748b}
+.card .value{font-size:24px;font-weight:bold;color:#172554}
 
-    select,input{
-      padding:10px;border-radius:8px;border:1px solid #cbd5e1
-    }
+.filters{
+display:grid;grid-template-columns:repeat(5,1fr);gap:10px
+}
 
-    table{
-      width:100%;border-collapse:collapse;margin-top:10px
-    }
+select,input{
+padding:10px;border-radius:8px;border:1px solid #cbd5e1
+}
 
-    th,td{
-      border:1px solid #334155;padding:8px;font-size:13px
-    }
+.btn-row{
+margin-top:12px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
 
-    th{background:#a9c0d7;color:#c00000}
-    tbody tr:nth-child(even){background:#f8fafc}
+.btn{
+border:none;
+padding:10px 14px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+color:#fff;
+}
 
-    .pr{color:#dc2626;font-weight:bold}
-    .ok{color:#166534;font-weight:bold}
+.btn-blue{background:#1e3a8a}
+.btn-green{background:#16a34a}
+.btn-gray{background:#64748b}
 
-    .btn-row{
-      margin-top:12px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+table{
+width:100%;border-collapse:collapse;margin-top:10px
+}
 
-    .btn{
-      border:none;
-      padding:10px 14px;
-      border-radius:8px;
-      font-weight:bold;
-      cursor:pointer;
-      color:#fff;
-    }
+th,td{
+border:1px solid #334155;padding:8px;font-size:13px
+}
 
-    .btn-blue{background:#1e3a8a}
-    .btn-green{background:#16a34a}
+th{background:#a9c0d7;color:#c00000}
+tbody tr:nth-child(even){background:#f8fafc}
 
-    .pr-item{
-      padding:12px;
-      border:1px solid #cbd5e1;
-      border-radius:10px;
-      margin-bottom:10px;
-      background:#f8fafc;
-    }
+.pr{color:#dc2626;font-weight:bold}
+.ok{color:#166534;font-weight:bold}
 
-    @media(max-width:900px){
-      .cards,.filters{grid-template-columns:1fr}
-    }
-  </style>
+.pr-item{
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:10px;
+margin-bottom:10px;
+background:#f8fafc;
+}
+
+@media(max-width:1000px){
+.cards,.filters{grid-template-columns:1fr}
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <div class="topbar">
-    <div class="title">
-      <h1>REPORTS</h1>
-    </div>
+<div class="topbar">
+<div class="title">
+<h1>REPORTS</h1>
+</div>
 
-    <div class="nav">
-      <a href="./index.html">Home</a>
-      <a href="./master-list.html">Master List</a>
-      <a href="./deliveries.html">Deliveries</a>
-      <a href="./issuance.html">Issuance</a>
-    </div>
-  </div>
+<div class="nav">
+<a href="./index.html">Home</a>
+<a href="./master-list.html">Master List</a>
+<a href="./deliveries.html">Deliveries</a>
+<a href="./issuance.html">Issuance</a>
+</div>
+</div>
 
-  <div class="section">
-    <h2>PR Summary (FAST-MOVING)</h2>
+<div class="section">
+<h2>PR Summary (FAST-MOVING)</h2>
 
-    <div style="margin:10px 0;">
-      <button onclick="generatePR()" class="btn btn-blue">
-        Generate PR List
-      </button>
-    </div>
+<div style="margin:10px 0;">
+<button onclick="generatePR()" class="btn btn-blue">
+Generate PR List
+</button>
+</div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>FM Items for PR</h3>
-        <div class="value" id="fmItemsPR">0</div>
-      </div>
+<div class="cards">
+<div class="card">
+<h3>FM Items for PR</h3>
+<div class="value" id="fmItemsPR">0</div>
+</div>
 
-      <div class="card">
-        <h3>FM Qty for PR</h3>
-        <div class="value" id="fmQtyPR">0</div>
-      </div>
+<div class="card">
+<h3>FM Qty for PR</h3>
+<div class="value" id="fmQtyPR">0</div>
+</div>
 
-      <div class="card">
-        <h3>Total FM Items</h3>
-        <div class="value" id="totalFM">0</div>
-      </div>
-    </div>
-  </div>
+<div class="card">
+<h3>Total FM Items</h3>
+<div class="value" id="totalFM">0</div>
+</div>
+</div>
+</div>
 
-  <div class="section">
-    <h2>Filters</h2>
+<div class="section">
+<h2>Filters</h2>
 
-    <div class="filters">
-      <select id="filterGroup">
-        <option value="">ALL GROUP</option>
-        <option value="ENGINEERING">ENGINEERING</option>
-        <option value="OFFICE">OFFICE</option>
-      </select>
+<div class="filters">
 
-      <select id="filterCategory">
-        <option value="">ALL CATEGORY</option>
-        <option value="FAST-MOVING">FAST-MOVING</option>
-        <option value="ON-NEED">ON-NEED</option>
-        <option value="TOOLS">TOOLS</option>
-      </select>
+<select id="filterGroup">
+<option value="">ALL GROUP</option>
+<option value="ENGINEERING">ENGINEERING</option>
+<option value="OFFICE">OFFICE</option>
+</select>
 
-      <select id="filterTrade">
-        <option value="">ALL TRADE / DEPARTMENT</option>
-      </select>
+<select id="filterCategory">
+<option value="">ALL CATEGORY</option>
+<option value="FAST-MOVING">FAST-MOVING</option>
+<option value="ON-NEED">ON-NEED</option>
+<option value="TOOLS">TOOLS</option>
+</select>
 
-      <input id="search" placeholder="Search item...">
-    </div>
+<select id="filterTrade">
+<option value="">ALL TRADE / DEPARTMENT</option>
+</select>
 
-    <div class="btn-row">
-      <button onclick="render()" class="btn btn-blue">Generate Report</button>
-      <button onclick="exportExcel()" class="btn btn-green">Export to Excel</button>
-    </div>
-  </div>
+<select id="filterClassification">
+<option value="">ALL CLASSIFICATION</option>
+<option value="ENGINEERING CONSUMABLE">ENGINEERING CONSUMABLE</option>
+<option value="HAZARDOUS">HAZARDOUS</option>
+<option value="SAFEKEEPING">SAFEKEEPING</option>
+<option value="TOOLS">TOOLS</option>
+<option value="EQUIPMENT">EQUIPMENT</option>
+<option value="PROJECT">PROJECT</option>
+<option value="OFFICE SUPPLY">OFFICE SUPPLY</option>
+<option value="UNIFORM">UNIFORM</option>
+<option value="OFFICE TOOLS">OFFICE TOOLS</option>
+<option value="GIVEAWAY">GIVEAWAY</option>
+<option value="PANTRY SUPPLY">PANTRY SUPPLY</option>
+<option value="RAFFLE ITEMS">RAFFLE ITEMS</option>
+<option value="MEDICINE">MEDICINE</option>
+<option value="OFFICE FURNITURES">OFFICE FURNITURES</option>
+</select>
 
-  <div class="section">
-    <h2>Report Table</h2>
+<input id="search" placeholder="Search item...">
 
-    <table id="reportTable">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Group</th>
-          <th>Trade</th>
-          <th>Category</th>
-          <th>Classification</th>
-          <th>Ending</th>
-          <th>Reorder</th>
-          <th>For PR</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+</div>
 
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
+<div class="btn-row">
+<button onclick="render()" class="btn btn-blue">Generate Report</button>
+<button onclick="exportExcel()" class="btn btn-green">Export to Excel</button>
+<button onclick="refreshReport()" class="btn btn-gray">Refresh</button>
+</div>
 
-  <div class="section">
-    <h2>Generated PR List</h2>
-    <div id="prList"></div>
-  </div>
+</div>
+
+<div class="section">
+<h2>Report Table</h2>
+
+<table id="reportTable">
+<thead>
+<tr>
+<th>Item</th>
+<th>Group</th>
+<th>Trade</th>
+<th>Category</th>
+<th>Classification</th>
+<th>Ending</th>
+<th>Reorder</th>
+<th>For PR</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<div class="section">
+<h2>Generated PR List</h2>
+<div id="prList"></div>
+</div>
 
 </div>
 
 <script>
-  let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
+let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-  function num(v){ return Number(v) || 0; }
+function num(v){ return Number(v) || 0; }
 
-  function getInventoryLevel(category, group){
-    if(category === "FAST-MOVING" && group === "ENGINEERING") return 6;
-    if(category === "FAST-MOVING" && group === "OFFICE") return 4;
-    return 0;
-  }
+function getInventoryLevel(category, group){
+if(category === "FAST-MOVING" && group === "ENGINEERING") return 6;
+if(category === "FAST-MOVING" && group === "OFFICE") return 4;
+return 0;
+}
 
-  function compute(item){
-    const inv = getInventoryLevel(item.category, item.group);
-    const adj = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
-    const ending = adj + num(item.inQty) - num(item.outQty);
-    const reorder = inv > 0 ? (num(item.forecast) / 12) * inv : 0;
-    const forPR = Math.max(reorder - ending - num(item.deliveryInTransit), 0);
+function compute(item){
+const inv = getInventoryLevel(item.category, item.group);
+const adj = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
+const ending = adj + num(item.inQty) - num(item.outQty);
+const reorder = inv > 0 ? (num(item.forecast) / 12) * inv : 0;
+const forPR = Math.max(reorder - ending - num(item.deliveryInTransit), 0);
 
-    return {...item, ending, reorder, forPR};
-  }
+return {...item, ending, reorder, forPR};
+}
 
-  function loadTradeFilter() {
-    const select = document.getElementById("filterTrade");
-    const trades = [...new Set(
-      masterItems
-        .map(item => item.trade)
-        .filter(Boolean)
-        .sort()
-    )];
+function loadTradeFilter() {
+const select = document.getElementById("filterTrade");
+const trades = [...new Set(masterItems.map(i => i.trade).filter(Boolean).sort())];
 
-    select.innerHTML = `<option value="">ALL TRADE / DEPARTMENT</option>`;
+select.innerHTML = `<option value="">ALL TRADE / DEPARTMENT</option>`;
+trades.forEach(t => {
+select.innerHTML += `<option value="${t}">${t}</option>`;
+});
+}
 
-    trades.forEach(trade => {
-      const option = document.createElement("option");
-      option.value = trade;
-      option.textContent = trade;
-      select.appendChild(option);
-    });
-  }
+function render(){
+const group = filterGroup.value;
+const cat = filterCategory.value;
+const trade = filterTrade.value;
+const classification = filterClassification.value;
+const search = searchInput.value.toLowerCase();
 
-  function render(){
-    const group = document.getElementById("filterGroup").value;
-    const cat = document.getElementById("filterCategory").value;
-    const trade = document.getElementById("filterTrade").value;
-    const search = document.getElementById("search").value.toLowerCase();
+let items = masterItems.map(compute);
 
-    let items = masterItems.map(compute);
+items = items.filter(i =>
+(group === "" || i.group === group) &&
+(cat === "" || i.category === cat) &&
+(trade === "" || i.trade === trade) &&
+(classification === "" || i.classification === classification) &&
+((i.name || "").toLowerCase().includes(search))
+);
 
-    items = items.filter(i =>
-      (group === "" || i.group === group) &&
-      (cat === "" || i.category === cat) &&
-      (trade === "" || i.trade === trade) &&
-      ((i.name || "").toLowerCase().includes(search))
-    );
+tableBody.innerHTML = "";
 
-    const tbody = document.getElementById("tableBody");
-    tbody.innerHTML = "";
+items.forEach(i => {
+tableBody.innerHTML += `
+<tr>
+<td>${i.name || ""}</td>
+<td>${i.group || ""}</td>
+<td>${i.trade || ""}</td>
+<td>${i.category || ""}</td>
+<td>${i.classification || ""}</td>
+<td>${i.ending}</td>
+<td>${i.reorder.toFixed(2)}</td>
+<td>${i.forPR > 0 ? i.forPR.toFixed(2) : "-"}</td>
+<td class="${i.forPR > 0 ? 'pr' : 'ok'}">
+${i.forPR > 0 ? 'FOR PR' : 'OK'}
+</td>
+</tr>`;
+});
 
-    items.forEach(i=>{
-      tbody.innerHTML += `
-        <tr>
-          <td>${i.name || ""}</td>
-          <td>${i.group || ""}</td>
-          <td>${i.trade || ""}</td>
-          <td>${i.category || ""}</td>
-          <td>${i.classification || ""}</td>
-          <td>${i.ending}</td>
-          <td>${i.reorder.toFixed(2)}</td>
-          <td>${i.forPR > 0 ? i.forPR.toFixed(2) : "-"}</td>
-          <td class="${i.forPR > 0 ? 'pr' : 'ok'}">
-            ${i.forPR > 0 ? 'FOR PR' : 'OK'}
-          </td>
-        </tr>
-      `;
-    });
+updateSummary();
+}
 
-    updateSummary();
-  }
+function updateSummary(){
+const items = masterItems.map(compute);
+const fm = items.filter(i => i.category === "FAST-MOVING");
+const fmPR = fm.filter(i => i.forPR > 0);
 
-  function updateSummary(){
-    const items = masterItems.map(compute);
+fmItemsPR.textContent = fmPR.length;
+fmQtyPR.textContent = fmPR.reduce((s,x) => s + num(x.forPR), 0).toFixed(2);
+totalFM.textContent = fm.length;
+}
 
-    const fm = items.filter(i => i.category === "FAST-MOVING");
-    const fmPR = fm.filter(i => i.forPR > 0);
+function generatePR(){
+const items = masterItems.map(compute);
+const fmPR = items.filter(i => i.category === "FAST-MOVING" && i.forPR > 0);
 
-    document.getElementById("totalFM").textContent = fm.length;
-    document.getElementById("fmItemsPR").textContent = fmPR.length;
-    document.getElementById("fmQtyPR").textContent =
-      fmPR.reduce((s, x) => s + num(x.forPR), 0).toFixed(2);
-  }
+prList.innerHTML = "";
 
-  function generatePR(){
-    const items = masterItems.map(compute);
+if(fmPR.length === 0){
+prList.innerHTML = "<p>No items for PR</p>";
+return;
+}
 
-    const fmPR = items.filter(i =>
-      i.category === "FAST-MOVING" &&
-      i.forPR > 0
-    );
+fmPR.forEach(i => {
+prList.innerHTML += `
+<div class="pr-item">
+<strong>${i.name}</strong><br>
+<small>${i.group || ""} | ${i.trade || ""}</small><br>
+<small>${i.category || ""} | ${i.classification || ""}</small><br>
+<span style="color:#dc2626;font-weight:bold;">
+Qty for PR: ${i.forPR.toFixed(2)}
+</span>
+</div>`;
+});
+}
 
-    const container = document.getElementById("prList");
-    container.innerHTML = "";
+function exportExcel(){
+let rows = document.querySelectorAll("#reportTable tr");
+let csv = [];
 
-    if(fmPR.length === 0){
-      container.innerHTML = "<p>No items for PR</p>";
-      return;
-    }
+rows.forEach(r => {
+let cols = r.querySelectorAll("th,td");
+let data = [];
+cols.forEach(c => data.push('"' + c.innerText.replace(/"/g, '""') + '"'));
+csv.push(data.join(","));
+});
 
-    fmPR.forEach(i=>{
-      container.innerHTML += `
-        <div class="pr-item">
-          <strong>${i.name}</strong><br>
-          <small>${i.group || ""} | ${i.trade || ""}</small><br>
-          <span style="color:#dc2626;font-weight:bold;">
-            Qty for PR: ${i.forPR.toFixed(2)}
-          </span>
-        </div>
-      `;
-    });
-  }
+let blob = new Blob([csv.join("\n")], {type:"text/csv"});
+let a = document.createElement("a");
+let today = new Date().toISOString().slice(0,10);
+a.href = URL.createObjectURL(blob);
+a.download = `report_${today}.csv`;
+a.click();
+}
 
-  function exportExcel(){
-    const table = document.getElementById("reportTable");
-    const rows = table.querySelectorAll("tr");
-    let csv = [];
+function refreshReport(){
+masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-    rows.forEach(row => {
-      let cols = row.querySelectorAll("th,td");
-      let rowData = [];
+filterGroup.value = "";
+filterCategory.value = "";
+filterTrade.value = "";
+filterClassification.value = "";
+searchInput.value = "";
 
-      cols.forEach(col => {
-        rowData.push('"' + col.innerText.replace(/"/g, '""') + '"');
-      });
+loadTradeFilter();
+render();
+prList.innerHTML = "";
+}
 
-      csv.push(rowData.join(","));
-    });
+const filterGroup = document.getElementById("filterGroup");
+const filterCategory = document.getElementById("filterCategory");
+const filterTrade = document.getElementById("filterTrade");
+const filterClassification = document.getElementById("filterClassification");
+const searchInput = document.getElementById("search");
 
-    const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-    const downloadLink = document.createElement("a");
-    const today = new Date().toISOString().slice(0,10);
+const tableBody = document.getElementById("tableBody");
+const prList = document.getElementById("prList");
 
-    downloadLink.download = `inventory_report_${today}.csv`;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-    downloadLink.style.display = "none";
+const fmItemsPR = document.getElementById("fmItemsPR");
+const fmQtyPR = document.getElementById("fmQtyPR");
+const totalFM = document.getElementById("totalFM");
 
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  }
-
-  loadTradeFilter();
-  render();
+loadTradeFilter();
+render();
 </script>
 
 </body>
-</html>
+</html>.
