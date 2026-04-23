@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Requisitions</title>
 
+<style>
+body{font-family:Arial;background:#f4f7fb;padding:20px}
+.container{max-width:1200px;margin:auto}
+.section{background:white;padding:16px;border-radius:12px;margin-bottom:16px}
+select,input{padding:8px;margin-top:6px;width:100%}
+button{padding:10px;margin-top:10px;background:#1e3a8a;color:white;border:none;border-radius:8px}
+table{width:100%;margin-top:10px;border-collapse:collapse}
+th,td{border:1px solid #ccc;padding:8px;text-align:center}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>Requisitions (PR)</h2>
+
+<div class="section">
+
+<label>Select Item</label>
+<select id="itemSelect"></select>
+
+<label>Qty Requested</label>
+<input type="number" id="qty">
+
+<label>Requested By</label>
+<input type="text" id="requestBy">
+
+<button onclick="addPR()">Add Request</button>
+
+</div>
+
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Requested By</th>
+</tr>
+</thead>
+<tbody id="prTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<script>
+let prData = JSON.parse(localStorage.getItem("prData")) || [];
+
+function loadItems(){
+  let items = JSON.parse(localStorage.getItem("masterItems")) || [];
+  let select = document.getElementById("itemSelect");
+
+  select.innerHTML = '<option value="">Select</option>';
+
+  items.forEach(i=>{
+    select.innerHTML += `<option value="${i.id}">${i.name}</option>`;
+  });
+}
+
+function addPR(){
+  let items = JSON.parse(localStorage.getItem("masterItems")) || [];
+
+  let id = Number(document.getElementById("itemSelect").value);
+  let qty = Number(document.getElementById("qty").value);
+  let by = document.getElementById("requestBy").value;
+
+  let item = items.find(i=>i.id===id);
+
+  if(!item || !qty){
+    alert("Complete fields");
+    return;
+  }
+
+  prData.push({
+    item: item.name,
+    qty,
+    by
+  });
+
+  localStorage.setItem("prData",JSON.stringify(prData));
+
+  renderPR();
+}
+
+function renderPR(){
+  let tbody = document.getElementById("prTable");
+  tbody.innerHTML="";
+
+  prData.forEach(r=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.item}</td>
+        <td>${r.qty}</td>
+        <td>${r.by}</td>
+      </tr>
+    `;
+  });
+}
+
+loadItems();
+renderPR();
+</script>
+
+</body>
+</html>
