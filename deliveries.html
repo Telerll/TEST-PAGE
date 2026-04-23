@@ -6,277 +6,41 @@
   <title>Deliveries - Inventory Management System</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    :root {
-      --blue-main: #1e3a8a;
-      --blue-dark: #172554;
-      --bg: #f4f7fb;
-      --white: #ffffff;
-      --line: #cbd5e1;
-      --muted: #64748b;
-      --head-bg: #a9c0d7;
-      --head-text: #c00000;
-      --mrr: #0f766e;
-      --rms: #2563eb;
-    }
-
-    body {
-      background: var(--bg);
-      padding: 20px;
-      color: #1f2937;
-    }
-
-    .container {
-      max-width: 1700px;
-      margin: auto;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .title-block small {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    .title-block h1 {
-      font-size: 28px;
-      color: var(--blue-dark);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      background: #e5e7eb;
-      color: #111827;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .section {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-
-    .section h2 {
-      color: var(--blue-dark);
-      margin-bottom: 14px;
-      font-size: 20px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-
-    .card {
-      background: #f8fafc;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 16px;
-    }
-
-    .card h3 {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .card .value {
-      font-size: 28px;
-      font-weight: bold;
-      color: var(--blue-dark);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .field label {
-      font-size: 12px;
-      font-weight: bold;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: 14px;
-      background: #fff;
-    }
-
-    .field textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .readonly {
-      background: #f1f5f9 !important;
-      font-weight: bold;
-    }
-
-    .full {
-      grid-column: span 4;
-    }
-
-    .actions {
-      margin-top: 14px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .btn-primary {
-      background: var(--blue-main);
-      color: white;
-    }
-
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .btn-danger {
-      background: #dc2626;
-      color: white;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      min-width: 2100px;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      border: 1px solid #334155;
-      padding: 8px 10px;
-      font-size: 13px;
-      vertical-align: top;
-    }
-
-    th {
-      background: var(--head-bg);
-      color: var(--head-text);
-      text-align: center;
-    }
-
-    tbody tr:nth-child(even) {
-      background: #f8fafc;
-    }
-
-    .center {
-      text-align: center;
-    }
-
-    .right {
-      text-align: right;
-    }
-
-    .badge {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .badge-mrr {
-      background: var(--mrr);
-    }
-
-    .badge-rms {
-      background: var(--rms);
-    }
-
-    .note {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 1200px) {
-      .cards,
-      .form-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .full {
-        grid-column: span 2;
-      }
-    }
-
-    @media (max-width: 700px) {
-      body {
-        padding: 12px;
-      }
-
-      .cards,
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .full {
-        grid-column: span 1;
-      }
-
-      .title-block h1 {
-        font-size: 22px;
-      }
-    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+    body{background:#f4f7fb;padding:20px;color:#1f2937}
+    .container{max-width:1800px;margin:auto}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+    .title small{display:block;font-size:12px;color:#64748b;font-weight:bold;letter-spacing:1px}
+    .title h1{margin-top:4px;font-size:28px;color:#172554}
+    .nav a{display:inline-block;text-decoration:none;background:#e5e7eb;color:#111827;padding:10px 14px;border-radius:10px;font-weight:bold;margin-right:8px;font-size:14px}
+    .section{background:#fff;border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+    .section h2{margin:0 0 14px;color:#172554;font-size:20px}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .card{background:#f8fafc;border:1px solid #cbd5e1;border-radius:14px;padding:16px}
+    .card h3{font-size:13px;color:#64748b;margin-bottom:8px}
+    .card .value{font-size:28px;font-weight:bold;color:#172554}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .field{display:flex;flex-direction:column}
+    .field label{font-size:12px;font-weight:bold;color:#64748b;margin-bottom:6px}
+    .field input,.field select,.field textarea{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;font-size:14px;background:#fff}
+    .field textarea{min-height:90px;resize:vertical}
+    .readonly{background:#f1f5f9 !important;font-weight:bold}
+    .full{grid-column:span 4}
+    .actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+    button{border:none;padding:10px 14px;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px}
+    .btn-primary{background:#1e3a8a;color:#fff}
+    .btn-secondary{background:#e5e7eb;color:#111827}
+    .btn-danger{background:#dc2626;color:#fff}
+    .table-wrap{overflow:auto}
+    table{width:100%;min-width:2200px;border-collapse:collapse}
+    th,td{border:1px solid #334155;padding:8px 10px;font-size:13px;vertical-align:top}
+    th{background:#a9c0d7;color:#c00000;text-align:center}
+    tbody tr:nth-child(even){background:#f8fafc}
+    .center{text-align:center}
+    .right{text-align:right}
+    .note{margin-top:10px;font-size:12px;color:#64748b;line-height:1.5}
+    @media (max-width:1200px){.cards,.grid{grid-template-columns:repeat(2,1fr)} .full{grid-column:span 2}}
+    @media (max-width:700px){.cards,.grid{grid-template-columns:1fr} .full{grid-column:span 1} .title h1{font-size:22px}}
   </style>
 </head>
 <body>
@@ -284,15 +48,16 @@
 <div class="container">
 
   <div class="topbar">
-    <div class="title-block">
+    <div class="title">
       <small>PROPERTY MANAGEMENT OFFICE</small>
-      <h1>STOCK CONTROL DEPARTMENT - DELIVERIES</h1>
+      <h1>DELIVERIES</h1>
     </div>
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="master-list.html">Master List</a>
-      <a href="issuance.html">Issuance</a>
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+      <a href="./issuance.html">Issuance</a>
+      <a href="./reports.html">Reports</a>
     </div>
   </div>
 
@@ -301,19 +66,19 @@
     <div class="cards">
       <div class="card">
         <h3>Total Delivery Transactions</h3>
-        <div class="value" id="totalTransactions">0</div>
+        <div class="value" id="dashTotalTrans">0</div>
       </div>
       <div class="card">
-        <h3>Total MRR Qty</h3>
-        <div class="value" id="totalMrrQty">0</div>
+        <h3>Total Delivered Qty</h3>
+        <div class="value" id="dashTotalQty">0</div>
       </div>
       <div class="card">
-        <h3>Total RMS Qty</h3>
-        <div class="value" id="totalRmsQty">0</div>
+        <h3>Total Amount</h3>
+        <div class="value" id="dashTotalAmount">0</div>
       </div>
       <div class="card">
-        <h3>Total Received Amount</h3>
-        <div class="value" id="totalAmount">0</div>
+        <h3>Unique Items Delivered</h3>
+        <div class="value" id="dashUniqueItems">0</div>
       </div>
     </div>
   </div>
@@ -321,7 +86,7 @@
   <div class="section">
     <h2>Add Delivery Entry</h2>
 
-    <div class="form-grid">
+    <div class="grid">
       <div class="field">
         <label>Date Received</label>
         <input type="date" id="dateReceived">
@@ -347,39 +112,37 @@
 
       <div class="field">
         <label>PR By</label>
-        <input type="text" id="prBy" placeholder="Requested by">
+        <input type="text" id="prBy">
       </div>
 
       <div class="field">
         <label>Received By</label>
-        <input type="text" id="receivedBy" placeholder="Receiver name">
+        <input type="text" id="receivedBy">
       </div>
 
       <div class="field">
         <label>Delivery Approved By</label>
-        <input type="text" id="approvedBy" placeholder="Approver name">
+        <input type="text" id="approvedBy">
       </div>
 
       <div class="field">
         <label>DR/SI No.</label>
-        <input type="text" id="drsiNo" placeholder="DR/SI number">
+        <input type="text" id="drsiNo">
       </div>
 
       <div class="field">
         <label>Supplier / Source</label>
-        <input type="text" id="supplier" placeholder="Supplier or source">
+        <input type="text" id="supplier">
       </div>
 
       <div class="field">
         <label>Select Item</label>
-        <select id="itemSelect" onchange="fillItemDetails()">
-          <option value="">-- Select Item --</option>
-        </select>
+        <select id="itemSelect"></select>
       </div>
 
       <div class="field">
-        <label>Category</label>
-        <input type="text" id="category" class="readonly" readonly>
+        <label>Group</label>
+        <input type="text" id="group" class="readonly" readonly>
       </div>
 
       <div class="field">
@@ -388,18 +151,23 @@
       </div>
 
       <div class="field">
+        <label>Category</label>
+        <input type="text" id="category" class="readonly" readonly>
+      </div>
+
+      <div class="field">
         <label>Classification</label>
         <input type="text" id="classification" class="readonly" readonly>
       </div>
 
       <div class="field">
-        <label>Hazardous</label>
-        <input type="text" id="hazard" class="readonly" readonly>
+        <label>Storage Code</label>
+        <input type="text" id="locationCode" class="readonly" readonly>
       </div>
 
       <div class="field">
-        <label>Location</label>
-        <input type="text" id="location" class="readonly" readonly>
+        <label>Location Name</label>
+        <input type="text" id="locationName" class="readonly" readonly>
       </div>
 
       <div class="field">
@@ -408,8 +176,8 @@
       </div>
 
       <div class="field full">
-        <label>Item Description</label>
-        <textarea id="itemDescription" class="readonly" readonly></textarea>
+        <label>Item Name</label>
+        <textarea id="itemName" class="readonly" readonly></textarea>
       </div>
 
       <div class="field">
@@ -418,18 +186,18 @@
       </div>
 
       <div class="field">
-        <label>Available Stock (for reference)</label>
+        <label>Available Stock</label>
         <input type="number" id="availableStock" class="readonly" readonly>
       </div>
 
       <div class="field">
         <label>Qty</label>
-        <input type="number" id="qty" value="0" oninput="autoComputeAmount()">
+        <input type="number" id="qty" value="0">
       </div>
 
       <div class="field">
         <label>Price</label>
-        <input type="number" id="price" value="0" oninput="autoComputeAmount()">
+        <input type="number" id="price" value="0">
       </div>
 
       <div class="field">
@@ -438,22 +206,19 @@
       </div>
 
       <div class="field full">
-        <label>Remark/s</label>
-        <textarea id="remarks" placeholder="Remarks"></textarea>
+        <label>Remarks</label>
+        <textarea id="remarks"></textarea>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn-primary" onclick="addDelivery()">Add Delivery</button>
-      <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
-      <button class="btn-secondary" onclick="loadSampleData()">Load Sample Data</button>
-      <button class="btn-danger" onclick="clearAllDeliveries()">Clear All</button>
+      <button class="btn-primary" id="saveBtn">Add Delivery</button>
+      <button class="btn-secondary" id="clearBtn">Clear Form</button>
+      <button class="btn-danger" id="clearAllBtn">Clear All</button>
     </div>
 
     <div class="note">
-      This page is for <strong>IN / receiving transactions only</strong>.  
-      Items are selected from the <strong>Master List</strong>.  
-      Every saved delivery automatically adds qty to the matching item's <strong>IN</strong> in the master list.
+      Every delivery entry adds quantity to the matching item's IN in the master list.
     </div>
   </div>
 
@@ -464,30 +229,26 @@
       <table>
         <thead>
           <tr>
-            <th>Date Received</th>
+            <th>Date</th>
             <th>Type</th>
-            <th>MRR# / RMS#</th>
+            <th>MRR/RMS#</th>
             <th>PR/PO</th>
-            <th>PR By</th>
-            <th>Received By</th>
-            <th>Delivery Approved By</th>
-            <th>DR/SI No.</th>
-            <th>Supplier / Source</th>
+            <th>Supplier</th>
+            <th>Item</th>
+            <th>Group</th>
+            <th>Trade</th>
             <th>Category</th>
-            <th>Trade / Department</th>
             <th>Classification</th>
-            <th>Hazardous</th>
-            <th>Location</th>
-            <th>Rack No.</th>
-            <th>Item Description</th>
+            <th>Storage</th>
+            <th>Rack</th>
             <th>Qty</th>
             <th>UOM</th>
             <th>Price</th>
             <th>Amount</th>
-            <th>Remark/s</th>
+            <th>Remarks</th>
           </tr>
         </thead>
-        <tbody id="deliveryTableBody"></tbody>
+        <tbody id="tableBody"></tbody>
       </table>
     </div>
   </div>
@@ -498,81 +259,63 @@
   let deliveriesData = JSON.parse(localStorage.getItem("deliveriesData")) || [];
   let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-  function num(value) {
-    return Number(value) || 0;
-  }
+  function num(v){ return Number(v) || 0; }
 
   function computeMasterItem(item) {
-    const inventoryLevel = item.category === "Engineering" ? 6 :
-      item.category === "Office Supplies" ? 4 : 0;
+    function getInventoryLevel(category, group) {
+      if (category === "FAST-MOVING" && group === "ENGINEERING") return 6;
+      if (category === "FAST-MOVING" && group === "OFFICE") return 4;
+      return 0;
+    }
 
+    const inventoryLevel = getInventoryLevel(item.category, item.group);
     const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
     const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
     const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
     const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
 
-    return {
-      ...item,
-      inventoryLevel,
-      adjustedBalance,
-      endingBalance,
-      reorderPoint,
-      forPR
-    };
+    return { ...item, inventoryLevel, adjustedBalance, endingBalance, reorderPoint, forPR };
   }
 
   function refreshMasterItems() {
-    masterItems = (JSON.parse(localStorage.getItem("masterItems")) || []).map(item => computeMasterItem(item));
+    masterItems = (JSON.parse(localStorage.getItem("masterItems")) || []).map(computeMasterItem);
   }
 
   function saveDeliveries() {
     localStorage.setItem("deliveriesData", JSON.stringify(deliveriesData));
   }
 
-  function loadItems() {
+  function loadItemsDropdown() {
     refreshMasterItems();
-
     const select = document.getElementById("itemSelect");
-    if (!select) return;
-
     select.innerHTML = '<option value="">-- Select Item --</option>';
 
     masterItems.forEach(item => {
-      select.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+      select.innerHTML += `<option value="${item.id}">${item.name} (${item.uom})</option>`;
     });
   }
 
   function fillItemDetails() {
     const id = Number(document.getElementById("itemSelect").value);
     const item = masterItems.find(i => i.id === id);
+    if (!item) return;
 
-    if (item) {
-      document.getElementById("category").value = item.category || "";
-      document.getElementById("trade").value = item.trade || "";
-      document.getElementById("classification").value = item.classification || "";
-      document.getElementById("hazard").value = item.hazard || "";
-      document.getElementById("location").value = item.location || "";
-      document.getElementById("rack").value = item.rack || "";
-      document.getElementById("itemDescription").value = item.name || "";
-      document.getElementById("uom").value = item.uom || "";
-      document.getElementById("availableStock").value = item.endingBalance || 0;
-    } else {
-      document.getElementById("category").value = "";
-      document.getElementById("trade").value = "";
-      document.getElementById("classification").value = "";
-      document.getElementById("hazard").value = "";
-      document.getElementById("location").value = "";
-      document.getElementById("rack").value = "";
-      document.getElementById("itemDescription").value = "";
-      document.getElementById("uom").value = "";
-      document.getElementById("availableStock").value = "";
-    }
+    document.getElementById("group").value = item.group || "";
+    document.getElementById("trade").value = item.trade || "";
+    document.getElementById("category").value = item.category || "";
+    document.getElementById("classification").value = item.classification || "";
+    document.getElementById("locationCode").value = item.locationCode || "";
+    document.getElementById("locationName").value = item.locationName || "";
+    document.getElementById("rack").value = item.rack || "";
+    document.getElementById("itemName").value = item.name || "";
+    document.getElementById("uom").value = item.uom || "";
+    document.getElementById("availableStock").value = item.endingBalance || 0;
   }
 
   function autoComputeAmount() {
     const qty = num(document.getElementById("qty").value);
     const price = num(document.getElementById("price").value);
-    document.getElementById("amount").value = qty * price;
+    document.getElementById("amount").value = (qty * price).toFixed(2);
   }
 
   function addDelivery() {
@@ -588,14 +331,15 @@
       approvedBy: document.getElementById("approvedBy").value.trim(),
       drsiNo: document.getElementById("drsiNo").value.trim(),
       supplier: document.getElementById("supplier").value.trim(),
-      itemId,
-      category: document.getElementById("category").value,
+      itemId: itemId,
+      group: document.getElementById("group").value,
       trade: document.getElementById("trade").value,
+      category: document.getElementById("category").value,
       classification: document.getElementById("classification").value,
-      hazard: document.getElementById("hazard").value,
-      location: document.getElementById("location").value,
+      locationCode: document.getElementById("locationCode").value,
+      locationName: document.getElementById("locationName").value,
       rack: document.getElementById("rack").value,
-      itemDescription: document.getElementById("itemDescription").value,
+      itemName: document.getElementById("itemName").value,
       qty: num(document.getElementById("qty").value),
       uom: document.getElementById("uom").value,
       price: num(document.getElementById("price").value),
@@ -604,80 +348,62 @@
     };
 
     if (!entry.dateReceived || !entry.docNo || !entry.itemId || !entry.qty || !entry.uom) {
-      alert("Please fill in the required fields.");
+      alert("Please complete the required fields.");
       return;
     }
 
     deliveriesData.push(entry);
     saveDeliveries();
 
-    // AUTO-UPDATE MASTER LIST (IN)
     let masterItemsRaw = JSON.parse(localStorage.getItem("masterItems")) || [];
-    const itemIndex = masterItemsRaw.findIndex(item => Number(item.id) === entry.itemId);
+    const index = masterItemsRaw.findIndex(i => Number(i.id) === entry.itemId);
 
-    if (itemIndex !== -1) {
-      masterItemsRaw[itemIndex].inQty = (Number(masterItemsRaw[itemIndex].inQty) || 0) + entry.qty;
+    if (index !== -1) {
+      masterItemsRaw[index].inQty = (Number(masterItemsRaw[index].inQty) || 0) + entry.qty;
       localStorage.setItem("masterItems", JSON.stringify(masterItemsRaw));
     }
 
-    renderDeliveries();
-    updateSummary();
+    refreshMasterItems();
+    renderTable();
+    updateDashboard();
     clearForm();
-    loadItems();
+    loadItemsDropdown();
   }
 
-  function renderDeliveries() {
-    const tbody = document.getElementById("deliveryTableBody");
+  function renderTable() {
+    const tbody = document.getElementById("tableBody");
     tbody.innerHTML = "";
 
     deliveriesData.forEach(entry => {
-      const badgeClass = entry.type === "MRR" ? "badge-mrr" : "badge-rms";
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td class="center">${entry.dateReceived || ""}</td>
-        <td class="center"><span class="badge ${badgeClass}">${entry.type}</span></td>
-        <td class="center">${entry.docNo || ""}</td>
-        <td class="center">${entry.prpo || ""}</td>
-        <td class="center">${entry.prBy || ""}</td>
-        <td class="center">${entry.receivedBy || ""}</td>
-        <td class="center">${entry.approvedBy || ""}</td>
-        <td class="center">${entry.drsiNo || ""}</td>
-        <td>${entry.supplier || ""}</td>
-        <td class="center">${entry.category || ""}</td>
-        <td class="center">${entry.trade || ""}</td>
-        <td class="center">${entry.classification || ""}</td>
-        <td class="center">${entry.hazard || ""}</td>
-        <td class="center">${entry.location || ""}</td>
-        <td class="center">${entry.rack || ""}</td>
-        <td>${entry.itemDescription || ""}</td>
-        <td class="right">${entry.qty || ""}</td>
-        <td class="center">${entry.uom || ""}</td>
-        <td class="right">${entry.price ? entry.price.toLocaleString() : ""}</td>
-        <td class="right">${entry.amount ? entry.amount.toLocaleString() : ""}</td>
-        <td>${entry.remarks || ""}</td>
+      tbody.innerHTML += `
+        <tr>
+          <td class="center">${entry.dateReceived || ""}</td>
+          <td class="center">${entry.type || ""}</td>
+          <td class="center">${entry.docNo || ""}</td>
+          <td class="center">${entry.prpo || ""}</td>
+          <td>${entry.supplier || ""}</td>
+          <td>${entry.itemName || ""}</td>
+          <td class="center">${entry.group || ""}</td>
+          <td class="center">${entry.trade || ""}</td>
+          <td class="center">${entry.category || ""}</td>
+          <td class="center">${entry.classification || ""}</td>
+          <td class="center">${entry.locationCode || ""}</td>
+          <td class="center">${entry.rack || ""}</td>
+          <td class="right">${num(entry.qty)}</td>
+          <td class="center">${entry.uom || ""}</td>
+          <td class="right">${num(entry.price).toFixed(2)}</td>
+          <td class="right">${num(entry.amount).toFixed(2)}</td>
+          <td>${entry.remarks || ""}</td>
+        </tr>
       `;
-      tbody.appendChild(row);
     });
   }
 
-  function updateSummary() {
-    const totalTransactions = deliveriesData.length;
-
-    const totalMrrQty = deliveriesData
-      .filter(entry => entry.type === "MRR")
-      .reduce((sum, entry) => sum + num(entry.qty), 0);
-
-    const totalRmsQty = deliveriesData
-      .filter(entry => entry.type === "RMS")
-      .reduce((sum, entry) => sum + num(entry.qty), 0);
-
-    const totalAmount = deliveriesData.reduce((sum, entry) => sum + num(entry.amount), 0);
-
-    document.getElementById("totalTransactions").textContent = totalTransactions.toLocaleString();
-    document.getElementById("totalMrrQty").textContent = totalMrrQty.toLocaleString();
-    document.getElementById("totalRmsQty").textContent = totalRmsQty.toLocaleString();
-    document.getElementById("totalAmount").textContent = totalAmount.toLocaleString();
+  function updateDashboard() {
+    document.getElementById("dashTotalTrans").textContent = deliveriesData.length;
+    document.getElementById("dashTotalQty").textContent = deliveriesData.reduce((s, x) => s + num(x.qty), 0).toLocaleString();
+    document.getElementById("dashTotalAmount").textContent = deliveriesData.reduce((s, x) => s + num(x.amount), 0).toFixed(2);
+    document.getElementById("dashUniqueItems").textContent = new Set(deliveriesData.map(x => x.itemId)).size;
   }
 
   function clearForm() {
@@ -691,13 +417,14 @@
     document.getElementById("drsiNo").value = "";
     document.getElementById("supplier").value = "";
     document.getElementById("itemSelect").value = "";
-    document.getElementById("category").value = "";
+    document.getElementById("group").value = "";
     document.getElementById("trade").value = "";
+    document.getElementById("category").value = "";
     document.getElementById("classification").value = "";
-    document.getElementById("hazard").value = "";
-    document.getElementById("location").value = "";
+    document.getElementById("locationCode").value = "";
+    document.getElementById("locationName").value = "";
     document.getElementById("rack").value = "";
-    document.getElementById("itemDescription").value = "";
+    document.getElementById("itemName").value = "";
     document.getElementById("uom").value = "";
     document.getElementById("availableStock").value = "";
     document.getElementById("qty").value = "0";
@@ -706,82 +433,25 @@
     document.getElementById("remarks").value = "";
   }
 
-  function clearAllDeliveries() {
-    const ok = confirm("Clear all delivery records?");
-    if (!ok) return;
-
+  function clearAll() {
+    if (!confirm("Clear all delivery records?")) return;
     deliveriesData = [];
     saveDeliveries();
-    renderDeliveries();
-    updateSummary();
+    renderTable();
+    updateDashboard();
   }
 
-  function loadSampleData() {
-    refreshMasterItems();
+  document.getElementById("itemSelect").addEventListener("change", fillItemDetails);
+  document.getElementById("qty").addEventListener("input", autoComputeAmount);
+  document.getElementById("price").addEventListener("input", autoComputeAmount);
+  document.getElementById("saveBtn").addEventListener("click", addDelivery);
+  document.getElementById("clearBtn").addEventListener("click", clearForm);
+  document.getElementById("clearAllBtn").addEventListener("click", clearAll);
 
-    const sampleItem1 = masterItems[0];
-    const sampleItem2 = masterItems[1];
-
-    deliveriesData = [
-      {
-        dateReceived: "2026-04-01",
-        type: "MRR",
-        docNo: "MRR-001",
-        prpo: "PO-1001",
-        prBy: "Engineer A",
-        receivedBy: "Storekeeper A",
-        approvedBy: "Manager A",
-        drsiNo: "DR-001",
-        supplier: "ABC Industrial Supply",
-        itemId: sampleItem1 ? sampleItem1.id : null,
-        category: sampleItem1 ? sampleItem1.category : "Engineering",
-        trade: sampleItem1 ? sampleItem1.trade : "CIVIL-WORK",
-        classification: sampleItem1 ? sampleItem1.classification : "ON-NEED",
-        hazard: sampleItem1 ? sampleItem1.hazard : "NO",
-        location: sampleItem1 ? sampleItem1.location : "B2T2-1",
-        rack: sampleItem1 ? sampleItem1.rack : "",
-        itemDescription: sampleItem1 ? sampleItem1.name : "BAR, FLAT, ALUMINUM 3/16 X 1 1/2 X 8",
-        qty: 5,
-        uom: sampleItem1 ? sampleItem1.uom : "PIECES",
-        price: 250,
-        amount: 1250,
-        remarks: "Complete delivery"
-      },
-      {
-        dateReceived: "2026-04-02",
-        type: "RMS",
-        docNo: "RMS-001",
-        prpo: "",
-        prBy: "CIVIL-WORK",
-        receivedBy: "Storekeeper B",
-        approvedBy: "Supervisor B",
-        drsiNo: "",
-        supplier: "Returned by CIVIL-WORK",
-        itemId: sampleItem2 ? sampleItem2.id : null,
-        category: sampleItem2 ? sampleItem2.category : "Engineering",
-        trade: sampleItem2 ? sampleItem2.trade : "CIVIL-WORK",
-        classification: sampleItem2 ? sampleItem2.classification : "ON-NEED",
-        hazard: sampleItem2 ? sampleItem2.hazard : "NO",
-        location: sampleItem2 ? sampleItem2.location : "B3T1-C",
-        rack: sampleItem2 ? sampleItem2.rack : "",
-        itemDescription: sampleItem2 ? sampleItem2.name : "ADHESIVE, TILE, REGULAR, 25KG/BAG (ABC)",
-        qty: 2,
-        uom: sampleItem2 ? sampleItem2.uom : "BAGS",
-        price: 0,
-        amount: 0,
-        remarks: "Returned good items"
-      }
-    ];
-
-    saveDeliveries();
-    renderDeliveries();
-    updateSummary();
-  }
-
-  loadItems();
-  renderDeliveries();
-  updateSummary();
+  loadItemsDropdown();
+  renderTable();
+  updateDashboard();
 </script>
 
 </body>
-</html>
+</html>.
