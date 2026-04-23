@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trade / Department Master</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      padding:20px;
+      color:#1f2937;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:20px;
+    }
+
+    .title small{
+      display:block;
+      font-size:12px;
+      color:#64748b;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .title h1{
+      margin-top:4px;
+      font-size:28px;
+      color:#172554;
+    }
+
+    .nav a{
+      display:inline-block;
+      text-decoration:none;
+      background:#e5e7eb;
+      color:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      margin-right:8px;
+      font-size:14px;
+    }
+
+    .section{
+      background:#fff;
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:18px;
+      box-shadow:0 4px 12px rgba(0,0,0,.06);
+    }
+
+    .section h2{
+      margin-bottom:14px;
+      font-size:20px;
+      color:#172554;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .field label{
+      font-size:12px;
+      font-weight:bold;
+      color:#64748b;
+      margin-bottom:6px;
+    }
+
+    .field input,
+    .field select{
+      padding:10px 12px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      font-size:14px;
+      background:#fff;
+    }
+
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    .btn-primary{
+      background:#1e3a8a;
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .btn-danger{
+      background:#dc2626;
+      color:#fff;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .card{
+      background:#f8fafc;
+      border:1px solid #cbd5e1;
+      border-radius:14px;
+      padding:16px;
+    }
+
+    .card h3{
+      font-size:13px;
+      color:#64748b;
+      margin-bottom:8px;
+    }
+
+    .card .value{
+      font-size:28px;
+      font-weight:bold;
+      color:#172554;
+    }
+
+    .table-wrap{
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      min-width:900px;
+      border-collapse:collapse;
+    }
+
+    th,td{
+      border:1px solid #334155;
+      padding:8px 10px;
+      font-size:13px;
+      vertical-align:middle;
+    }
+
+    th{
+      background:#a9c0d7;
+      color:#c00000;
+      text-align:center;
+    }
+
+    tbody tr:nth-child(even){
+      background:#f8fafc;
+    }
+
+    .center{text-align:center}
+
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      color:#64748b;
+      line-height:1.5;
+    }
+
+    @media (max-width:900px){
+      .grid,.cards{
+        grid-template-columns:1fr;
+      }
+
+      .title h1{
+        font-size:22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div class="title">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>TRADE / DEPARTMENT MASTER</h1>
+    </div>
+
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+      <a href="./deliveries.html">Deliveries</a>
+      <a href="./issuance.html">Issuance</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Summary</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Total Entries</h3>
+        <div class="value" id="totalTrades">0</div>
+      </div>
+      <div class="card">
+        <h3>Engineering Group</h3>
+        <div class="value" id="engineeringCount">0</div>
+      </div>
+      <div class="card">
+        <h3>Office Group</h3>
+        <div class="value" id="officeCount">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Add / Update Trade / Department</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label>Trade / Department Name</label>
+        <input type="text" id="tradeName" placeholder="CIVIL-WORK">
+      </div>
+
+      <div class="field">
+        <label>Group</label>
+        <select id="tradeGroup">
+          <option value="ENGINEERING">ENGINEERING</option>
+          <option value="OFFICE">OFFICE</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Status</label>
+        <select id="tradeStatus">
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="INACTIVE">INACTIVE</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="saveBtn" onclick="saveTrade()">Add Trade</button>
+      <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
+      <button class="btn-secondary" onclick="loadDefaultTrades()">Load Default Trades</button>
+      <button class="btn-danger" onclick="clearAllTrades()">Clear All</button>
+    </div>
+
+    <div class="note">
+      This page manages the centralized Trade / Department list used by the system.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Trade / Department List</h2>
+
+    <div class="grid" style="margin-bottom:14px;">
+      <div class="field">
+        <label>Search</label>
+        <input type="text" id="searchInput" placeholder="Type trade / department..." oninput="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Group</label>
+        <select id="filterGroup" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="ENGINEERING">ENGINEERING</option>
+          <option value="OFFICE">OFFICE</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Status</label>
+        <select id="filterStatus" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="INACTIVE">INACTIVE</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Trade / Department</th>
+            <th>Group</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tradeTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const defaultTradeList = [
+    { id: 1, name: "ENGINEERING", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 2, name: "ELECTRICAL", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 3, name: "CIVIL-WORK", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 4, name: "PLUMBING", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 5, name: "HVAC", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 6, name: "ELECTRO-MECH", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 7, name: "FDAS", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 8, name: "PLAN ATTENDANT", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 9, name: "BMS", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 10, name: "TREASURY", group: "OFFICE", status: "ACTIVE" },
+    { id: 11, name: "TRD", group: "OFFICE", status: "ACTIVE" },
+    { id: 12, name: "HOUSEKEEPING", group: "OFFICE", status: "ACTIVE" },
+    { id: 13, name: "CPR", group: "OFFICE", status: "ACTIVE" },
+    { id: 14, name: "IT DEPARTMENT", group: "OFFICE", status: "ACTIVE" },
+    { id: 15, name: "PARKING", group: "OFFICE", status: "ACTIVE" },
+    { id: 16, name: "PURCHASING", group: "OFFICE", status: "ACTIVE" },
+    { id: 17, name: "SAFETY", group: "OFFICE", status: "ACTIVE" },
+    { id: 18, name: "HUMAN RESOURCE", group: "OFFICE", status: "ACTIVE" },
+    { id: 19, name: "OFFICE OF THE GENERAL MANAGER", group: "OFFICE", status: "ACTIVE" },
+    { id: 20, name: "OFFICE OF THE ASSISTANT GENERAL MANAGER", group: "OFFICE", status: "ACTIVE" },
+    { id: 21, name: "STOCK CONTROL", group: "OFFICE", status: "ACTIVE" }
+  ];
+
+  let tradeDeptList = JSON.parse(localStorage.getItem("tradeDeptList")) || [];
+  let editingId = null;
+
+  if (!tradeDeptList.length) {
+    tradeDeptList = defaultTradeList;
+    localStorage.setItem("tradeDeptList", JSON.stringify(tradeDeptList));
+  }
+
+  function saveTradeDeptList() {
+    localStorage.setItem("tradeDeptList", JSON.stringify(tradeDeptList));
+  }
+
+  function updateSummary() {
+    document.getElementById("totalTrades").textContent = tradeDeptList.length;
+    document.getElementById("engineeringCount").textContent = tradeDeptList.filter(x => x.group === "ENGINEERING").length;
+    document.getElementById("officeCount").textContent = tradeDeptList.filter(x => x.group === "OFFICE").length;
+  }
+
+  function saveTrade() {
+    const name = document.getElementById("tradeName").value.trim().toUpperCase();
+    const group = document.getElementById("tradeGroup").value;
+    const status = document.getElementById("tradeStatus").value;
+
+    if (!name) {
+      alert("Trade / Department Name is required.");
+      return;
+    }
+
+    const duplicate = tradeDeptList.find(x =>
+      x.name === name && x.id !== editingId
+    );
+
+    if (duplicate) {
+      alert("Trade / Department already exists.");
+      return;
+    }
+
+    if (editingId) {
+      tradeDeptList = tradeDeptList.map(item =>
+        item.id === editingId
+          ? { ...item, name, group, status }
+          : item
+      );
+    } else {
+      tradeDeptList.push({
+        id: Date.now(),
+        name,
+        group,
+        status
+      });
+    }
+
+    saveTradeDeptList();
+    renderTable(tradeDeptList);
+    updateSummary();
+    clearForm();
+  }
+
+  function editTrade(id) {
+    const item = tradeDeptList.find(x => x.id === id);
+    if (!item) return;
+
+    editingId = id;
+    document.getElementById("saveBtn").textContent = "Update Trade";
+    document.getElementById("tradeName").value = item.name || "";
+    document.getElementById("tradeGroup").value = item.group || "ENGINEERING";
+    document.getElementById("tradeStatus").value = item.status || "ACTIVE";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function deleteTrade(id) {
+    if (!confirm("Delete this trade / department?")) return;
+
+    tradeDeptList = tradeDeptList.filter(x => x.id !== id);
+    saveTradeDeptList();
+    applyFilters();
+    updateSummary();
+  }
+
+  function clearForm() {
+    editingId = null;
+    document.getElementById("saveBtn").textContent = "Add Trade";
+    document.getElementById("tradeName").value = "";
+    document.getElementById("tradeGroup").value = "ENGINEERING";
+    document.getElementById("tradeStatus").value = "ACTIVE";
+  }
+
+  function clearAllTrades() {
+    if (!confirm("Clear all trade / department entries?")) return;
+
+    tradeDeptList = [];
+    saveTradeDeptList();
+    renderTable(tradeDeptList);
+    updateSummary();
+    clearForm();
+  }
+
+  function loadDefaultTrades() {
+    if (!confirm("Load default trade / department list? This will replace current data.")) return;
+
+    tradeDeptList = [...defaultTradeList];
+    saveTradeDeptList();
+    renderTable(tradeDeptList);
+    updateSummary();
+    clearForm();
+  }
+
+  function renderTable(items) {
+    const tbody = document.getElementById("tradeTableBody");
+    tbody.innerHTML = "";
+
+    items.forEach(item => {
+      tbody.innerHTML += `
+        <tr>
+          <td class="center">${item.id}</td>
+          <td>${item.name}</td>
+          <td class="center">${item.group}</td>
+          <td class="center">${item.status}</td>
+          <td class="center">
+            <button class="btn-secondary" onclick="editTrade(${item.id})">Edit</button>
+            <button class="btn-danger" onclick="deleteTrade(${item.id})">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  function applyFilters() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const group = document.getElementById("filterGroup").value;
+    const status = document.getElementById("filterStatus").value;
+
+    const filtered = tradeDeptList.filter(item => {
+      return (
+        (item.name || "").toLowerCase().includes(search) &&
+        (group === "" || item.group === group) &&
+        (status === "" || item.status === status)
+      );
+    });
+
+    renderTable(filtered);
+  }
+
+  renderTable(tradeDeptList);
+  updateSummary();
+</script>
+
+</body>
+</html>
