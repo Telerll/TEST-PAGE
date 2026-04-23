@@ -1,1 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hazardous Items Report</title>
 
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      padding:20px;
+      color:#1f2937;
+    }
+
+    .container{
+      max-width:1700px;
+      margin:auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    .title small{
+      display:block;
+      font-size:12px;
+      color:#64748b;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .title h1{
+      margin-top:4px;
+      font-size:28px;
+      color:#172554;
+    }
+
+    .nav a{
+      display:inline-block;
+      text-decoration:none;
+      background:#e5e7eb;
+      color:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      margin-right:8px;
+      font-size:14px;
+    }
+
+    .section{
+      background:#fff;
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:18px;
+      box-shadow:0 4px 12px rgba(0,0,0,.06);
+    }
+
+    .section h2{
+      margin-bottom:14px;
+      font-size:20px;
+      color:#172554;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .card{
+      background:#f8fafc;
+      border:1px solid #cbd5e1;
+      border-radius:14px;
+      padding:16px;
+    }
+
+    .card h3{
+      font-size:13px;
+      color:#64748b;
+      margin-bottom:8px;
+    }
+
+    .card .value{
+      font-size:28px;
+      font-weight:bold;
+      color:#172554;
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .field label{
+      font-size:12px;
+      font-weight:bold;
+      color:#64748b;
+      margin-bottom:6px;
+    }
+
+    .field input,
+    .field select{
+      padding:10px 12px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      font-size:14px;
+      background:#fff;
+    }
+
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    .btn-primary{
+      background:#1e3a8a;
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .table-wrap{
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      min-width:2200px;
+      border-collapse:collapse;
+    }
+
+    th,td{
+      border:1px solid #334155;
+      padding:8px 10px;
+      font-size:13px;
+      vertical-align:middle;
+    }
+
+    th{
+      background:#a9c0d7;
+      color:#c00000;
+      text-align:center;
+    }
+
+    tbody tr:nth-child(even){
+      background:#f8fafc;
+    }
+
+    .center{text-align:center}
+    .right{text-align:right}
+    .danger-text{
+      color:#dc2626;
+      font-weight:bold;
+    }
+    .ok-text{
+      color:#166534;
+      font-weight:bold;
+    }
+
+    @media (max-width:1200px){
+      .cards,.filters{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media (max-width:700px){
+      .cards,.filters{
+        grid-template-columns:1fr;
+      }
+
+      .title h1{
+        font-size:22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div class="title">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>HAZARDOUS ITEMS REPORT</h1>
+    </div>
+
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+      <a href="./deliveries.html">Deliveries</a>
+      <a href="./issuance.html">Issuance</a>
+      <a href="./reports.html">Reports</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Hazardous Summary</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Total Hazardous Items</h3>
+        <div class="value" id="totalItems">0</div>
+      </div>
+      <div class="card">
+        <h3>Total Stock On Hand</h3>
+        <div class="value" id="totalSOH">0</div>
+      </div>
+      <div class="card">
+        <h3>Total Delivery In Transit</h3>
+        <div class="value" id="totalTransit">0</div>
+      </div>
+      <div class="card">
+        <h3>Total For PR</h3>
+        <div class="value" id="totalPR">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Filters</h2>
+
+    <div class="filters">
+      <div class="field">
+        <label>Search Item</label>
+        <input type="text" id="searchInput" placeholder="Type item name..." oninput="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Trade / Department</label>
+        <select id="filterTrade" onchange="applyFilters()">
+          <option value="">ALL</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Storage Code</label>
+        <select id="filterLocation" onchange="applyFilters()">
+          <option value="">ALL</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Status</label>
+        <select id="filterStatus" onchange="applyFilters()">
+          <option value="">ALL</option>
+          <option value="FOR REORDER">FOR REORDER</option>
+          <option value="COVERED">COVERED</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="exportCSV()">Export CSV</button>
+      <button class="btn-secondary" onclick="window.print()">Print</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Hazardous Item List</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Classification</th>
+            <th>Trade / Department</th>
+            <th>Storage Code</th>
+            <th>Location Name</th>
+            <th>Rack No.</th>
+            <th>Item Name</th>
+            <th>UOM</th>
+            <th>Qty. (Book)</th>
+            <th>Count Variance</th>
+            <th>Recon Adj</th>
+            <th>Adjusted Balance</th>
+            <th>IN</th>
+            <th>OUT</th>
+            <th>Ending Balance</th>
+            <th>Annual Forecast Qty</th>
+            <th>Inventory Level</th>
+            <th>Delivery In Transit</th>
+            <th>Reorder Point</th>
+            <th>For PR</th>
+            <th>Usage %</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="hazardTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
+
+  function num(v){
+    return Number(v) || 0;
+  }
+
+  function getInventoryLevelByCategory(category){
+    const fourMonthCategories = [
+      "OFFICE SUPPLY",
+      "PANTRY SUPPLY",
+      "OFFICE TOOLS",
+      "OFFICE FURNITURES",
+      "MEDICINE",
+      "UNIFORM",
+      "GIVEAWAY",
+      "RAFFLE ITEMS"
+    ];
+
+    if(category === "FAST-MOVING") return 6;
+    if(fourMonthCategories.includes(category)) return 4;
+    return 0;
+  }
+
+  function computeItem(item){
+    const inventoryLevel = getInventoryLevelByCategory(item.category);
+    const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
+    const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
+    const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
+    const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
+    const usagePercent = num(item.forecast) > 0
+      ? ((num(item.outQty) / num(item.forecast)) * 100).toFixed(0) + "%"
+      : "";
+    const status = forPR > 0 ? "FOR REORDER" : "COVERED";
+
+    return {
+      ...item,
+      inventoryLevel,
+      adjustedBalance,
+      endingBalance,
+      reorderPoint,
+      forPR,
+      usagePercent,
+      status
+    };
+  }
+
+  function getHazardousItems(){
+    return masterItems
+      .map(computeItem)
+      .filter(item => item.classification === "HAZARDOUS");
+  }
+
+  function loadFilterOptions(){
+    const hazardousItems = getHazardousItems();
+
+    const tradeSelect = document.getElementById("filterTrade");
+    const locationSelect = document.getElementById("filterLocation");
+
+    const trades = [...new Set(hazardousItems.map(item => item.trade).filter(Boolean))];
+    const locations = [...new Set(hazardousItems.map(item => item.locationCode).filter(Boolean))];
+
+    tradeSelect.innerHTML = '<option value="">ALL</option>';
+    trades.forEach(trade => {
+      tradeSelect.innerHTML += `<option value="${trade}">${trade}</option>`;
+    });
+
+    locationSelect.innerHTML = '<option value="">ALL</option>';
+    locations.forEach(loc => {
+      locationSelect.innerHTML += `<option value="${loc}">${loc}</option>`;
+    });
+  }
+
+  function applyFilters(){
+    const hazardousItems = getHazardousItems();
+
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const trade = document.getElementById("filterTrade").value;
+    const location = document.getElementById("filterLocation").value;
+    const status = document.getElementById("filterStatus").value;
+
+    const filtered = hazardousItems.filter(item => {
+      return (
+        (item.name || "").toLowerCase().includes(search) &&
+        (trade === "" || item.trade === trade) &&
+        (location === "" || item.locationCode === location) &&
+        (status === "" || item.status === status)
+      );
+    });
+
+    renderTable(filtered);
+    updateSummary(filtered);
+  }
+
+  function renderTable(items){
+    const tbody = document.getElementById("hazardTableBody");
+    tbody.innerHTML = "";
+
+    items.forEach(item => {
+      tbody.innerHTML += `
+        <tr>
+          <td class="center">${item.id || ""}</td>
+          <td class="center">${item.category || ""}</td>
+          <td class="center danger-text">${item.classification || ""}</td>
+          <td class="center">${item.trade || ""}</td>
+          <td class="center">${item.locationCode || ""}</td>
+          <td class="center">${item.locationName || ""}</td>
+          <td class="center">${item.rack || ""}</td>
+          <td>${item.name || ""}</td>
+          <td class="center">${item.uom || ""}</td>
+          <td class="center">${num(item.qtyBook)}</td>
+          <td class="center">${num(item.countVariance)}</td>
+          <td class="center">${num(item.reconAdj)}</td>
+          <td class="center">${item.adjustedBalance}</td>
+          <td class="center">${num(item.inQty)}</td>
+          <td class="center">${num(item.outQty)}</td>
+          <td class="center">${item.endingBalance}</td>
+          <td class="center">${num(item.forecast)}</td>
+          <td class="center">${item.inventoryLevel}</td>
+          <td class="center">${num(item.deliveryInTransit)}</td>
+          <td class="center">${item.reorderPoint ? item.reorderPoint.toFixed(2) : "0.00"}</td>
+          <td class="center">${item.forPR ? item.forPR.toFixed(2) : "0.00"}</td>
+          <td class="center">${item.usagePercent}</td>
+          <td class="center ${item.status === "FOR REORDER" ? "danger-text" : "ok-text"}">${item.status}</td>
+        </tr>
+      `;
+    });
+  }
+
+  function updateSummary(items){
+    document.getElementById("totalItems").textContent = items.length;
+    document.getElementById("totalSOH").textContent = items.reduce((sum, item) => sum + num(item.endingBalance), 0).toLocaleString();
+    document.getElementById("totalTransit").textContent = items.reduce((sum, item) => sum + num(item.deliveryInTransit), 0).toLocaleString();
+    document.getElementById("totalPR").textContent = items.reduce((sum, item) => sum + num(item.forPR), 0).toFixed(2);
+  }
+
+  function exportCSV(){
+    const rows = [["ID","Category","Classification","Trade / Department","Storage Code","Location Name","Rack No.","Item Name","UOM","Qty. (Book)","Count Variance","Recon Adj","Adjusted Balance","IN","OUT","Ending Balance","Annual Forecast Qty","Inventory Level","Delivery In Transit","Reorder Point","For PR","Usage %","Status"]];
+    const hazardousItems = getHazardousItems();
+
+    hazardousItems.forEach(item => {
+      rows.push([
+        item.id || "",
+        item.category || "",
+        item.classification || "",
+        item.trade || "",
+        item.locationCode || "",
+        item.locationName || "",
+        item.rack || "",
+        item.name || "",
+        item.uom || "",
+        num(item.qtyBook),
+        num(item.countVariance),
+        num(item.reconAdj),
+        item.adjustedBalance,
+        num(item.inQty),
+        num(item.outQty),
+        item.endingBalance,
+        num(item.forecast),
+        item.inventoryLevel,
+        num(item.deliveryInTransit),
+        item.reorderPoint ? item.reorderPoint.toFixed(2) : "0.00",
+        item.forPR ? item.forPR.toFixed(2) : "0.00",
+        item.usagePercent || "",
+        item.status || ""
+      ]);
+    });
+
+    const csv = rows.map(row =>
+      row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(",")
+    ).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "hazardous_report.csv";
+    link.click();
+  }
+
+  loadFilterOptions();
+  applyFilters();
+</script>
+
+</body>
+</html>
