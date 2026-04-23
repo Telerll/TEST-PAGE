@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inventory Management System</title>
+
   <style>
     *{
       margin:0;
@@ -19,7 +20,7 @@
     }
 
     .container{
-      max-width:1100px;
+      max-width:1200px;
       margin:auto;
     }
 
@@ -49,6 +50,13 @@
       opacity:.95;
     }
 
+    .section-title{
+      margin:20px 0 10px;
+      font-weight:bold;
+      color:#172554;
+      font-size:16px;
+    }
+
     .grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -64,7 +72,7 @@
     }
 
     .card h2{
-      font-size:22px;
+      font-size:20px;
       color:#172554;
       margin-bottom:10px;
     }
@@ -86,6 +94,14 @@
       font-weight:bold;
     }
 
+    .card a.secondary{
+      background:#0f766e;
+    }
+
+    .card a.warning{
+      background:#dc2626;
+    }
+
     @media (max-width:900px){
       .grid{
         grid-template-columns:1fr;
@@ -93,34 +109,83 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
+
   <div class="header">
     <small>PROPERTY MANAGEMENT OFFICE</small>
     <h1>Inventory Management System</h1>
-    <p>Main navigation page for Master List, Deliveries, and Issuance.</p>
+    <p>Main navigation page for all modules.</p>
   </div>
 
+  <!-- MAIN OPERATIONS -->
+  <div class="section-title">MAIN OPERATIONS</div>
   <div class="grid">
+
     <div class="card">
       <h2>Master List</h2>
-      <p>Manage item records, stock profile, forecast, inventory level, reorder point, and running balances.</p>
-      <a href="./master-list.html">Open Master List</a>
+      <p>Manage items, stock, forecast, reorder point, and balances.</p>
+      <a href="./master-list.html">Open</a>
     </div>
 
     <div class="card">
       <h2>Deliveries</h2>
-      <p>Record incoming deliveries, MRR, RMS, and update IN quantity to the master list.</p>
-      <a href="./deliveries.html">Open Deliveries</a>
+      <p>Record incoming deliveries (MRR / RMS) and update IN.</p>
+      <a href="./deliveries.html">Open</a>
     </div>
 
     <div class="card">
       <h2>Issuance</h2>
-      <p>Record issued items, MIS, AIF, and update OUT quantity to the master list.</p>
-      <a href="./issuance.html">Open Issuance</a>
+      <p>Record issued items and update OUT.</p>
+      <a href="./issuance.html">Open</a>
     </div>
+
   </div>
+
+  <!-- PROCUREMENT -->
+  <div class="section-title">PROCUREMENT</div>
+  <div class="grid">
+
+    <div class="card">
+      <h2>Requisitions</h2>
+      <p>Create Purchase Requests based on system shortage.</p>
+      <a href="./requisitions.html" class="secondary">Open</a>
+    </div>
+
+  </div>
+
+  <!-- REPORTS -->
+  <div class="section-title">REPORTS</div>
+  <div class="grid">
+
+    <div class="card">
+      <h2>Reports Dashboard</h2>
+      <p>View stock status, movement, consumption, and export data.</p>
+      <a href="./reports.html" class="secondary">Open</a>
+    </div>
+
+    <div class="card">
+      <h2>Hazardous Report</h2>
+      <p>Monitor hazardous items and safety-critical stock.</p>
+      <a href="./hazardous.html" class="warning">Open</a>
+    </div>
+
+  </div>
+
+  <!-- MASTER DATA -->
+  <div class="section-title">MASTER DATA</div>
+  <div class="grid">
+
+    <div class="card">
+      <h2>Trade / Department</h2>
+      <p>Manage department and trade master data.</p>
+      <a href="./trade-dept.html">Open</a>
+    </div>
+
+  </div>
+
 </div>
 
 </body>
