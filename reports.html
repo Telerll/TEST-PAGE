@@ -18,7 +18,7 @@
     .title h1{color:#172554}
     .nav a{
       text-decoration:none;background:#e5e7eb;
-      padding:10px;border-radius:8px;margin-right:6px;font-weight:bold
+      padding:10px;border-radius:8px;margin-right:6px;font-weight:bold;color:#111827
     }
 
     .section{
@@ -59,6 +59,33 @@
     .pr{color:#dc2626;font-weight:bold}
     .ok{color:#166534;font-weight:bold}
 
+    .btn-row{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      padding:10px 14px;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+      color:#fff;
+    }
+
+    .btn-blue{background:#1e3a8a}
+    .btn-green{background:#16a34a}
+
+    .pr-item{
+      padding:12px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      margin-bottom:10px;
+      background:#f8fafc;
+    }
+
     @media(max-width:900px){
       .cards,.filters{grid-template-columns:1fr}
     }
@@ -85,15 +112,7 @@
     <h2>PR Summary (FAST-MOVING)</h2>
 
     <div style="margin:10px 0;">
-      <button onclick="generatePR()" style="
-        background:#1e3a8a;
-        color:#fff;
-        padding:10px 14px;
-        border:none;
-        border-radius:8px;
-        font-weight:bold;
-        cursor:pointer;
-      ">
+      <button onclick="generatePR()" class="btn btn-blue">
         Generate PR List
       </button>
     </div>
@@ -122,30 +141,34 @@
     <div class="filters">
       <select id="filterGroup">
         <option value="">ALL GROUP</option>
-        <option>ENGINEERING</option>
-        <option>OFFICE</option>
+        <option value="ENGINEERING">ENGINEERING</option>
+        <option value="OFFICE">OFFICE</option>
       </select>
 
       <select id="filterCategory">
         <option value="">ALL CATEGORY</option>
-        <option>FAST-MOVING</option>
-        <option>ON-NEED</option>
-        <option>TOOLS</option>
+        <option value="FAST-MOVING">FAST-MOVING</option>
+        <option value="ON-NEED">ON-NEED</option>
+        <option value="TOOLS">TOOLS</option>
       </select>
 
-      <select id="filterHazard">
-        <option value="">ALL</option>
-        <option>HAZARDOUS</option>
+      <select id="filterTrade">
+        <option value="">ALL TRADE / DEPARTMENT</option>
       </select>
 
       <input id="search" placeholder="Search item...">
+    </div>
+
+    <div class="btn-row">
+      <button onclick="render()" class="btn btn-blue">Generate Report</button>
+      <button onclick="exportExcel()" class="btn btn-green">Export to Excel</button>
     </div>
   </div>
 
   <div class="section">
     <h2>Report Table</h2>
 
-    <table>
+    <table id="reportTable">
       <thead>
         <tr>
           <th>Item</th>
@@ -164,7 +187,6 @@
     </table>
   </div>
 
-  <!-- PR OUTPUT -->
   <div class="section">
     <h2>Generated PR List</h2>
     <div id="prList"></div>
@@ -175,116 +197,155 @@
 <script>
   let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-  function num(v){ return Number(v) || 0 }
+  function num(v){ return Number(v) || 0; }
 
   function getInventoryLevel(category, group){
-    if(category==="FAST-MOVING" && group==="ENGINEERING") return 6
-    if(category==="FAST-MOVING" && group==="OFFICE") return 4
-    return 0
+    if(category === "FAST-MOVING" && group === "ENGINEERING") return 6;
+    if(category === "FAST-MOVING" && group === "OFFICE") return 4;
+    return 0;
   }
 
   function compute(item){
-    const inv = getInventoryLevel(item.category,item.group)
-    const adj = num(item.qtyBook)+num(item.countVariance)+num(item.reconAdj)
-    const ending = adj + num(item.inQty) - num(item.outQty)
-    const reorder = inv>0 ? (num(item.forecast)/12)*inv : 0
-    const forPR = Math.max(reorder - ending - num(item.deliveryInTransit),0)
+    const inv = getInventoryLevel(item.category, item.group);
+    const adj = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
+    const ending = adj + num(item.inQty) - num(item.outQty);
+    const reorder = inv > 0 ? (num(item.forecast) / 12) * inv : 0;
+    const forPR = Math.max(reorder - ending - num(item.deliveryInTransit), 0);
 
-    return {...item,ending,reorder,forPR}
+    return {...item, ending, reorder, forPR};
+  }
+
+  function loadTradeFilter() {
+    const select = document.getElementById("filterTrade");
+    const trades = [...new Set(
+      masterItems
+        .map(item => item.trade)
+        .filter(Boolean)
+        .sort()
+    )];
+
+    select.innerHTML = `<option value="">ALL TRADE / DEPARTMENT</option>`;
+
+    trades.forEach(trade => {
+      const option = document.createElement("option");
+      option.value = trade;
+      option.textContent = trade;
+      select.appendChild(option);
+    });
   }
 
   function render(){
-    const group = document.getElementById("filterGroup").value
-    const cat = document.getElementById("filterCategory").value
-    const hazard = document.getElementById("filterHazard").value
-    const search = document.getElementById("search").value.toLowerCase()
+    const group = document.getElementById("filterGroup").value;
+    const cat = document.getElementById("filterCategory").value;
+    const trade = document.getElementById("filterTrade").value;
+    const search = document.getElementById("search").value.toLowerCase();
 
-    let items = masterItems.map(compute)
+    let items = masterItems.map(compute);
 
     items = items.filter(i =>
-      (group=="" || i.group===group) &&
-      (cat=="" || i.category===cat) &&
-      (hazard=="" || i.classification==="HAZARDOUS") &&
-      i.name.toLowerCase().includes(search)
-    )
+      (group === "" || i.group === group) &&
+      (cat === "" || i.category === cat) &&
+      (trade === "" || i.trade === trade) &&
+      ((i.name || "").toLowerCase().includes(search))
+    );
 
-    const tbody = document.getElementById("tableBody")
-    tbody.innerHTML=""
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
 
     items.forEach(i=>{
-      tbody.innerHTML+=`
+      tbody.innerHTML += `
         <tr>
-          <td>${i.name}</td>
-          <td>${i.group}</td>
-          <td>${i.trade}</td>
-          <td>${i.category}</td>
-          <td>${i.classification}</td>
+          <td>${i.name || ""}</td>
+          <td>${i.group || ""}</td>
+          <td>${i.trade || ""}</td>
+          <td>${i.category || ""}</td>
+          <td>${i.classification || ""}</td>
           <td>${i.ending}</td>
           <td>${i.reorder.toFixed(2)}</td>
-          <td>${i.forPR>0 ? i.forPR.toFixed(2):"-"}</td>
-          <td class="${i.forPR>0?'pr':'ok'}">
-            ${i.forPR>0?'FOR PR':'OK'}
+          <td>${i.forPR > 0 ? i.forPR.toFixed(2) : "-"}</td>
+          <td class="${i.forPR > 0 ? 'pr' : 'ok'}">
+            ${i.forPR > 0 ? 'FOR PR' : 'OK'}
           </td>
         </tr>
-      `
-    })
+      `;
+    });
 
-    updateSummary()
+    updateSummary();
   }
 
   function updateSummary(){
-    const items = masterItems.map(compute)
+    const items = masterItems.map(compute);
 
-    const fm = items.filter(i=>i.category==="FAST-MOVING")
-    const fmPR = fm.filter(i=>i.forPR>0)
+    const fm = items.filter(i => i.category === "FAST-MOVING");
+    const fmPR = fm.filter(i => i.forPR > 0);
 
-    document.getElementById("totalFM").textContent = fm.length
-    document.getElementById("fmItemsPR").textContent = fmPR.length
+    document.getElementById("totalFM").textContent = fm.length;
+    document.getElementById("fmItemsPR").textContent = fmPR.length;
     document.getElementById("fmQtyPR").textContent =
-      fmPR.reduce((s,x)=>s+num(x.forPR),0).toFixed(2)
+      fmPR.reduce((s, x) => s + num(x.forPR), 0).toFixed(2);
   }
 
   function generatePR(){
-    const items = masterItems.map(compute)
+    const items = masterItems.map(compute);
 
     const fmPR = items.filter(i =>
       i.category === "FAST-MOVING" &&
       i.forPR > 0
-    )
+    );
 
-    const container = document.getElementById("prList")
-    container.innerHTML=""
+    const container = document.getElementById("prList");
+    container.innerHTML = "";
 
     if(fmPR.length === 0){
-      container.innerHTML = "<p>No items for PR</p>"
-      return
+      container.innerHTML = "<p>No items for PR</p>";
+      return;
     }
 
     fmPR.forEach(i=>{
-      container.innerHTML+=`
-        <div style="
-          padding:12px;
-          border:1px solid #cbd5e1;
-          border-radius:10px;
-          margin-bottom:10px;
-          background:#f8fafc;
-        ">
+      container.innerHTML += `
+        <div class="pr-item">
           <strong>${i.name}</strong><br>
-          <small>${i.group} | ${i.trade}</small><br>
+          <small>${i.group || ""} | ${i.trade || ""}</small><br>
           <span style="color:#dc2626;font-weight:bold;">
             Qty for PR: ${i.forPR.toFixed(2)}
           </span>
         </div>
-      `
-    })
+      `;
+    });
   }
 
-  document.querySelectorAll("select,input").forEach(el=>{
-    el.addEventListener("input",render)
-  })
+  function exportExcel(){
+    const table = document.getElementById("reportTable");
+    const rows = table.querySelectorAll("tr");
+    let csv = [];
 
-  render()
+    rows.forEach(row => {
+      let cols = row.querySelectorAll("th,td");
+      let rowData = [];
+
+      cols.forEach(col => {
+        rowData.push('"' + col.innerText.replace(/"/g, '""') + '"');
+      });
+
+      csv.push(rowData.join(","));
+    });
+
+    const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+    const downloadLink = document.createElement("a");
+    const today = new Date().toISOString().slice(0,10);
+
+    downloadLink.download = `inventory_report_${today}.csv`;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
+  loadTradeFilter();
+  render();
 </script>
 
 </body>
-</html>.
+</html>
