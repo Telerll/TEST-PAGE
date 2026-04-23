@@ -20,7 +20,7 @@
     }
 
     .container{
-      max-width:1100px;
+      max-width:1200px;
       margin:auto;
     }
 
@@ -75,7 +75,7 @@
 
     .cards{
       display:grid;
-      grid-template-columns:repeat(4,1fr);
+      grid-template-columns:repeat(5,1fr);
       gap:14px;
     }
 
@@ -162,7 +162,7 @@
 
     table{
       width:100%;
-      min-width:900px;
+      min-width:950px;
       border-collapse:collapse;
     }
 
@@ -195,11 +195,9 @@
     }
 
     .badge-eng{background:#1e3a8a}
-    .badge-office{background:#0f766e}
-    .badge-tech{background:#2563eb}
-    .badge-other{background:#64748b}
-    .badge-contractor{background:#d97706}
-    .badge-tenant{background:#7c3aed}
+    .badge-hk{background:#0f766e}
+    .badge-office{background:#2563eb}
+    .badge-others{background:#7c3aed}
     .badge-active{background:#16a34a}
     .badge-inactive{background:#dc2626}
 
@@ -256,18 +254,23 @@
       </div>
 
       <div class="card">
-        <h3>Engineering Group</h3>
+        <h3>Engineering</h3>
         <div class="value" id="engineeringCount">0</div>
       </div>
 
       <div class="card">
-        <h3>Office Group</h3>
+        <h3>Housekeeping</h3>
+        <div class="value" id="housekeepingCount">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Office Supplies</h3>
         <div class="value" id="officeCount">0</div>
       </div>
 
       <div class="card">
-        <h3>Active Entries</h3>
-        <div class="value" id="activeCount">0</div>
+        <h3>Others</h3>
+        <div class="value" id="othersCount">0</div>
       </div>
     </div>
   </div>
@@ -285,17 +288,9 @@
         <label>Group</label>
         <select id="tradeGroup">
           <option value="ENGINEERING">ENGINEERING</option>
-          <option value="OFFICE">OFFICE</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Type</label>
-        <select id="tradeType">
-          <option value="TECHNICAL">TECHNICAL</option>
+          <option value="HOUSEKEEPING">HOUSEKEEPING</option>
+          <option value="OFFICE SUPPLIES">OFFICE SUPPLIES</option>
           <option value="OTHERS">OTHERS</option>
-          <option value="CONTRACTOR">CONTRACTOR</option>
-          <option value="TENANT">TENANT</option>
         </select>
       </div>
 
@@ -316,8 +311,8 @@
     </div>
 
     <div class="note">
-      This page is the main source of Trade / Department data. Other pages should read from the saved
-      <strong>tradeDeptList</strong> in localStorage.
+      This is the main source of Trade / Department choices for the system.
+      Existing data will not be overwritten automatically.
     </div>
   </div>
 
@@ -335,18 +330,9 @@
         <select id="filterGroup" onchange="applyFilters()">
           <option value="">ALL</option>
           <option value="ENGINEERING">ENGINEERING</option>
-          <option value="OFFICE">OFFICE</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Type</label>
-        <select id="filterType" onchange="applyFilters()">
-          <option value="">ALL</option>
-          <option value="TECHNICAL">TECHNICAL</option>
+          <option value="HOUSEKEEPING">HOUSEKEEPING</option>
+          <option value="OFFICE SUPPLIES">OFFICE SUPPLIES</option>
           <option value="OTHERS">OTHERS</option>
-          <option value="CONTRACTOR">CONTRACTOR</option>
-          <option value="TENANT">TENANT</option>
         </select>
       </div>
 
@@ -367,7 +353,6 @@
             <th>ID</th>
             <th>Trade / Department</th>
             <th>Group</th>
-            <th>Type</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -381,38 +366,42 @@
 
 <script>
   const defaultTradeList = [
-    { id: 1, name: "ENGINEERING", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 2, name: "ELECTRICAL", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 3, name: "CIVIL-WORK", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 4, name: "PLUMBING", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 5, name: "HVAC", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 6, name: "ELECTRO-MECH", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 7, name: "FDAS", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 8, name: "PLAN ATTENDANT", group: "ENGINEERING", type: "OTHERS", status: "ACTIVE" },
-    { id: 9, name: "BMS", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 10, name: "TREASURY", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 11, name: "TRD", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 12, name: "HOUSEKEEPING", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 13, name: "CPR", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 14, name: "IT DEPARTMENT", group: "OFFICE", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 15, name: "PARKING", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 16, name: "PURCHASING", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 17, name: "SAFETY", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 18, name: "HUMAN RESOURCE", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 19, name: "OFFICE OF THE GENERAL MANAGER", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 20, name: "OFFICE OF THE ASSISTANT GENERAL MANAGER", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 21, name: "STOCK CONTROL", group: "OFFICE", type: "OTHERS", status: "ACTIVE" },
-    { id: 22, name: "TECHNICAL", group: "ENGINEERING", type: "TECHNICAL", status: "ACTIVE" },
-    { id: 23, name: "OTHERS", group: "OFFICE", type: "OTHERS", status: "ACTIVE" }
+    // ENGINEERING
+    { id: 1, name: "ENGINEERING", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 2, name: "ELECTRICAL", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 3, name: "CIVIL-WORK", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 4, name: "PLUMBING", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 5, name: "HVAC", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 6, name: "ELECTRO-MECH", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 7, name: "FDAS", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 8, name: "PLAN ATTENDANT", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 9, name: "BMS", group: "ENGINEERING", status: "ACTIVE" },
+    { id: 10, name: "TECHNICAL", group: "ENGINEERING", status: "ACTIVE" },
+
+    // HOUSEKEEPING
+    { id: 11, name: "HOUSEKEEPING", group: "HOUSEKEEPING", status: "ACTIVE" },
+
+    // OFFICE SUPPLIES
+    { id: 12, name: "TREASURY", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 13, name: "TRD", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 14, name: "CPR", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 15, name: "IT DEPARTMENT", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 16, name: "PARKING", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 17, name: "PURCHASING", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 18, name: "SAFETY", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 19, name: "HUMAN RESOURCE", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 20, name: "OFFICE OF THE GENERAL MANAGER", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 21, name: "OFFICE OF THE ASSISTANT GENERAL MANAGER", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+    { id: 22, name: "STOCK CONTROL", group: "OFFICE SUPPLIES", status: "ACTIVE" },
+
+    // OTHERS
+    { id: 23, name: "CONTRACTOR", group: "OTHERS", status: "ACTIVE" },
+    { id: 24, name: "TENANT", group: "OTHERS", status: "ACTIVE" },
+    { id: 25, name: "OTHERS", group: "OTHERS", status: "ACTIVE" }
   ];
 
   let tradeDeptList = JSON.parse(localStorage.getItem("tradeDeptList")) || [];
   let editingId = null;
-
-  if (!tradeDeptList.length) {
-    tradeDeptList = defaultTradeList;
-    localStorage.setItem("tradeDeptList", JSON.stringify(tradeDeptList));
-  }
 
   function saveTradeDeptList() {
     localStorage.setItem("tradeDeptList", JSON.stringify(tradeDeptList));
@@ -421,14 +410,14 @@
   function updateSummary() {
     document.getElementById("totalTrades").textContent = tradeDeptList.length;
     document.getElementById("engineeringCount").textContent = tradeDeptList.filter(x => x.group === "ENGINEERING").length;
-    document.getElementById("officeCount").textContent = tradeDeptList.filter(x => x.group === "OFFICE").length;
-    document.getElementById("activeCount").textContent = tradeDeptList.filter(x => x.status === "ACTIVE").length;
+    document.getElementById("housekeepingCount").textContent = tradeDeptList.filter(x => x.group === "HOUSEKEEPING").length;
+    document.getElementById("officeCount").textContent = tradeDeptList.filter(x => x.group === "OFFICE SUPPLIES").length;
+    document.getElementById("othersCount").textContent = tradeDeptList.filter(x => x.group === "OTHERS").length;
   }
 
   function saveTrade() {
     const name = document.getElementById("tradeName").value.trim().toUpperCase();
     const group = document.getElementById("tradeGroup").value;
-    const type = document.getElementById("tradeType").value;
     const status = document.getElementById("tradeStatus").value;
 
     if (!name) {
@@ -448,7 +437,7 @@
     if (editingId) {
       tradeDeptList = tradeDeptList.map(item =>
         item.id === editingId
-          ? { ...item, name, group, type, status }
+          ? { ...item, name, group, status }
           : item
       );
     } else {
@@ -456,7 +445,6 @@
         id: Date.now(),
         name,
         group,
-        type,
         status
       });
     }
@@ -475,7 +463,6 @@
     document.getElementById("saveBtn").textContent = "Update Trade";
     document.getElementById("tradeName").value = item.name || "";
     document.getElementById("tradeGroup").value = item.group || "ENGINEERING";
-    document.getElementById("tradeType").value = item.type || "TECHNICAL";
     document.getElementById("tradeStatus").value = item.status || "ACTIVE";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -494,7 +481,6 @@
     document.getElementById("saveBtn").textContent = "Add Trade";
     document.getElementById("tradeName").value = "";
     document.getElementById("tradeGroup").value = "ENGINEERING";
-    document.getElementById("tradeType").value = "TECHNICAL";
     document.getElementById("tradeStatus").value = "ACTIVE";
   }
 
@@ -520,16 +506,10 @@
 
   function groupBadge(group) {
     if (group === "ENGINEERING") return '<span class="badge badge-eng">ENGINEERING</span>';
-    if (group === "OFFICE") return '<span class="badge badge-office">OFFICE</span>';
+    if (group === "HOUSEKEEPING") return '<span class="badge badge-hk">HOUSEKEEPING</span>';
+    if (group === "OFFICE SUPPLIES") return '<span class="badge badge-office">OFFICE SUPPLIES</span>';
+    if (group === "OTHERS") return '<span class="badge badge-others">OTHERS</span>';
     return group || "";
-  }
-
-  function typeBadge(type) {
-    if (type === "TECHNICAL") return '<span class="badge badge-tech">TECHNICAL</span>';
-    if (type === "OTHERS") return '<span class="badge badge-other">OTHERS</span>';
-    if (type === "CONTRACTOR") return '<span class="badge badge-contractor">CONTRACTOR</span>';
-    if (type === "TENANT") return '<span class="badge badge-tenant">TENANT</span>';
-    return type || "";
   }
 
   function statusBadge(status) {
@@ -548,7 +528,6 @@
           <td class="center">${item.id}</td>
           <td>${item.name}</td>
           <td class="center">${groupBadge(item.group)}</td>
-          <td class="center">${typeBadge(item.type)}</td>
           <td class="center">${statusBadge(item.status)}</td>
           <td class="center">
             <button class="btn-secondary" onclick="editTrade(${item.id})">Edit</button>
@@ -562,14 +541,12 @@
   function applyFilters() {
     const search = document.getElementById("searchInput").value.toLowerCase();
     const group = document.getElementById("filterGroup").value;
-    const type = document.getElementById("filterType").value;
     const status = document.getElementById("filterStatus").value;
 
     const filtered = tradeDeptList.filter(item => {
       return (
         (item.name || "").toLowerCase().includes(search) &&
         (group === "" || item.group === group) &&
-        (type === "" || item.type === type) &&
         (status === "" || item.status === status)
       );
     });
