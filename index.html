@@ -9,230 +9,199 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
-  background:linear-gradient(180deg,#eef2f7,#e2e8f0);
+  background:#eaf6ff;
   color:#0f172a;
-  padding:18px;
+  padding:22px;
 }
 
-.app-shell{
-  max-width:1600px;
+.oracle-shell{
+  max-width:1250px;
   margin:auto;
+  min-height:700px;
+  background:linear-gradient(180deg,#8bd3ff,#b9e8ff);
+  border-radius:4px;
+  padding:18px 26px 40px;
+  position:relative;
+  overflow:hidden;
 }
 
-.top-nav{
-  background:rgba(15,23,42,.96);
-  color:#fff;
-  border-radius:16px;
-  padding:14px 18px;
+.oracle-shell:before,
+.oracle-shell:after{
+  content:"";
+  position:absolute;
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+}
+
+.oracle-shell:before{
+  width:420px;height:80px;
+  right:80px;top:80px;
+}
+
+.oracle-shell:after{
+  width:520px;height:70px;
+  right:40px;top:330px;
+}
+
+.topbar{
+  position:relative;
+  z-index:2;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  box-shadow:0 10px 28px rgba(15,23,42,.22);
-}
-
-.brand small{
-  display:block;
-  font-size:11px;
-  letter-spacing:1px;
-  opacity:.75;
-}
-
-.brand h1{
-  font-size:22px;
-  margin-top:3px;
-}
-
-.system-pill{
-  background:linear-gradient(135deg,#1e40af,#2563eb);
-  padding:8px 13px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.command-header{
-  margin:16px 0 28px;
-  background:linear-gradient(135deg,#1e3a8a,#2563eb);
-  color:white;
-  border-radius:22px;
-  padding:48px 20px;
-  text-align:center;
-  border:1px solid rgba(255,255,255,.25);
-  box-shadow:0 20px 42px rgba(30,58,138,.28);
-}
-
-.command-header small{
-  display:block;
-  font-size:12px;
-  letter-spacing:1px;
-  opacity:.9;
-  margin-bottom:8px;
-}
-
-.command-header h2{
-  font-size:34px;
-  margin-bottom:8px;
-}
-
-.command-header p{
-  font-size:14px;
-  opacity:.95;
-}
-
-.section{
-  margin-bottom:34px;
-}
-
-.section-title{
   font-size:13px;
-  letter-spacing:1px;
-  color:#334155;
   font-weight:bold;
-  margin-bottom:12px;
 }
 
-/* PERFECT SECTION GRIDS */
-.main-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  align-items:stretch;
-}
-
-.proc-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  align-items:stretch;
-}
-
-.master-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-  align-items:stretch;
-}
-
-.card{
-  background:rgba(255,255,255,.82);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:18px;
-  padding:20px;
-  min-height:178px;
-  height:100%;
-  box-shadow:0 8px 20px rgba(15,23,42,.08);
+.brand{
   display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  align-items:center;
+  gap:8px;
 }
 
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 18px 38px rgba(15,23,42,.16);
-  border-color:rgba(147,197,253,.75);
+.menu{
+  font-size:18px;
 }
 
-.card-top{
+.top-icons{
   display:flex;
   gap:14px;
-  align-items:flex-start;
+  align-items:center;
+  font-size:16px;
 }
 
-.icon{
-  width:46px;
-  height:46px;
-  min-width:46px;
-  min-height:46px;
-  border-radius:14px;
-  background:linear-gradient(145deg,#e0e7ff,#c7d2fe);
+.user-badge{
+  background:white;
+  color:#2563eb;
+  padding:4px 6px;
+  border-radius:4px;
+  font-size:11px;
+}
+
+.page{
+  position:relative;
+  z-index:2;
+  max-width:860px;
+  margin:45px auto 0;
+}
+
+.view-label{
+  font-size:12px;
+  color:#1e40af;
+  margin-bottom:35px;
+}
+
+.tabs{
+  display:flex;
+  gap:34px;
+  border-bottom:1px solid rgba(15,23,42,.3);
+  margin-bottom:22px;
+}
+
+.tabs span{
+  padding-bottom:10px;
+  font-size:13px;
+  color:#1e3a8a;
+}
+
+.tabs .active{
+  border-bottom:3px solid #1e3a8a;
+  font-weight:bold;
+}
+
+.content{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:35px;
+}
+
+.quick h4,
+.apps h4{
+  font-size:12px;
+  color:#1e293b;
+  margin-bottom:16px;
+}
+
+.quick-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:13px;
+  color:#1e3a8a;
+  margin-bottom:18px;
+}
+
+.quick-icon{
+  width:22px;
+  height:22px;
+  border-radius:4px;
+  background:rgba(255,255,255,.55);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:22px;
-  line-height:1;
-  flex-shrink:0;
-  box-shadow:inset 0 2px 4px rgba(255,255,255,.7),0 4px 10px rgba(15,23,42,.10);
 }
 
-.card h3{
-  font-size:18px;
-  color:#0f172a;
-  margin-bottom:7px;
+.app-grid{
+  display:grid;
+  grid-template-columns:repeat(5,90px);
+  gap:26px 20px;
+  align-items:start;
 }
 
-.card p{
-  font-size:13px;
-  line-height:1.5;
-  color:#64748b;
-}
-
-.card-footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:22px;
-  gap:10px;
-}
-
-.badge{
-  font-size:11px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-weight:bold;
-}
-
-.badge-core{background:#dbeafe;color:#1e3a8a}
-.badge-proc{background:#dcfce7;color:#166534}
-.badge-report{background:#fee2e2;color:#991b1b}
-.badge-master{background:#e0e7ff;color:#3730a3}
-
-.btn{
-  text-decoration:none;
-  color:#fff;
-  padding:10px 16px;
-  border-radius:12px;
-  font-weight:bold;
-  font-size:13px;
-  transition:all .18s ease;
-}
-
-.btn:hover{
-  transform:scale(1.05);
-  box-shadow:0 10px 18px rgba(15,23,42,.18);
-}
-
-.btn-blue{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
-.btn-green{background:linear-gradient(135deg,#047857,#10b981)}
-.btn-red{background:linear-gradient(135deg,#dc2626,#ef4444)}
-.btn-dark{background:linear-gradient(135deg,#334155,#1e293b)}
-
-.footer-note{
+.app{
   text-align:center;
-  color:#64748b;
+  text-decoration:none;
+  color:#0f172a;
   font-size:12px;
-  padding:18px;
 }
 
-@media(max-width:1250px){
-  .proc-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+.app-icon{
+  width:54px;
+  height:54px;
+  margin:0 auto 8px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:24px;
+  box-shadow:0 8px 16px rgba(15,23,42,.18);
 }
 
-@media(max-width:950px){
-  .main-grid,
-  .proc-grid,
-  .master-grid{
+.orange{background:#f97316}
+.blue{background:#0ea5e9}
+.green{background:#14b8a6}
+.red{background:#ef4444}
+.amber{background:#f59e0b}
+.teal{background:#0d9488}
+.purple{background:#6366f1}
+.dark{background:#334155}
+
+.add{
+  font-size:34px;
+  color:#1e3a8a;
+  opacity:.7;
+  margin-top:8px;
+}
+
+.footer-text{
+  margin-top:55px;
+  color:#1e40af;
+  font-size:14px;
+}
+
+@media(max-width:900px){
+  .content{
     grid-template-columns:1fr;
   }
 
-  .command-header h2{
-    font-size:25px;
+  .app-grid{
+    grid-template-columns:repeat(3,90px);
+  }
+
+  .tabs{
+    overflow:auto;
+    gap:22px;
   }
 }
 </style>
@@ -240,168 +209,126 @@ body{
 
 <body>
 
-<div class="app-shell">
+<div class="oracle-shell">
 
-  <div class="top-nav">
+  <div class="topbar">
     <div class="brand">
-      <small>PROPERTY MANAGEMENT OFFICE</small>
-      <h1>Inventory Management System</h1>
+      <span class="menu">☰</span>
+      <span>IMS</span>
     </div>
-    <div class="system-pill">IMS DASHBOARD</div>
-  </div>
 
-  <div class="command-header">
-    <small>CENTRALIZED INVENTORY CONTROL</small>
-    <h2>Operations Dashboard</h2>
-    <p>Master Data • Deliveries • Issuance • Report Generation • Analytics</p>
-  </div>
-
-  <div class="section">
-    <div class="section-title">MAIN OPERATIONS</div>
-
-    <div class="main-grid">
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📦</div>
-          <div>
-            <h3>Master List</h3>
-            <p>Manage item records, stock profile, annual forecast, reorder point, and balances.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-core">CORE DATA</span>
-          <a href="./master-list.html" class="btn btn-blue">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">⬇️</div>
-          <div>
-            <h3>Deliveries</h3>
-            <p>Record incoming deliveries, MRR/RMS transactions, and update IN quantities.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-core">INBOUND</span>
-          <a href="./deliveries.html" class="btn btn-blue">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">⬆️</div>
-          <div>
-            <h3>Issuance</h3>
-            <p>Record released items, MIS/AIF references, and update OUT quantities.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-core">OUTBOUND</span>
-          <a href="./issuance.html" class="btn btn-blue">Open</a>
-        </div>
-      </div>
+    <div class="top-icons">
+      <span>⌂</span>
+      <span>☆</span>
+      <span>⚑</span>
+      <span>🔔</span>
+      <span class="user-badge">RL</span>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">PROCUREMENT & REPORTS</div>
+  <div class="page">
 
-    <div class="proc-grid">
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">🧾</div>
-          <div>
-            <h3>Requisitions</h3>
-            <p>Create purchase requests based on shortage and items with quantity for PR.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-proc">PR CONTROL</span>
-          <a href="./requisitions.html" class="btn btn-green">Open</a>
-        </div>
-      </div>
+    <div class="view-label">Show More</div>
 
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📄</div>
-          <div>
-            <h3>Report Generation</h3>
-            <p>Generate stock status, movement, reorder, and exportable inventory reports.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-report">REPORTS</span>
-          <a href="./reports.html" class="btn btn-green">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📊</div>
-          <div>
-            <h3>Analytics</h3>
-            <p>View graphs, percentage of consumption, trends, and visual inventory insights.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-report">ANALYTICS</span>
-          <a href="./analytics.html" class="btn btn-green">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">⚠️</div>
-          <div>
-            <h3>Hazardous Report</h3>
-            <p>Monitor hazardous and safety-critical inventory items for separate reporting.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-report">CRITICAL</span>
-          <a href="./hazardous.html" class="btn btn-red">Open</a>
-        </div>
-      </div>
+    <div class="tabs">
+      <span class="active">Inventory Control</span>
+      <span>Procurement</span>
+      <span>Reports</span>
+      <span>Master Data</span>
+      <span>Tools</span>
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-title">MASTER DATA</div>
+    <div class="content">
 
-    <div class="master-grid">
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">🏷️</div>
-          <div>
-            <h3>Trade / Department</h3>
-            <p>Maintain centralized group and trade / department choices used by the system.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-master">REFERENCE</span>
-          <a href="./trade-dept.html" class="btn btn-dark">Open</a>
+      <div class="quick">
+        <h4>QUICK ACTIONS</h4>
+
+        <a class="quick-item" href="./master-list.html">
+          <span class="quick-icon">📦</span>
+          Maintain Master List
+        </a>
+
+        <a class="quick-item" href="./deliveries.html">
+          <span class="quick-icon">⬇️</span>
+          Record Delivery
+        </a>
+
+        <a class="quick-item" href="./issuance.html">
+          <span class="quick-icon">⬆️</span>
+          Record Issuance
+        </a>
+
+        <a class="quick-item" href="./reports.html">
+          <span class="quick-icon">📄</span>
+          Generate Report
+        </a>
+
+        <a class="quick-item" href="./requisitions.html">
+          <span class="quick-icon">🧾</span>
+          Create Requisition
+        </a>
+      </div>
+
+      <div class="apps">
+        <h4>APPS</h4>
+
+        <div class="app-grid">
+          <a class="app" href="./master-list.html">
+            <div class="app-icon orange">📦</div>
+            Master<br>List
+          </a>
+
+          <a class="app" href="./deliveries.html">
+            <div class="app-icon blue">⬇️</div>
+            Delivery<br>Receiving
+          </a>
+
+          <a class="app" href="./issuance.html">
+            <div class="app-icon green">⬆️</div>
+            Item<br>Issuance
+          </a>
+
+          <a class="app" href="./reports.html">
+            <div class="app-icon red">📄</div>
+            Report<br>Generation
+          </a>
+
+          <a class="app" href="./requisitions.html">
+            <div class="app-icon amber">🧾</div>
+            Purchase<br>Request
+          </a>
+
+          <a class="app" href="./trade-dept.html">
+            <div class="app-icon teal">🏷️</div>
+            Trade / Dept<br>Master
+          </a>
+
+          <a class="app" href="./locations.html">
+            <div class="app-icon purple">📍</div>
+            Location<br>Master
+          </a>
+
+          <a class="app" href="./analytics.html">
+            <div class="app-icon blue">📊</div>
+            Analytics<br>Dashboard
+          </a>
+
+          <a class="app" href="./hazardous.html">
+            <div class="app-icon red">⚠️</div>
+            Hazardous<br>Report
+          </a>
+
+          <a class="app" href="#">
+            <div class="add">＋</div>
+            Add<br>Shortcut
+          </a>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📍</div>
-          <div>
-            <h3>Location Master</h3>
-            <p>Maintain storage locations, location codes, racks, and stock room references.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-master">STORAGE</span>
-          <a href="./locations.html" class="btn btn-dark">Open</a>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div class="footer-note">
-    Inventory Management System • Property Management Office
+    <div class="footer-text">Things to Finish</div>
+
   </div>
 
 </div>
