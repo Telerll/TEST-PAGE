@@ -1,210 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inventory Management System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Management System</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial,sans-serif;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
 
-    body{
-      background:#f4f7fb;
-      padding:20px;
-      color:#1f2937;
-    }
+body{
+  background:#eef2f7;
+  color:#0f172a;
+  padding:18px;
+}
 
-    .app-shell{
-      max-width:1250px;
-      margin:auto;
-    }
+.app-shell{
+  max-width:1250px;
+  margin:auto;
+}
 
-    .top-nav{
-      background:#0f172a;
-      color:#fff;
-      border-radius:16px;
-      padding:14px 18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      box-shadow:0 8px 20px rgba(15,23,42,.18);
-      margin-bottom:18px;
-    }
+/* TOP BAR */
+.top-nav{
+  background:#0f172a;
+  color:#fff;
+  border-radius:14px;
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  box-shadow:0 8px 20px rgba(15,23,42,.18);
+}
 
-    .brand small{
-      display:block;
-      font-size:11px;
-      letter-spacing:1px;
-      opacity:.75;
-    }
+.brand small{
+  display:block;
+  font-size:11px;
+  letter-spacing:1px;
+  opacity:.75;
+}
 
-    .brand h1{
-      font-size:22px;
-      margin-top:3px;
-    }
+.brand h1{
+  font-size:22px;
+  margin-top:3px;
+}
 
-    .system-pill{
-      background:#1e3a8a;
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:bold;
-    }
+.system-pill{
+  background:#1e40af;
+  padding:8px 13px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+}
 
-    .hero{
-      margin:18px 0 24px;
-      background:linear-gradient(135deg,#1e3a8a,#2563eb);
-      color:#fff;
-      border-radius:18px;
-      padding:30px 20px;
-      text-align:center;
-      box-shadow:0 8px 20px rgba(30,58,138,.22);
-    }
+/* COMMAND HEADER */
+.command-header{
+  margin:16px 0 24px;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  color:white;
+  border-radius:18px;
+  padding:30px 24px;
+  text-align:center;
+  box-shadow:0 10px 22px rgba(30,58,138,.22);
+}
 
-    .logo-box{
-      width:80px;
-      height:80px;
-      margin:0 auto 10px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.15);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+.logo-box{
+  width:78px;
+  height:78px;
+  margin:0 auto 12px;
+  border-radius:50%;
+  background:rgba(255,255,255,.16);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .logo-box img{
-      width:55px;
-      height:55px;
-      object-fit:contain;
-    }
+.logo-box img{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+}
 
-    .hero small{
-      font-size:12px;
-      letter-spacing:1px;
-      opacity:.9;
-    }
+.command-header small{
+  display:block;
+  font-size:12px;
+  letter-spacing:1px;
+  opacity:.9;
+  margin-bottom:6px;
+}
 
-    .hero h2{
-      margin-top:6px;
-      font-size:30px;
-    }
+.command-header h2{
+  font-size:30px;
+  margin-bottom:8px;
+}
 
-    .hero p{
-      margin-top:8px;
-      font-size:14px;
-      opacity:.95;
-    }
+.command-header p{
+  font-size:14px;
+  opacity:.95;
+}
 
-    .hero-stats{
-      display:flex;
-      justify-content:center;
-      gap:16px;
-      margin-top:18px;
-      flex-wrap:wrap;
-    }
+/* SECTIONS */
+.section{
+  margin-bottom:28px;
+}
 
-    .stat{
-      background:rgba(255,255,255,0.15);
-      padding:12px 16px;
-      border-radius:12px;
-      min-width:115px;
-    }
+.section-title{
+  font-size:13px;
+  letter-spacing:1px;
+  color:#334155;
+  font-weight:bold;
+  margin-bottom:12px;
+}
 
-    .stat span{
-      display:block;
-      font-size:22px;
-      font-weight:bold;
-    }
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
 
-    .stat label{
-      font-size:11px;
-      opacity:.95;
-    }
+/* CARD */
+.card{
+  background:#fff;
+  border:1px solid #d4deea;
+  border-radius:16px;
+  padding:20px;
+  min-height:160px;
+  box-shadow:0 5px 14px rgba(15,23,42,.06);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:.18s ease;
+}
 
-    .section-title{
-      margin:22px 0 10px;
-      font-weight:bold;
-      color:#172554;
-      font-size:14px;
-      letter-spacing:1px;
-    }
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(15,23,42,.13);
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
-    }
+.card-top{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
 
-    .card{
-      background:white;
-      border-radius:18px;
-      padding:22px;
-      box-shadow:0 4px 12px rgba(0,0,0,.06);
-      border:1px solid #cbd5e1;
-      min-height:150px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
+.icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:#e0e7ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  flex-shrink:0;
+}
 
-    .card h2{
-      font-size:20px;
-      color:#172554;
-      margin-bottom:10px;
-    }
+.card h3{
+  font-size:18px;
+  color:#0f172a;
+  margin-bottom:7px;
+}
 
-    .card p{
-      font-size:14px;
-      color:#64748b;
-      line-height:1.5;
-      margin-bottom:16px;
-    }
+.card p{
+  font-size:13px;
+  line-height:1.5;
+  color:#64748b;
+}
 
-    .card a{
-      display:inline-block;
-      width:max-content;
-      text-decoration:none;
-      background:#1e3a8a;
-      color:white;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:bold;
-      font-size:14px;
-    }
+.card-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:18px;
+  gap:10px;
+}
 
-    .card a.secondary{
-      background:#0f766e;
-    }
+.badge{
+  font-size:11px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-weight:bold;
+}
 
-    .card a.warning{
-      background:#dc2626;
-    }
+.badge-core{background:#dbeafe;color:#1e3a8a}
+.badge-proc{background:#dcfce7;color:#166534}
+.badge-report{background:#fee2e2;color:#991b1b}
+.badge-master{background:#e0e7ff;color:#3730a3}
 
-    .footer-note{
-      text-align:center;
-      color:#64748b;
-      font-size:12px;
-      padding:18px;
-      margin-top:20px;
-    }
+.btn{
+  text-decoration:none;
+  color:#fff;
+  padding:9px 14px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:13px;
+}
 
-    @media (max-width:900px){
-      .grid{
-        grid-template-columns:1fr;
-      }
+.btn-blue{background:#1e3a8a}
+.btn-green{background:#047857}
+.btn-red{background:#dc2626}
+.btn-dark{background:#334155}
 
-      .hero h2{
-        font-size:24px;
-      }
-    }
-  </style>
+.footer-note{
+  text-align:center;
+  color:#64748b;
+  font-size:12px;
+  padding:18px;
+}
+
+@media(max-width:950px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .command-header h2{
+    font-size:24px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -216,106 +235,133 @@
       <small>PROPERTY MANAGEMENT OFFICE</small>
       <h1>Inventory Management System</h1>
     </div>
+
     <div class="system-pill">IMS DASHBOARD</div>
   </div>
 
-  <div class="hero">
+  <div class="command-header">
     <div class="logo-box">
-      <img src="logo.png" alt="Logo">
+      <img src="logo.png" alt="Company Logo">
     </div>
 
-    <small>PROPERTY MANAGEMENT OFFICE</small>
-    <h2>Inventory Management System</h2>
-    <p>Operations Dashboard • Real-time Inventory Control</p>
+    <small>CENTRALIZED INVENTORY CONTROL</small>
+    <h2>Operations Dashboard</h2>
+    <p>Master data • Deliveries • Issuance • Reports • Requisitions</p>
+  </div>
 
-    <div class="hero-stats">
-      <div class="stat">
-        <span id="statItems">0</span>
-        <label>Total Items</label>
+  <div class="section">
+    <div class="section-title">MAIN OPERATIONS</div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">📦</div>
+          <div>
+            <h3>Master List</h3>
+            <p>Manage item records, stock profile, annual forecast, reorder point, and balances.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-core">CORE DATA</span>
+          <a href="./master-list.html" class="btn btn-blue">Open</a>
+        </div>
       </div>
 
-      <div class="stat">
-        <span id="statFM">0</span>
-        <label>FM Items</label>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">⬇️</div>
+          <div>
+            <h3>Deliveries</h3>
+            <p>Record incoming deliveries, MRR/RMS transactions, and update IN quantities.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-core">INBOUND</span>
+          <a href="./deliveries.html" class="btn btn-blue">Open</a>
+        </div>
       </div>
 
-      <div class="stat">
-        <span id="statPR">0</span>
-        <label>Items for PR</label>
-      </div>
-
-      <div class="stat">
-        <span id="statEng">0</span>
-        <label>Engineering</label>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">⬆️</div>
+          <div>
+            <h3>Issuance</h3>
+            <p>Record released items, MIS/AIF references, and update OUT quantities.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-core">OUTBOUND</span>
+          <a href="./issuance.html" class="btn btn-blue">Open</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="section-title">MAIN OPERATIONS</div>
-  <div class="grid">
-    <div class="card">
-      <div>
-        <h2>Master List</h2>
-        <p>Manage items, stock, forecast, reorder point, and balances.</p>
-      </div>
-      <a href="./master-list.html">Open</a>
-    </div>
+  <div class="section">
+    <div class="section-title">PROCUREMENT</div>
 
-    <div class="card">
-      <div>
-        <h2>Deliveries</h2>
-        <p>Record incoming deliveries (MRR / RMS) and update IN.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">🧾</div>
+          <div>
+            <h3>Requisitions</h3>
+            <p>Create purchase requests based on shortage and items with quantity for PR.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-proc">PR CONTROL</span>
+          <a href="./requisitions.html" class="btn btn-green">Open</a>
+        </div>
       </div>
-      <a href="./deliveries.html">Open</a>
-    </div>
 
-    <div class="card">
-      <div>
-        <h2>Issuance</h2>
-        <p>Record issued items and update OUT.</p>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">📊</div>
+          <div>
+            <h3>Reports Dashboard</h3>
+            <p>View stock status, movement, reorder condition, and exportable reports.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-report">ANALYTICS</span>
+          <a href="./reports.html" class="btn btn-green">Open</a>
+        </div>
       </div>
-      <a href="./issuance.html">Open</a>
-    </div>
-  </div>
 
-  <div class="section-title">PROCUREMENT</div>
-  <div class="grid">
-    <div class="card">
-      <div>
-        <h2>Requisitions</h2>
-        <p>Create Purchase Requests based on system shortage.</p>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">⚠️</div>
+          <div>
+            <h3>Hazardous Report</h3>
+            <p>Monitor hazardous and safety-critical inventory items for separate reporting.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-report">CRITICAL</span>
+          <a href="./hazardous.html" class="btn btn-red">Open</a>
+        </div>
       </div>
-      <a href="./requisitions.html" class="secondary">Open</a>
-    </div>
-  </div>
-
-  <div class="section-title">REPORTS</div>
-  <div class="grid">
-    <div class="card">
-      <div>
-        <h2>Reports Dashboard</h2>
-        <p>View stock status, movement, consumption, and export data.</p>
-      </div>
-      <a href="./reports.html" class="secondary">Open</a>
-    </div>
-
-    <div class="card">
-      <div>
-        <h2>Hazardous Report</h2>
-        <p>Monitor hazardous items and safety-critical stock.</p>
-      </div>
-      <a href="./hazardous.html" class="warning">Open</a>
     </div>
   </div>
 
-  <div class="section-title">MASTER DATA</div>
-  <div class="grid">
-    <div class="card">
-      <div>
-        <h2>Trade / Department</h2>
-        <p>Manage department and trade master data.</p>
+  <div class="section">
+    <div class="section-title">MASTER DATA</div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-top">
+          <div class="icon">🏷️</div>
+          <div>
+            <h3>Trade / Department</h3>
+            <p>Maintain centralized group and trade / department choices used by the system.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="badge badge-master">REFERENCE</span>
+          <a href="./trade-dept.html" class="btn btn-dark">Open</a>
+        </div>
       </div>
-      <a href="./trade-dept.html">Open</a>
     </div>
   </div>
 
@@ -324,47 +370,6 @@
   </div>
 
 </div>
-
-<script>
-  function getInventoryLevel(category, group){
-    if(category !== "FAST-MOVING") return 0;
-    if(group === "ENGINEERING") return 6;
-    if(group === "HOUSEKEEPING") return 4;
-    if(group === "OFFICE SUPPLIES") return 4;
-    return 0;
-  }
-
-  function loadHeaderStats(){
-    const items = JSON.parse(localStorage.getItem("masterItems")) || [];
-
-    const totalItems = items.length;
-    const fmItems = items.filter(i => i.category === "FAST-MOVING").length;
-    const engineeringItems = items.filter(i => i.group === "ENGINEERING").length;
-
-    const itemsForPR = items.filter(i => {
-      const inv = getInventoryLevel(i.category, i.group);
-
-      const ending =
-        (Number(i.qtyBook) || 0) +
-        (Number(i.countVariance) || 0) +
-        (Number(i.reconAdj) || 0) +
-        (Number(i.inQty) || 0) -
-        (Number(i.outQty) || 0);
-
-      const reorder = inv > 0 ? ((Number(i.forecast) || 0) / 12) * inv : 0;
-      const forPR = reorder - ending - (Number(i.deliveryInTransit) || 0);
-
-      return forPR > 0;
-    }).length;
-
-    document.getElementById("statItems").textContent = totalItems;
-    document.getElementById("statFM").textContent = fmItems;
-    document.getElementById("statPR").textContent = itemsForPR;
-    document.getElementById("statEng").textContent = engineeringItems;
-  }
-
-  loadHeaderStats();
-</script>
 
 </body>
 </html>
