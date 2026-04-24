@@ -3,201 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PPRX Financial Tracking System</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Inventory Management System</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
-  background:radial-gradient(circle at top,#0c2340,#071a33,#040712);
-  color:#fff;
-  padding:12px;
+  background:linear-gradient(180deg,#eef6ff,#e2e8f0);
+  color:#0f172a;
+  padding:16px;
 }
 
-/* ================= HEADER ================= */
-.header{
-  background:
-    radial-gradient(circle at 22% 50%, rgba(255,170,0,.35), transparent 35%),
-    linear-gradient(135deg,#030712,#07111f,#0b1f3a);
-    
-  padding:16px 10px;
-  border-radius:18px;
+.app-shell{
+  max-width:1200px;
+  margin:auto;
+}
 
-  min-height:200px;
-
+/* TOP BAR */
+.top-bar{
+  background:#0f172a;
+  color:white;
+  border-radius:12px;
+  padding:10px 16px;
   display:flex;
-  flex-direction:column;
+  justify-content:space-between;
   align-items:center;
-  justify-content:center;
-  text-align:center;
-
-  position:relative;
-  overflow:hidden;
-
-  border:1px solid rgba(255,179,71,.25);
-  box-shadow:0 15px 40px rgba(0,0,0,.5);
-}
-
-/* SHINE */
-.header::before{
-  content:"";
-  position:absolute;
-  top:-50%;
-  left:-80%;
-  width:60%;
-  height:200%;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent);
-  transform:rotate(25deg);
-  animation:shine 4s ease-in-out infinite;
-}
-
-/* LOGO */
-.main-logo{
-  max-width:170px;
-  width:100%;
-  margin-bottom:8px;
-  position:relative;
-  z-index:5;
-
-  filter:
-    drop-shadow(0 10px 25px rgba(0,0,0,.6))
-    drop-shadow(0 0 18px rgba(255,170,0,.4));
-
-  animation:pulse 3s ease-in-out infinite;
-}
-
-/* TEXT FIXED */
-.system-title{
-  display:block;
-  position:relative;
-  z-index:5;
-
-  margin-top:8px;
-
-  color:#ffffff;
   font-size:13px;
-  font-weight:900;
-  letter-spacing:2px;
-  text-transform:uppercase;
-
-  text-shadow:
-    0 0 8px rgba(255,255,255,.9),
-    0 0 18px rgba(255,179,71,.5);
+  margin-bottom:10px;
+  box-shadow:0 10px 28px rgba(15,23,42,.22);
 }
 
-/* ================= KPI ================= */
-.kpi{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:12px;
-}
-
-.card{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  padding:12px;
-  border-radius:14px;
-  text-align:center;
-}
-
-.income{border-left:4px solid #00ff9d}
-.expense{border-left:4px solid #ff4d4d}
-.net{border-left:4px solid #ffb300}
-
-/* ================= GRID ================= */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:10px;
-}
-
-.module{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.09);
-  padding:12px;
-  border-radius:14px;
-}
-
-/* INPUT */
-input,select{
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.12);
-  background:#0f2a52;
-  color:#fff;
-}
-
-/* BUTTON */
-button{
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(90deg,#ff9800,#ffb347);
-  color:#111;
+.top-bar .left{
   font-weight:bold;
 }
 
-/* ================= REPORT ================= */
-.report-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
+.top-bar .right{
+  display:flex;
+  gap:14px;
+  align-items:center;
 }
 
-.report-box,.chart{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.09);
-  padding:12px;
-  border-radius:14px;
+.user{
+  background:#1e40af;
+  color:white;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:bold;
 }
 
-.item{
-  background:rgba(255,255,255,.06);
-  padding:10px;
-  margin-top:8px;
-  border-radius:10px;
+/* MAIN HEADER */
+.main-header{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:white;
+  border-radius:18px;
+  padding:32px 20px;
+  text-align:center;
+  box-shadow:0 15px 35px rgba(15,23,42,.25);
+  margin-bottom:20px;
+}
+
+.main-header small{
+  display:block;
+  font-size:12px;
+  letter-spacing:1px;
+  opacity:.8;
+  margin-bottom:6px;
+}
+
+.main-header h1{
+  font-size:28px;
+  margin-bottom:6px;
+}
+
+.main-header p{
+  font-size:14px;
+  opacity:.9;
+}
+
+/* COMMAND HEADER */
+.command-header{
+  margin:14px 0 22px;
+  background:linear-gradient(135deg,#1d4ed8,#38bdf8);
+  color:white;
+  border-radius:20px;
+  padding:34px 18px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 18px 36px rgba(30,58,138,.24);
+}
+
+.command-header small{
+  display:block;
+  font-size:11px;
+  letter-spacing:1px;
+  opacity:.9;
+  margin-bottom:7px;
+}
+
+.command-header h2{
+  font-size:30px;
+  margin-bottom:7px;
+}
+
+.command-header p{
   font-size:13px;
+  opacity:.95;
 }
 
-.chart{margin-top:12px}
-
-/* ================= ANIMATION ================= */
-@keyframes shine{
-  0%{left:-80%;opacity:0}
-  30%{opacity:1}
-  100%{left:130%;opacity:0}
+/* SECTIONS */
+.section{
+  margin-bottom:24px;
 }
 
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.05)}
+.section-title{
+  font-size:12px;
+  letter-spacing:1px;
+  color:#334155;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
-/* ================= MOBILE ================= */
-@media(max-width:768px){
-  .grid,.kpi,.report-grid{
+/* GRIDS */
+.main-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.proc-grid,
+.master-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+/* CARDS */
+.card{
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:16px;
+  padding:16px;
+  min-height:130px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow:0 6px 16px rgba(15,23,42,.07);
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 14px 28px rgba(15,23,42,.14);
+}
+
+.card-top{
+  display:flex;
+  gap:12px;
+}
+
+.icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:#dbeafe;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+.card h3{
+  font-size:15px;
+}
+
+.card p{
+  font-size:12px;
+  color:#64748b;
+}
+
+.card-footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.badge{
+  font-size:10px;
+  padding:4px 7px;
+  border-radius:999px;
+}
+
+.badge-core{background:#dbeafe;color:#1e3a8a}
+.badge-proc{background:#dcfce7;color:#166534}
+.badge-report{background:#fee2e2;color:#991b1b}
+.badge-master{background:#e0e7ff;color:#3730a3}
+
+.btn{
+  text-decoration:none;
+  color:white;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:11px;
+}
+
+.btn-blue{background:#1e3a8a}
+.btn-green{background:#047857}
+.btn-red{background:#dc2626}
+.btn-dark{background:#334155}
+
+.footer-note{
+  text-align:center;
+  font-size:12px;
+  margin-top:20px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .main-grid,
+  .proc-grid,
+  .master-grid{
     grid-template-columns:1fr;
-  }
-
-  .header{
-    min-height:180px;
-  }
-
-  .main-logo{
-    max-width:140px;
-  }
-
-  .system-title{
-    font-size:11px;
   }
 }
 </style>
@@ -205,128 +232,85 @@ button{
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="brand">
-    <img src="logo.png" class="main-logo" alt="PPRX Logo">
-    <div class="system-title">FINANCIAL TRACKING SYSTEM</div>
+<div class="app-shell">
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="left">IMS</div>
+  <div class="right">
+    🔔 ⚙️ <span class="user">RL</span>
   </div>
 </div>
 
-<!-- KPI -->
-<div class="kpi">
-  <div class="card income">INCOME<br><b id="incomeTotal">₱0</b></div>
-  <div class="card expense">EXPENSE<br><b id="expenseTotal">₱0</b></div>
-  <div class="card net">NET<br><b id="netTotal">₱0</b></div>
-  <div class="card">ENTRIES<br><b id="entryTotal">0</b></div>
+<!-- HEADER -->
+<div class="main-header">
+  <small>PROPERTY MANAGEMENT OFFICE</small>
+  <h1>Stock Control Department</h1>
+  <p>Inventory Management System</p>
 </div>
 
-<!-- INPUT -->
-<div class="grid">
-
-<div class="module">
-<h3>INCOME</h3>
-
-<select id="incomeType">
-<option selected disabled>Select Income</option>
-<option>Corporate Event</option>
-<option>Wedding</option>
-<option>Birthday</option>
-<option>LED Wall & Visual Display</option>
-<option>Stage & Production</option>
-<option>Full Event Services</option>
-</select>
-
-<input id="incomeEvent" placeholder="Event / Client">
-<input id="incomeAmount" type="number" placeholder="Amount">
-<input id="incomeDate" type="date">
-
-<button onclick="addIncome()">ADD INCOME</button>
+<!-- COMMAND -->
+<div class="command-header">
+  <small>OPERATIONS COMMAND CENTER</small>
+  <h2>Inventory Control Dashboard</h2>
+  <p>Item Master • Stock Receipt • Stock Issuance • Purchase Requisition • Reports</p>
 </div>
 
-<div class="module">
-<h3>EXPENSE</h3>
+<!-- MAIN -->
+<div class="section">
+<div class="main-grid">
 
-<select id="expenseType">
-<option selected disabled>Select Expense</option>
-<option>Fuel</option>
-<option>Salary</option>
-<option>Repair</option>
-<option>Office Supplies</option>
-<option>Bills</option>
-</select>
+<div class="card">
+  <div class="card-top">
+    <div class="icon">📦</div>
+    <div>
+      <h3>Item Master</h3>
+      <p>Manage items and stock data</p>
+    </div>
+  </div>
+  <div class="card-footer">
+    <span class="badge badge-core">CORE</span>
+    <a href="#" class="btn btn-blue">Open</a>
+  </div>
+</div>
 
-<input id="expenseNotes" placeholder="Notes">
-<input id="expenseAmount" type="number" placeholder="Amount">
-<input id="expenseDate" type="date">
+<div class="card">
+  <div class="card-top">
+    <div class="icon">⬇️</div>
+    <div>
+      <h3>Stock Receipt</h3>
+      <p>Record incoming stock</p>
+    </div>
+  </div>
+  <div class="card-footer">
+    <span class="badge badge-core">IN</span>
+    <a href="#" class="btn btn-blue">Open</a>
+  </div>
+</div>
 
-<button onclick="addExpense()">ADD EXPENSE</button>
+<div class="card">
+  <div class="card-top">
+    <div class="icon">⬆️</div>
+    <div>
+      <h3>Stock Issuance</h3>
+      <p>Record outgoing stock</p>
+    </div>
+  </div>
+  <div class="card-footer">
+    <span class="badge badge-core">OUT</span>
+    <a href="#" class="btn btn-blue">Open</a>
+  </div>
 </div>
 
 </div>
-
-<div class="report-grid">
-<div class="report-box"><h3>INCOME</h3><div id="incomeReport"></div></div>
-<div class="report-box"><h3>EXPENSE</h3><div id="expenseReport"></div></div>
 </div>
 
-<div class="chart">
-<canvas id="chartCanvas"></canvas>
+<!-- FOOTER -->
+<div class="footer-note">
+Inventory Management System
 </div>
 
-<script>
-let data = JSON.parse(localStorage.getItem("pprxData")) || [];
-let income = 0, expense = 0, chart;
-
-function save(){localStorage.setItem("pprxData", JSON.stringify(data));}
-
-function addIncome(){
-if(!incomeAmount.value)return;
-data.push({type:"Income",category:incomeType.value,event:incomeEvent.value,amount:+incomeAmount.value});
-reset();save();update();
-}
-
-function addExpense(){
-if(!expenseAmount.value)return;
-data.push({type:"Expense",category:expenseType.value,event:expenseNotes.value,amount:+expenseAmount.value});
-reset();save();update();
-}
-
-function reset(){document.querySelectorAll("input").forEach(i=>i.value="");}
-
-function update(){
-income=0;expense=0;
-incomeReport.innerHTML="";expenseReport.innerHTML="";
-
-data.forEach(d=>{
-if(d.type==="Income"){
-income+=d.amount;
-incomeReport.innerHTML+=`<div class="item">${d.category}<br>₱${d.amount}</div>`;
-}
-if(d.type==="Expense"){
-expense+=d.amount;
-expenseReport.innerHTML+=`<div class="item">${d.category}<br>₱${d.amount}</div>`;
-}
-});
-
-incomeTotal.innerText="₱"+income;
-expenseTotal.innerText="₱"+expense;
-netTotal.innerText="₱"+(income-expense);
-entryTotal.innerText=data.length;
-
-drawChart();
-}
-
-function drawChart(){
-if(chart) chart.destroy();
-chart=new Chart(chartCanvas,{
-type:"doughnut",
-data:{labels:["Income","Expense"],datasets:[{data:[income,expense],backgroundColor:["#00ff9d","#ff4d4d"]}]}
-});
-}
-
-update();
-</script>
+</div>
 
 </body>
 </html>
