@@ -1,0 +1,143 @@
+<section class="location-section">
+  <h2>Location Code Directory</h2>
+  <p>Search location or code below.</p>
+
+  <input type="text" id="locationSearch" placeholder="Search location or code...">
+
+  <div class="location-table-wrap">
+    <table id="locationTable">
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>PODIUM 3 - STOCK CONTROL OFFICE</td><td>P3T2-SCO</td></tr>
+        <tr><td>BASEMENT 2, TOWER 2</td><td>B2T2</td></tr>
+        <tr><td>BASEMENT 2, TOWER 2, 1</td><td>B2T2-1</td></tr>
+        <tr><td>BASEMENT 2, TOWER 2, 2</td><td>B2T2-2</td></tr>
+        <tr><td>BASEMENT 3, TOWER 1 AHU</td><td>B3T1-A</td></tr>
+        <tr><td>BASEMENT 3, TOWER 1 CYCLONE</td><td>B3T1-C</td></tr>
+        <tr><td>BASEMENT 3, TOWER 2 AHU</td><td>B3T2-A</td></tr>
+        <tr><td>BASEMENT 4, TOWER 1 AHU</td><td>B4T1-A</td></tr>
+        <tr><td>BASEMENT 4, TOWER 1 CYCLONE 1</td><td>B4T1-C1</td></tr>
+        <tr><td>BASEMENT 4, TOWER 1 CYCLONE 2</td><td>B4T1-C2</td></tr>
+        <tr><td>BASEMENT 4, TOWER 2 AHU</td><td>B4T2-A</td></tr>
+        <tr><td>BASEMENT 4, TOWER 2 CYCLONE</td><td>B4T2-C</td></tr>
+        <tr><td>BASEMENT 5, TOWER 1 AHU</td><td>B5T1-A</td></tr>
+        <tr><td>BASEMENT 5, TOWER 1 CYCLONE</td><td>B5T1-C</td></tr>
+        <tr><td>BASEMENT 5, TOWER 2 AHU</td><td>B5T2-A</td></tr>
+        <tr><td>BASEMENT 5, TOWER 2 CYCLONE</td><td>B5T2-C</td></tr>
+        <tr><td>BASEMENT 2 - GLOBE ROOM</td><td>GLOBE ROOM</td></tr>
+        <tr><td>BASEMENT 1, TOWER 2</td><td>B1T2</td></tr>
+        <tr><td>BASEMENT 6, TOWER 1 AHU</td><td>B6T1-A</td></tr>
+        <tr><td>BASEMENT 6, TOWER 1 CYCLONE</td><td>B6T1-C</td></tr>
+        <tr><td>BASEMENT 6, TOWER 2 CYCLONE</td><td>B6T2-C</td></tr>
+        <tr><td>BASEMENT 6, TOWER 2 AHU</td><td>B6T2-A</td></tr>
+        <tr><td>BASEMENT 7, TOWER 1 AHU</td><td>B7T1-A</td></tr>
+        <tr><td>BASEMENT 7, TOWER 1 CYCLONE</td><td>B7T1-C</td></tr>
+        <tr><td>BASEMENT 7, TOWER 2 AHU</td><td>B7T2-A</td></tr>
+        <tr><td>BASEMENT 7, TOWER 2 CYCLONE</td><td>B7T2-C</td></tr>
+        <tr><td>LEVEL 10, TOWER 1</td><td>L10-T1</td></tr>
+        <tr><td>LEVEL 11, TOWER 2</td><td>L11-T2</td></tr>
+        <tr><td>PODIUM 3 LIBRARY 1, TOWER 1</td><td>P3T1-L1</td></tr>
+        <tr><td>PODIUM 3 LIBRARY 2, TOWER 1</td><td>P3T1-L2</td></tr>
+        <tr><td>PODIUM 3 LIBRARY 3, TOWER 1</td><td>P3T1-L3</td></tr>
+        <tr><td>DELIVERED DIRECTLY</td><td>DIRECT</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+.location-section{
+  max-width:900px;
+  margin:30px auto;
+  padding:20px;
+  font-family:Arial, sans-serif;
+  background:#f8fafc;
+  border-radius:16px;
+  box-shadow:0 8px 24px rgba(15,23,42,.12);
+}
+
+.location-section h2{
+  margin-bottom:6px;
+  color:#0f172a;
+}
+
+.location-section p{
+  color:#64748b;
+  margin-bottom:14px;
+}
+
+#locationSearch{
+  width:100%;
+  padding:12px 14px;
+  margin-bottom:16px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  font-size:15px;
+}
+
+.location-table-wrap{
+  overflow-x:auto;
+}
+
+.location-section table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.location-section th{
+  background:#0f172a;
+  color:#fff;
+  text-align:left;
+  padding:12px;
+}
+
+.location-section td{
+  padding:11px 12px;
+  border-bottom:1px solid #e2e8f0;
+  font-size:14px;
+}
+
+.location-section td:last-child{
+  font-weight:bold;
+  color:#2563eb;
+  white-space:nowrap;
+}
+
+.location-section tr:hover{
+  background:#f1f5f9;
+}
+
+@media(max-width:600px){
+  .location-section{
+    padding:14px;
+  }
+
+  .location-section td,
+  .location-section th{
+    font-size:13px;
+    padding:10px;
+  }
+}
+</style>
+
+<script>
+const searchInput = document.getElementById("locationSearch");
+const rows = document.querySelectorAll("#locationTable tbody tr");
+
+searchInput.addEventListener("input", function(){
+  const keyword = this.value.toLowerCase();
+
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(keyword) ? "" : "none";
+  });
+});
+</script>
