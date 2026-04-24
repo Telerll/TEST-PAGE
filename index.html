@@ -9,28 +9,27 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
-  background:#eef2f7;
+  background:linear-gradient(180deg,#eef2f7,#e2e8f0);
   color:#0f172a;
   padding:18px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
+.app-shell{
+  max-width:1600px;
+  margin:auto;
 }
 
 .top-nav{
-  background:#0f172a;
+  background:rgba(15,23,42,.96);
   color:#fff;
-  border-radius:14px;
+  border-radius:16px;
   padding:14px 18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:12px;
   flex-wrap:wrap;
-  box-shadow:0 8px 20px rgba(15,23,42,.18);
+  box-shadow:0 10px 28px rgba(15,23,42,.22);
 }
 
 .brand small{
@@ -46,7 +45,7 @@ body{
 }
 
 .system-pill{
-  background:#1e40af;
+  background:linear-gradient(135deg,#1e40af,#2563eb);
   padding:8px 13px;
   border-radius:999px;
   font-size:12px;
@@ -54,13 +53,14 @@ body{
 }
 
 .command-header{
-  margin:16px 0 24px;
+  margin:16px 0 28px;
   background:linear-gradient(135deg,#1e3a8a,#2563eb);
   color:white;
-  border-radius:18px;
-  padding:42px 20px;
+  border-radius:22px;
+  padding:48px 20px;
   text-align:center;
-  box-shadow:0 10px 22px rgba(30,58,138,.22);
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 20px 42px rgba(30,58,138,.28);
 }
 
 .command-header small{
@@ -72,7 +72,7 @@ body{
 }
 
 .command-header h2{
-  font-size:32px;
+  font-size:34px;
   margin-bottom:8px;
 }
 
@@ -81,7 +81,9 @@ body{
   opacity:.95;
 }
 
-.section{margin-bottom:28px}
+.section{
+  margin-bottom:34px;
+}
 
 .section-title{
   font-size:13px;
@@ -91,22 +93,48 @@ body{
   margin-bottom:12px;
 }
 
-.grid{
+/* PERFECT SECTION GRIDS */
+.main-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  align-items:stretch;
+}
+
+.proc-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  align-items:stretch;
+}
+
+.master-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  align-items:stretch;
 }
 
 .card{
-  background:#fff;
-  border:1px solid #d4deea;
-  border-radius:16px;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:18px;
   padding:20px;
-  min-height:160px;
-  box-shadow:0 5px 14px rgba(15,23,42,.06);
+  min-height:178px;
+  height:100%;
+  box-shadow:0 8px 20px rgba(15,23,42,.08);
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 38px rgba(15,23,42,.16);
+  border-color:rgba(147,197,253,.75);
 }
 
 .card-top{
@@ -116,15 +144,19 @@ body{
 }
 
 .icon{
-  width:44px;
-  height:44px;
-  border-radius:12px;
-  background:#e0e7ff;
+  width:46px;
+  height:46px;
+  min-width:46px;
+  min-height:46px;
+  border-radius:14px;
+  background:linear-gradient(145deg,#e0e7ff,#c7d2fe);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:21px;
+  font-size:22px;
+  line-height:1;
   flex-shrink:0;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.7),0 4px 10px rgba(15,23,42,.10);
 }
 
 .card h3{
@@ -143,13 +175,13 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-top:18px;
+  margin-top:22px;
   gap:10px;
 }
 
 .badge{
   font-size:11px;
-  padding:5px 9px;
+  padding:6px 10px;
   border-radius:999px;
   font-weight:bold;
 }
@@ -162,16 +194,22 @@ body{
 .btn{
   text-decoration:none;
   color:#fff;
-  padding:9px 14px;
-  border-radius:10px;
+  padding:10px 16px;
+  border-radius:12px;
   font-weight:bold;
   font-size:13px;
+  transition:all .18s ease;
 }
 
-.btn-blue{background:#1e3a8a}
-.btn-green{background:#047857}
-.btn-red{background:#dc2626}
-.btn-dark{background:#334155}
+.btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 18px rgba(15,23,42,.18);
+}
+
+.btn-blue{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
+.btn-green{background:linear-gradient(135deg,#047857,#10b981)}
+.btn-red{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.btn-dark{background:linear-gradient(135deg,#334155,#1e293b)}
 
 .footer-note{
   text-align:center;
@@ -180,9 +218,22 @@ body{
   padding:18px;
 }
 
+@media(max-width:1250px){
+  .proc-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
 @media(max-width:950px){
-  .grid{grid-template-columns:1fr}
-  .command-header h2{font-size:24px}
+  .main-grid,
+  .proc-grid,
+  .master-grid{
+    grid-template-columns:1fr;
+  }
+
+  .command-header h2{
+    font-size:25px;
+  }
 }
 </style>
 </head>
@@ -208,7 +259,7 @@ body{
   <div class="section">
     <div class="section-title">MAIN OPERATIONS</div>
 
-    <div class="grid">
+    <div class="main-grid">
       <div class="card">
         <div class="card-top">
           <div class="icon">📦</div>
@@ -256,7 +307,7 @@ body{
   <div class="section">
     <div class="section-title">PROCUREMENT & REPORTS</div>
 
-    <div class="grid">
+    <div class="proc-grid">
       <div class="card">
         <div class="card-top">
           <div class="icon">🧾</div>
@@ -318,7 +369,7 @@ body{
   <div class="section">
     <div class="section-title">MASTER DATA</div>
 
-    <div class="grid">
+    <div class="master-grid">
       <div class="card">
         <div class="card-top">
           <div class="icon">🏷️</div>
