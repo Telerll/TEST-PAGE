@@ -269,3 +269,97 @@ top-nav{
   font-size:14px;
   opacity:.9;
 }
+.app-shell{
+  max-width:1250px;
+  margin:auto;
+}
+
+.top-bar{
+  background:#0f172a;
+  color:#fff;
+  border-radius:14px;
+  padding:12px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+  box-shadow:0 8px 20px rgba(15,23,42,.18);
+}
+
+.system-name{
+  font-weight:bold;
+  font-size:16px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.user{
+  background:#1e40af;
+  color:#fff;
+  padding:6px 9px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.main-header{
+  background:#fff;
+  border:1px solid #dbe3ee;
+  border-radius:16px;
+  padding:20px 22px;
+  margin-bottom:16px;
+  box-shadow:0 5px 14px rgba(15,23,42,.06);
+}
+
+.main-header small{
+  display:block;
+  color:#64748b;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1px;
+  margin-bottom:5px;
+}
+
+.main-header h1{
+  font-size:28px;
+  color:#0f172a;
+  margin-bottom:4px;
+}
+
+.main-header p{
+  color:#475569;
+  font-size:14px;
+}
+
+.command-header{
+  margin:16px 0 28px;
+  background:linear-gradient(135deg,#1e3a8a,#38bdf8);
+  color:white;
+  border-radius:18px;
+  padding:36px 20px;
+  text-align:center;
+  box-shadow:0 16px 34px rgba(30,58,138,.22);
+}
+
+.command-header small{
+  display:block;
+  font-size:12px;
+  letter-spacing:1px;
+  opacity:.9;
+  margin-bottom:8px;
+  font-weight:bold;
+}
+
+.command-header h2{
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.command-header p{
+  font-size:14px;
+  opacity:.95;
+}
