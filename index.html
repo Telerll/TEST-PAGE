@@ -19,42 +19,121 @@
       color:#1f2937;
     }
 
-    .container{
-      max-width:1200px;
+    .app-shell{
+      max-width:1250px;
       margin:auto;
     }
 
-    .header{
-      background:#1e3a8a;
-      color:white;
-      padding:24px;
-      border-radius:18px;
-      margin-bottom:20px;
+    .top-nav{
+      background:#0f172a;
+      color:#fff;
+      border-radius:16px;
+      padding:14px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      box-shadow:0 8px 20px rgba(15,23,42,.18);
+      margin-bottom:18px;
     }
 
-    .header small{
+    .brand small{
       display:block;
-      font-size:13px;
-      opacity:.9;
-      margin-bottom:6px;
+      font-size:11px;
       letter-spacing:1px;
+      opacity:.75;
     }
 
-    .header h1{
+    .brand h1{
+      font-size:22px;
+      margin-top:3px;
+    }
+
+    .system-pill{
+      background:#1e3a8a;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .hero{
+      margin:18px 0 24px;
+      background:linear-gradient(135deg,#1e3a8a,#2563eb);
+      color:#fff;
+      border-radius:18px;
+      padding:30px 20px;
+      text-align:center;
+      box-shadow:0 8px 20px rgba(30,58,138,.22);
+    }
+
+    .logo-box{
+      width:80px;
+      height:80px;
+      margin:0 auto 10px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.15);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .logo-box img{
+      width:55px;
+      height:55px;
+      object-fit:contain;
+    }
+
+    .hero small{
+      font-size:12px;
+      letter-spacing:1px;
+      opacity:.9;
+    }
+
+    .hero h2{
+      margin-top:6px;
       font-size:30px;
-      margin-bottom:8px;
     }
 
-    .header p{
+    .hero p{
+      margin-top:8px;
       font-size:14px;
       opacity:.95;
     }
 
+    .hero-stats{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+
+    .stat{
+      background:rgba(255,255,255,0.15);
+      padding:12px 16px;
+      border-radius:12px;
+      min-width:115px;
+    }
+
+    .stat span{
+      display:block;
+      font-size:22px;
+      font-weight:bold;
+    }
+
+    .stat label{
+      font-size:11px;
+      opacity:.95;
+    }
+
     .section-title{
-      margin:20px 0 10px;
+      margin:22px 0 10px;
       font-weight:bold;
       color:#172554;
-      font-size:16px;
+      font-size:14px;
+      letter-spacing:1px;
     }
 
     .grid{
@@ -69,6 +148,10 @@
       padding:22px;
       box-shadow:0 4px 12px rgba(0,0,0,.06);
       border:1px solid #cbd5e1;
+      min-height:150px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
 
     .card h2{
@@ -86,12 +169,14 @@
 
     .card a{
       display:inline-block;
+      width:max-content;
       text-decoration:none;
       background:#1e3a8a;
       color:white;
       padding:10px 14px;
       border-radius:10px;
       font-weight:bold;
+      font-size:14px;
     }
 
     .card a.secondary{
@@ -102,9 +187,21 @@
       background:#dc2626;
     }
 
+    .footer-note{
+      text-align:center;
+      color:#64748b;
+      font-size:12px;
+      padding:18px;
+      margin-top:20px;
+    }
+
     @media (max-width:900px){
       .grid{
         grid-template-columns:1fr;
+      }
+
+      .hero h2{
+        font-size:24px;
       }
     }
   </style>
@@ -114,15 +211,15 @@
 
 <div class="app-shell">
 
-  <!-- TOP NAV -->
   <div class="top-nav">
-    ...
+    <div class="brand">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>Inventory Management System</h1>
+    </div>
+    <div class="system-pill">IMS DASHBOARD</div>
   </div>
 
-  <!-- 🔥 DITO MO ILALAGAY -->
   <div class="hero">
-
-    <!-- LOGO -->
     <div class="logo-box">
       <img src="logo.png" alt="Logo">
     </div>
@@ -131,9 +228,7 @@
     <h2>Inventory Management System</h2>
     <p>Operations Dashboard • Real-time Inventory Control</p>
 
-    <!-- STATS -->
     <div class="hero-stats">
-
       <div class="stat">
         <span id="statItems">0</span>
         <label>Total Items</label>
@@ -153,73 +248,123 @@
         <span id="statEng">0</span>
         <label>Engineering</label>
       </div>
+    </div>
+  </div>
 
+  <div class="section-title">MAIN OPERATIONS</div>
+  <div class="grid">
+    <div class="card">
+      <div>
+        <h2>Master List</h2>
+        <p>Manage items, stock, forecast, reorder point, and balances.</p>
+      </div>
+      <a href="./master-list.html">Open</a>
     </div>
 
-  </div>
-
-  <!-- MAIN OPERATIONS -->
-  <div class="section">
-    ...
-  </div>
-
     <div class="card">
-      <h2>Deliveries</h2>
-      <p>Record incoming deliveries (MRR / RMS) and update IN.</p>
+      <div>
+        <h2>Deliveries</h2>
+        <p>Record incoming deliveries (MRR / RMS) and update IN.</p>
+      </div>
       <a href="./deliveries.html">Open</a>
     </div>
 
     <div class="card">
-      <h2>Issuance</h2>
-      <p>Record issued items and update OUT.</p>
+      <div>
+        <h2>Issuance</h2>
+        <p>Record issued items and update OUT.</p>
+      </div>
       <a href="./issuance.html">Open</a>
     </div>
-
   </div>
 
-  <!-- PROCUREMENT -->
   <div class="section-title">PROCUREMENT</div>
   <div class="grid">
-
     <div class="card">
-      <h2>Requisitions</h2>
-      <p>Create Purchase Requests based on system shortage.</p>
+      <div>
+        <h2>Requisitions</h2>
+        <p>Create Purchase Requests based on system shortage.</p>
+      </div>
       <a href="./requisitions.html" class="secondary">Open</a>
     </div>
-
   </div>
 
-  <!-- REPORTS -->
   <div class="section-title">REPORTS</div>
   <div class="grid">
-
     <div class="card">
-      <h2>Reports Dashboard</h2>
-      <p>View stock status, movement, consumption, and export data.</p>
+      <div>
+        <h2>Reports Dashboard</h2>
+        <p>View stock status, movement, consumption, and export data.</p>
+      </div>
       <a href="./reports.html" class="secondary">Open</a>
     </div>
 
     <div class="card">
-      <h2>Hazardous Report</h2>
-      <p>Monitor hazardous items and safety-critical stock.</p>
+      <div>
+        <h2>Hazardous Report</h2>
+        <p>Monitor hazardous items and safety-critical stock.</p>
+      </div>
       <a href="./hazardous.html" class="warning">Open</a>
     </div>
-
   </div>
 
-  <!-- MASTER DATA -->
   <div class="section-title">MASTER DATA</div>
   <div class="grid">
-
     <div class="card">
-      <h2>Trade / Department</h2>
-      <p>Manage department and trade master data.</p>
+      <div>
+        <h2>Trade / Department</h2>
+        <p>Manage department and trade master data.</p>
+      </div>
       <a href="./trade-dept.html">Open</a>
     </div>
+  </div>
 
+  <div class="footer-note">
+    Inventory Management System • Property Management Office
   </div>
 
 </div>
+
+<script>
+  function getInventoryLevel(category, group){
+    if(category !== "FAST-MOVING") return 0;
+    if(group === "ENGINEERING") return 6;
+    if(group === "HOUSEKEEPING") return 4;
+    if(group === "OFFICE SUPPLIES") return 4;
+    return 0;
+  }
+
+  function loadHeaderStats(){
+    const items = JSON.parse(localStorage.getItem("masterItems")) || [];
+
+    const totalItems = items.length;
+    const fmItems = items.filter(i => i.category === "FAST-MOVING").length;
+    const engineeringItems = items.filter(i => i.group === "ENGINEERING").length;
+
+    const itemsForPR = items.filter(i => {
+      const inv = getInventoryLevel(i.category, i.group);
+
+      const ending =
+        (Number(i.qtyBook) || 0) +
+        (Number(i.countVariance) || 0) +
+        (Number(i.reconAdj) || 0) +
+        (Number(i.inQty) || 0) -
+        (Number(i.outQty) || 0);
+
+      const reorder = inv > 0 ? ((Number(i.forecast) || 0) / 12) * inv : 0;
+      const forPR = reorder - ending - (Number(i.deliveryInTransit) || 0);
+
+      return forPR > 0;
+    }).length;
+
+    document.getElementById("statItems").textContent = totalItems;
+    document.getElementById("statFM").textContent = fmItems;
+    document.getElementById("statPR").textContent = itemsForPR;
+    document.getElementById("statEng").textContent = engineeringItems;
+  }
+
+  loadHeaderStats();
+</script>
 
 </body>
 </html>
