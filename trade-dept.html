@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trade / Department Master</title>
+  <title>Master List - Inventory Management System</title>
 
   <style>
     *{
@@ -13,14 +13,29 @@
       font-family:Arial,sans-serif;
     }
 
+    :root{
+      --blue-main:#1e3a8a;
+      --blue-dark:#172554;
+      --bg:#f4f7fb;
+      --white:#ffffff;
+      --line:#cbd5e1;
+      --muted:#64748b;
+      --head-bg:#a9c0d7;
+      --head-text:#c00000;
+      --green-dark:#2f8f2f;
+      --green-mid:#8bc34a;
+      --green-light:#00c853;
+      --danger:#dc2626;
+    }
+
     body{
-      background:#f4f7fb;
+      background:var(--bg);
       padding:20px;
       color:#1f2937;
     }
 
     .container{
-      max-width:1200px;
+      max-width:2200px;
       margin:auto;
     }
 
@@ -28,15 +43,15 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
       margin-bottom:20px;
+      flex-wrap:wrap;
+      gap:12px;
     }
 
     .title small{
       display:block;
       font-size:12px;
-      color:#64748b;
+      color:var(--muted);
       font-weight:bold;
       letter-spacing:1px;
     }
@@ -44,7 +59,7 @@
     .title h1{
       margin-top:4px;
       font-size:28px;
-      color:#172554;
+      color:var(--blue-dark);
     }
 
     .nav a{
@@ -60,7 +75,7 @@
     }
 
     .section{
-      background:#fff;
+      background:var(--white);
       border-radius:16px;
       padding:18px;
       margin-bottom:18px;
@@ -68,34 +83,34 @@
     }
 
     .section h2{
-      margin-bottom:14px;
+      margin:0 0 14px;
+      color:var(--blue-dark);
       font-size:20px;
-      color:#172554;
     }
 
     .cards{
       display:grid;
-      grid-template-columns:repeat(5,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:14px;
     }
 
     .card{
       background:#f8fafc;
-      border:1px solid #cbd5e1;
+      border:1px solid var(--line);
       border-radius:14px;
       padding:16px;
     }
 
     .card h3{
       font-size:13px;
-      color:#64748b;
+      color:var(--muted);
       margin-bottom:8px;
     }
 
     .card .value{
       font-size:28px;
       font-weight:bold;
-      color:#172554;
+      color:var(--blue-dark);
     }
 
     .grid{
@@ -112,17 +127,22 @@
     .field label{
       font-size:12px;
       font-weight:bold;
-      color:#64748b;
+      color:var(--muted);
       margin-bottom:6px;
     }
 
     .field input,
     .field select{
       padding:10px 12px;
-      border:1px solid #cbd5e1;
+      border:1px solid var(--line);
       border-radius:10px;
       font-size:14px;
       background:#fff;
+    }
+
+    .readonly{
+      background:#f1f5f9 !important;
+      font-weight:bold;
     }
 
     .actions{
@@ -142,7 +162,7 @@
     }
 
     .btn-primary{
-      background:#1e3a8a;
+      background:var(--blue-main);
       color:#fff;
     }
 
@@ -152,7 +172,7 @@
     }
 
     .btn-danger{
-      background:#dc2626;
+      background:var(--danger);
       color:#fff;
     }
 
@@ -162,7 +182,7 @@
 
     table{
       width:100%;
-      min-width:950px;
+      min-width:3000px;
       border-collapse:collapse;
     }
 
@@ -174,8 +194,8 @@
     }
 
     th{
-      background:#a9c0d7;
-      color:#c00000;
+      background:var(--head-bg);
+      color:var(--head-text);
       text-align:center;
     }
 
@@ -185,30 +205,43 @@
 
     .center{text-align:center}
 
-    .badge{
-      display:inline-block;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:bold;
+    .qty-book,
+    .adjusted,
+    .ending{
+      background:var(--green-dark);
       color:#fff;
+      font-weight:bold;
+      text-align:center;
     }
 
-    .badge-eng{background:#1e3a8a}
-    .badge-hk{background:#0f766e}
-    .badge-office{background:#2563eb}
-    .badge-others{background:#7c3aed}
-    .badge-active{background:#16a34a}
-    .badge-inactive{background:#dc2626}
+    .in-col{
+      background:var(--green-mid);
+      text-align:center;
+    }
+
+    .out-col{
+      background:var(--green-light);
+      text-align:center;
+    }
+
+    .ok{
+      color:#166534;
+      font-weight:bold;
+    }
+
+    .pr{
+      color:var(--danger);
+      font-weight:bold;
+    }
 
     .note{
       margin-top:10px;
       font-size:12px;
-      color:#64748b;
+      color:var(--muted);
       line-height:1.5;
     }
 
-    @media (max-width:1000px){
+    @media (max-width:1200px){
       .cards,.grid{
         grid-template-columns:repeat(2,1fr);
       }
@@ -226,67 +259,56 @@
   </style>
 </head>
 <body>
-
 <div class="container">
 
   <div class="topbar">
     <div class="title">
       <small>PROPERTY MANAGEMENT OFFICE</small>
-      <h1>TRADE / DEPARTMENT MASTER</h1>
+      <h1>MASTER LIST</h1>
     </div>
 
     <div class="nav">
       <a href="./index.html">Home</a>
-      <a href="./master-list.html">Master List</a>
       <a href="./deliveries.html">Deliveries</a>
       <a href="./issuance.html">Issuance</a>
       <a href="./reports.html">Reports</a>
+      <a href="./trade-dept.html">Trade Master</a>
     </div>
   </div>
 
   <div class="section">
-    <h2>Summary</h2>
-
+    <h2>Dashboard Summary</h2>
     <div class="cards">
       <div class="card">
-        <h3>Total Entries</h3>
-        <div class="value" id="totalTrades">0</div>
+        <h3>Total FM Items</h3>
+        <div class="value" id="dashFM">0</div>
       </div>
 
       <div class="card">
-        <h3>Engineering</h3>
-        <div class="value" id="engineeringCount">0</div>
+        <h3>Total Office Supplies</h3>
+        <div class="value" id="dashOfficeSupplies">0</div>
       </div>
 
       <div class="card">
-        <h3>Housekeeping</h3>
-        <div class="value" id="housekeepingCount">0</div>
+        <h3>Total On-Need</h3>
+        <div class="value" id="dashOnNeed">0</div>
       </div>
 
       <div class="card">
-        <h3>Office Supplies</h3>
-        <div class="value" id="officeCount">0</div>
-      </div>
-
-      <div class="card">
-        <h3>Others</h3>
-        <div class="value" id="othersCount">0</div>
+        <h3>Total Tools</h3>
+        <div class="value" id="dashTools">0</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <h2>Add / Update Trade / Department</h2>
+    <h2>Add / Update Item</h2>
 
     <div class="grid">
       <div class="field">
-        <label>Trade / Department Name</label>
-        <input type="text" id="tradeName" placeholder="CIVIL-WORK">
-      </div>
-
-      <div class="field">
         <label>Group</label>
-        <select id="tradeGroup">
+        <select id="group">
+          <option value="">Select Group</option>
           <option value="ENGINEERING">ENGINEERING</option>
           <option value="HOUSEKEEPING">HOUSEKEEPING</option>
           <option value="OFFICE SUPPLIES">OFFICE SUPPLIES</option>
@@ -295,39 +317,139 @@
       </div>
 
       <div class="field">
-        <label>Status</label>
-        <select id="tradeStatus">
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="INACTIVE">INACTIVE</option>
+        <label>Trade / Department</label>
+        <select id="trade">
+          <option value="">Select Trade</option>
         </select>
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <select id="category">
+          <option value="">Select Category</option>
+          <option value="FAST-MOVING">FAST-MOVING</option>
+          <option value="ON-NEED">ON-NEED</option>
+          <option value="TOOLS">TOOLS</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Storage Code</label>
+        <input id="locationCode" placeholder="B2T2-1">
+      </div>
+
+      <div class="field">
+        <label>Location Name</label>
+        <input id="locationName" placeholder="BASEMENT 2, TOWER 2, 1">
+      </div>
+
+      <div class="field">
+        <label>Rack No.</label>
+        <input id="rack" placeholder="R17/L3">
+      </div>
+
+      <div class="field">
+        <label>Item Name</label>
+        <input id="name" placeholder="Item description">
+      </div>
+
+      <div class="field">
+        <label>UOM</label>
+        <input id="uom" placeholder="PIECES / BAGS / ROLLS">
+      </div>
+
+      <div class="field">
+        <label>Qty. (Book)</label>
+        <input id="qtyBook" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>Count Variance</label>
+        <input id="countVariance" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>Recon Adj</label>
+        <input id="reconAdj" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>Adjusted Balance</label>
+        <input id="adjustedBalance" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>IN</label>
+        <input id="inQty" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>OUT</label>
+        <input id="outQty" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>Ending Balance</label>
+        <input id="endingBalance" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>Annual Forecast Qty</label>
+        <input id="forecast" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>Inventory Level</label>
+        <input id="inventoryLevel" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>Delivery In Transit</label>
+        <input id="deliveryInTransit" type="number" value="0">
+      </div>
+
+      <div class="field">
+        <label>Reorder Point</label>
+        <input id="reorderPoint" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>For PR</label>
+        <input id="forPR" class="readonly" readonly>
+      </div>
+
+      <div class="field">
+        <label>Usage %</label>
+        <input id="usagePercent" class="readonly" readonly>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn-primary" id="saveBtn" onclick="saveTrade()">Add Trade</button>
-      <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
-      <button class="btn-secondary" onclick="loadDefaultTrades()">Load Default Trades</button>
-      <button class="btn-danger" onclick="clearAllTrades()">Clear All</button>
+      <button class="btn-primary" id="saveBtn">Add Item</button>
+      <button class="btn-secondary" id="clearBtn">Clear Form</button>
+      <button class="btn-danger" id="clearAllBtn">Clear All</button>
     </div>
 
     <div class="note">
-      This is the main source of Trade / Department choices for the system.
-      Existing data will not be overwritten automatically.
+      FAST-MOVING + ENGINEERING = 6 months<br>
+      FAST-MOVING + HOUSEKEEPING = 4 months<br>
+      FAST-MOVING + OFFICE SUPPLIES = 4 months<br>
+      OTHERS = no automatic reorder
     </div>
   </div>
 
   <div class="section">
-    <h2>Trade / Department List</h2>
+    <h2>Filter Items</h2>
 
-    <div class="grid" style="margin-bottom:14px;">
+    <div class="grid">
       <div class="field">
-        <label>Search</label>
-        <input type="text" id="searchInput" placeholder="Type trade / department..." oninput="applyFilters()">
+        <label>Search Item</label>
+        <input id="searchInput" placeholder="Type item name...">
       </div>
 
       <div class="field">
         <label>Group</label>
-        <select id="filterGroup" onchange="applyFilters()">
+        <select id="filterGroup">
           <option value="">ALL</option>
           <option value="ENGINEERING">ENGINEERING</option>
           <option value="HOUSEKEEPING">HOUSEKEEPING</option>
@@ -337,27 +459,58 @@
       </div>
 
       <div class="field">
-        <label>Status</label>
-        <select id="filterStatus" onchange="applyFilters()">
+        <label>Trade / Department</label>
+        <select id="filterTrade">
           <option value="">ALL</option>
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="INACTIVE">INACTIVE</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+        <select id="filterCategory">
+          <option value="">ALL</option>
+          <option value="FAST-MOVING">FAST-MOVING</option>
+          <option value="ON-NEED">ON-NEED</option>
+          <option value="TOOLS">TOOLS</option>
         </select>
       </div>
     </div>
+  </div>
+
+  <div class="section">
+    <h2>Item List</h2>
 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th>ID</th>
-            <th>Trade / Department</th>
             <th>Group</th>
+            <th>Trade / Department</th>
+            <th>Category</th>
+            <th>Storage Code</th>
+            <th>Location Name</th>
+            <th>Rack No.</th>
+            <th>Item Name</th>
+            <th>UOM</th>
+            <th>Qty. (Book)</th>
+            <th>Count Variance</th>
+            <th>Recon Adj</th>
+            <th>Adjusted Balance</th>
+            <th>IN</th>
+            <th>OUT</th>
+            <th>Ending Balance</th>
+            <th>Annual Forecast Qty</th>
+            <th>Inventory Level</th>
+            <th>Delivery In Transit</th>
+            <th>Reorder Point</th>
+            <th>For PR</th>
+            <th>Usage %</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="tradeTableBody"></tbody>
+        <tbody id="tableBody"></tbody>
       </table>
     </div>
   </div>
@@ -365,173 +518,269 @@
 </div>
 
 <script>
-  const defaultTradeList = [
-    // ENGINEERING
-    { id: 1, name: "ENGINEERING", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 2, name: "ELECTRICAL", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 3, name: "CIVIL-WORK", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 4, name: "PLUMBING", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 5, name: "HVAC", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 6, name: "ELECTRO-MECH", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 7, name: "FDAS", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 8, name: "PLAN ATTENDANT", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 9, name: "BMS", group: "ENGINEERING", status: "ACTIVE" },
-    { id: 10, name: "TECHNICAL", group: "ENGINEERING", status: "ACTIVE" },
+  function getTradeDeptList() {
+    return JSON.parse(localStorage.getItem("tradeDeptList")) || [];
+  }
 
-    // HOUSEKEEPING
-    { id: 11, name: "HOUSEKEEPING", group: "HOUSEKEEPING", status: "ACTIVE" },
-
-    // OFFICE SUPPLIES
-    { id: 12, name: "TREASURY", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 13, name: "TRD", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 14, name: "CPR", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 15, name: "IT DEPARTMENT", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 16, name: "PARKING", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 17, name: "PURCHASING", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 18, name: "SAFETY", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 19, name: "HUMAN RESOURCE", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 20, name: "OFFICE OF THE GENERAL MANAGER", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 21, name: "OFFICE OF THE ASSISTANT GENERAL MANAGER", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-    { id: 22, name: "STOCK CONTROL", group: "OFFICE SUPPLIES", status: "ACTIVE" },
-
-    // OTHERS
-    { id: 23, name: "CONTRACTOR", group: "OTHERS", status: "ACTIVE" },
-    { id: 24, name: "TENANT", group: "OTHERS", status: "ACTIVE" },
-    { id: 25, name: "OTHERS", group: "OTHERS", status: "ACTIVE" }
-  ];
-
-  let tradeDeptList = JSON.parse(localStorage.getItem("tradeDeptList")) || [];
+  let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
   let editingId = null;
 
-  function saveTradeDeptList() {
-    localStorage.setItem("tradeDeptList", JSON.stringify(tradeDeptList));
+  function num(v) {
+    return Number(v) || 0;
   }
 
-  function updateSummary() {
-    document.getElementById("totalTrades").textContent = tradeDeptList.length;
-    document.getElementById("engineeringCount").textContent = tradeDeptList.filter(x => x.group === "ENGINEERING").length;
-    document.getElementById("housekeepingCount").textContent = tradeDeptList.filter(x => x.group === "HOUSEKEEPING").length;
-    document.getElementById("officeCount").textContent = tradeDeptList.filter(x => x.group === "OFFICE SUPPLIES").length;
-    document.getElementById("othersCount").textContent = tradeDeptList.filter(x => x.group === "OTHERS").length;
-  }
+  function loadTradeOptions(selected = "") {
+    const group = document.getElementById("group").value;
+    const list = getTradeDeptList();
 
-  function saveTrade() {
-    const name = document.getElementById("tradeName").value.trim().toUpperCase();
-    const group = document.getElementById("tradeGroup").value;
-    const status = document.getElementById("tradeStatus").value;
+    let trades = list
+      .filter(i => i.group === group && i.status === "ACTIVE")
+      .map(i => i.name);
 
-    if (!name) {
-      alert("Trade / Department Name is required.");
-      return;
+    if (!trades.includes("OTHERS")) {
+      trades.push("OTHERS");
     }
 
-    const duplicate = tradeDeptList.find(x =>
-      x.name === name && x.id !== editingId
-    );
+    const select = document.getElementById("trade");
+    select.innerHTML = `<option value="">Select Trade</option>`;
 
-    if (duplicate) {
-      alert("Trade / Department already exists.");
+    trades.forEach(t => {
+      const option = document.createElement("option");
+      option.value = t;
+      option.textContent = t;
+      select.appendChild(option);
+    });
+
+    if (selected) select.value = selected;
+  }
+
+  function loadTradeFilter() {
+    const select = document.getElementById("filterTrade");
+    const list = getTradeDeptList();
+
+    let trades = [...new Set(list.filter(i => i.status === "ACTIVE").map(i => i.name))];
+
+    if (!trades.includes("OTHERS")) {
+      trades.push("OTHERS");
+    }
+
+    trades.sort();
+
+    select.innerHTML = `<option value="">ALL</option>`;
+    trades.forEach(t => {
+      const option = document.createElement("option");
+      option.value = t;
+      option.textContent = t;
+      select.appendChild(option);
+    });
+  }
+
+  function getInventoryLevel(category, group) {
+    if (category !== "FAST-MOVING") return 0;
+    if (group === "ENGINEERING") return 6;
+    if (group === "HOUSEKEEPING") return 4;
+    if (group === "OFFICE SUPPLIES") return 4;
+    return 0;
+  }
+
+  function computeItem(item) {
+    const inventoryLevel = getInventoryLevel(item.category, item.group);
+    const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
+    const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
+    const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
+    const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
+    const usagePercent = num(item.forecast) > 0 ? ((num(item.outQty) / num(item.forecast)) * 100).toFixed(0) + "%" : "";
+    const status = forPR > 0 ? "FOR PR" : "OK";
+
+    return {
+      ...item,
+      inventoryLevel,
+      adjustedBalance,
+      endingBalance,
+      reorderPoint,
+      forPR,
+      usagePercent,
+      status
+    };
+  }
+
+  function saveItems() {
+    localStorage.setItem("masterItems", JSON.stringify(masterItems));
+  }
+
+  function autoComputePreview() {
+    const category = document.getElementById("category").value;
+    const group = document.getElementById("group").value;
+    const qtyBook = num(document.getElementById("qtyBook").value);
+    const countVariance = num(document.getElementById("countVariance").value);
+    const reconAdj = num(document.getElementById("reconAdj").value);
+    const inQty = num(document.getElementById("inQty").value);
+    const outQty = num(document.getElementById("outQty").value);
+    const forecast = num(document.getElementById("forecast").value);
+    const deliveryInTransit = num(document.getElementById("deliveryInTransit").value);
+
+    const inventoryLevel = getInventoryLevel(category, group);
+    const adjustedBalance = qtyBook + countVariance + reconAdj;
+    const endingBalance = adjustedBalance + inQty - outQty;
+    const reorderPoint = inventoryLevel > 0 ? (forecast / 12) * inventoryLevel : 0;
+    const forPR = Math.max(reorderPoint - endingBalance - deliveryInTransit, 0);
+    const usagePercent = forecast > 0 ? ((outQty / forecast) * 100).toFixed(0) + "%" : "";
+
+    document.getElementById("inventoryLevel").value = inventoryLevel;
+    document.getElementById("adjustedBalance").value = adjustedBalance;
+    document.getElementById("endingBalance").value = endingBalance;
+    document.getElementById("reorderPoint").value = reorderPoint ? reorderPoint.toFixed(2) : "";
+    document.getElementById("forPR").value = forPR ? forPR.toFixed(2) : "0";
+    document.getElementById("usagePercent").value = usagePercent;
+  }
+
+  function getFormData() {
+    return {
+      id: editingId || Date.now(),
+      group: document.getElementById("group").value,
+      trade: document.getElementById("trade").value,
+      category: document.getElementById("category").value,
+      locationCode: document.getElementById("locationCode").value.trim(),
+      locationName: document.getElementById("locationName").value.trim(),
+      rack: document.getElementById("rack").value.trim(),
+      name: document.getElementById("name").value.trim(),
+      uom: document.getElementById("uom").value.trim(),
+      qtyBook: num(document.getElementById("qtyBook").value),
+      countVariance: num(document.getElementById("countVariance").value),
+      reconAdj: num(document.getElementById("reconAdj").value),
+      inQty: num(document.getElementById("inQty").value),
+      outQty: num(document.getElementById("outQty").value),
+      forecast: num(document.getElementById("forecast").value),
+      deliveryInTransit: num(document.getElementById("deliveryInTransit").value)
+    };
+  }
+
+  function saveItem() {
+    const item = getFormData();
+
+    if (!item.group || !item.trade || !item.category || !item.name || !item.uom) {
+      alert("Group, Trade / Department, Category, Item Name, and UOM are required.");
       return;
     }
 
     if (editingId) {
-      tradeDeptList = tradeDeptList.map(item =>
-        item.id === editingId
-          ? { ...item, name, group, status }
-          : item
-      );
+      masterItems = masterItems.map(x => x.id === editingId ? item : x);
     } else {
-      tradeDeptList.push({
-        id: Date.now(),
-        name,
-        group,
-        status
-      });
+      masterItems.push(item);
     }
 
-    saveTradeDeptList();
-    applyFilters();
-    updateSummary();
+    saveItems();
+    render();
+    updateDashboard();
     clearForm();
   }
 
-  function editTrade(id) {
-    const item = tradeDeptList.find(x => x.id === id);
+  function editItem(id) {
+    const item = masterItems.find(x => x.id === id);
     if (!item) return;
 
     editingId = id;
-    document.getElementById("saveBtn").textContent = "Update Trade";
-    document.getElementById("tradeName").value = item.name || "";
-    document.getElementById("tradeGroup").value = item.group || "ENGINEERING";
-    document.getElementById("tradeStatus").value = item.status || "ACTIVE";
+    document.getElementById("saveBtn").textContent = "Update Item";
+
+    document.getElementById("group").value = item.group || "";
+    loadTradeOptions(item.trade || "");
+    document.getElementById("category").value = item.category || "";
+    document.getElementById("locationCode").value = item.locationCode || "";
+    document.getElementById("locationName").value = item.locationName || "";
+    document.getElementById("rack").value = item.rack || "";
+    document.getElementById("name").value = item.name || "";
+    document.getElementById("uom").value = item.uom || "";
+    document.getElementById("qtyBook").value = item.qtyBook || 0;
+    document.getElementById("countVariance").value = item.countVariance || 0;
+    document.getElementById("reconAdj").value = item.reconAdj || 0;
+    document.getElementById("inQty").value = item.inQty || 0;
+    document.getElementById("outQty").value = item.outQty || 0;
+    document.getElementById("forecast").value = item.forecast || 0;
+    document.getElementById("deliveryInTransit").value = item.deliveryInTransit || 0;
+
+    autoComputePreview();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function deleteTrade(id) {
-    if (!confirm("Delete this trade / department?")) return;
-
-    tradeDeptList = tradeDeptList.filter(x => x.id !== id);
-    saveTradeDeptList();
-    applyFilters();
-    updateSummary();
+  function deleteItem(id) {
+    if (!confirm("Delete item?")) return;
+    masterItems = masterItems.filter(x => x.id !== id);
+    saveItems();
+    render();
+    updateDashboard();
   }
 
   function clearForm() {
     editingId = null;
-    document.getElementById("saveBtn").textContent = "Add Trade";
-    document.getElementById("tradeName").value = "";
-    document.getElementById("tradeGroup").value = "ENGINEERING";
-    document.getElementById("tradeStatus").value = "ACTIVE";
+    document.getElementById("saveBtn").textContent = "Add Item";
+
+    document.getElementById("group").value = "";
+    loadTradeOptions();
+    document.getElementById("trade").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("locationCode").value = "";
+    document.getElementById("locationName").value = "";
+    document.getElementById("rack").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("uom").value = "";
+    document.getElementById("qtyBook").value = "0";
+    document.getElementById("countVariance").value = "0";
+    document.getElementById("reconAdj").value = "0";
+    document.getElementById("inQty").value = "0";
+    document.getElementById("outQty").value = "0";
+    document.getElementById("forecast").value = "0";
+    document.getElementById("deliveryInTransit").value = "0";
+    document.getElementById("inventoryLevel").value = "";
+    document.getElementById("adjustedBalance").value = "";
+    document.getElementById("endingBalance").value = "";
+    document.getElementById("reorderPoint").value = "";
+    document.getElementById("forPR").value = "";
+    document.getElementById("usagePercent").value = "";
   }
 
-  function clearAllTrades() {
-    if (!confirm("Clear all trade / department entries?")) return;
-
-    tradeDeptList = [];
-    saveTradeDeptList();
-    applyFilters();
-    updateSummary();
+  function clearAll() {
+    if (!confirm("Clear all items from master list?")) return;
+    masterItems = [];
+    saveItems();
+    render();
+    updateDashboard();
     clearForm();
   }
 
-  function loadDefaultTrades() {
-    if (!confirm("Load default trade / department list? This will replace current data.")) return;
-
-    tradeDeptList = [...defaultTradeList];
-    saveTradeDeptList();
-    applyFilters();
-    updateSummary();
-    clearForm();
-  }
-
-  function groupBadge(group) {
-    if (group === "ENGINEERING") return '<span class="badge badge-eng">ENGINEERING</span>';
-    if (group === "HOUSEKEEPING") return '<span class="badge badge-hk">HOUSEKEEPING</span>';
-    if (group === "OFFICE SUPPLIES") return '<span class="badge badge-office">OFFICE SUPPLIES</span>';
-    if (group === "OTHERS") return '<span class="badge badge-others">OTHERS</span>';
-    return group || "";
-  }
-
-  function statusBadge(status) {
-    if (status === "ACTIVE") return '<span class="badge badge-active">ACTIVE</span>';
-    if (status === "INACTIVE") return '<span class="badge badge-inactive">INACTIVE</span>';
-    return status || "";
-  }
-
-  function renderTable(items) {
-    const tbody = document.getElementById("tradeTableBody");
+  function renderFiltered(list) {
+    const tbody = document.getElementById("tableBody");
     tbody.innerHTML = "";
 
-    items.forEach(item => {
+    list.forEach(item => {
+      const x = computeItem(item);
       tbody.innerHTML += `
         <tr>
-          <td class="center">${item.id}</td>
-          <td>${item.name}</td>
-          <td class="center">${groupBadge(item.group)}</td>
-          <td class="center">${statusBadge(item.status)}</td>
+          <td class="center">${x.id}</td>
+          <td class="center">${x.group || ""}</td>
+          <td class="center">${x.trade || ""}</td>
+          <td class="center">${x.category || ""}</td>
+          <td class="center">${x.locationCode || ""}</td>
+          <td class="center">${x.locationName || ""}</td>
+          <td class="center">${x.rack || ""}</td>
+          <td>${x.name || ""}</td>
+          <td class="center">${x.uom || ""}</td>
+          <td class="qty-book">${x.qtyBook}</td>
+          <td class="center">${x.countVariance}</td>
+          <td class="center">${x.reconAdj}</td>
+          <td class="adjusted">${x.adjustedBalance}</td>
+          <td class="in-col">${x.inQty}</td>
+          <td class="out-col">${x.outQty}</td>
+          <td class="ending">${x.endingBalance}</td>
+          <td class="center">${x.forecast}</td>
+          <td class="center">${x.inventoryLevel}</td>
+          <td class="center">${x.deliveryInTransit}</td>
+          <td class="center">${x.reorderPoint ? x.reorderPoint.toFixed(2) : "0"}</td>
+          <td class="center">${x.forPR ? x.forPR.toFixed(2) : "-"}</td>
+          <td class="center">${x.usagePercent}</td>
+          <td class="center ${x.forPR > 0 ? "pr" : "ok"}">${x.status}</td>
           <td class="center">
-            <button class="btn-secondary" onclick="editTrade(${item.id})">Edit</button>
-            <button class="btn-danger" onclick="deleteTrade(${item.id})">Delete</button>
+            <button class="btn-secondary" onclick="editItem(${x.id})">Edit</button>
+            <button class="btn-danger" onclick="deleteItem(${x.id})">Delete</button>
           </td>
         </tr>
       `;
@@ -541,21 +790,59 @@
   function applyFilters() {
     const search = document.getElementById("searchInput").value.toLowerCase();
     const group = document.getElementById("filterGroup").value;
-    const status = document.getElementById("filterStatus").value;
+    const trade = document.getElementById("filterTrade").value;
+    const category = document.getElementById("filterCategory").value;
 
-    const filtered = tradeDeptList.filter(item => {
-      return (
-        (item.name || "").toLowerCase().includes(search) &&
-        (group === "" || item.group === group) &&
-        (status === "" || item.status === status)
-      );
-    });
+    const filtered = masterItems.filter(item =>
+      (item.name || "").toLowerCase().includes(search) &&
+      (group === "" || item.group === group) &&
+      (trade === "" || item.trade === trade) &&
+      (category === "" || item.category === category)
+    );
 
-    renderTable(filtered);
+    renderFiltered(filtered);
   }
 
-  renderTable(tradeDeptList);
-  updateSummary();
+  function render() {
+    renderFiltered(masterItems);
+  }
+
+  function updateDashboard() {
+    const items = masterItems;
+
+    const totalFM = items.filter(i => i.category === "FAST-MOVING").length;
+    const totalOfficeSupplies = items.filter(i => i.group === "OFFICE SUPPLIES").length;
+    const totalOnNeed = items.filter(i => i.category === "ON-NEED").length;
+    const totalTools = items.filter(i => i.category === "TOOLS").length;
+
+    document.getElementById("dashFM").textContent = totalFM;
+    document.getElementById("dashOfficeSupplies").textContent = totalOfficeSupplies;
+    document.getElementById("dashOnNeed").textContent = totalOnNeed;
+    document.getElementById("dashTools").textContent = totalTools;
+  }
+
+  document.getElementById("group").addEventListener("change", function () {
+    loadTradeOptions();
+    autoComputePreview();
+  });
+
+  ["category","qtyBook","countVariance","reconAdj","inQty","outQty","forecast","deliveryInTransit"]
+    .forEach(id => document.getElementById(id).addEventListener("input", autoComputePreview));
+
+  document.getElementById("saveBtn").addEventListener("click", saveItem);
+  document.getElementById("clearBtn").addEventListener("click", clearForm);
+  document.getElementById("clearAllBtn").addEventListener("click", clearAll);
+
+  document.getElementById("searchInput").addEventListener("input", applyFilters);
+  document.getElementById("filterGroup").addEventListener("change", applyFilters);
+  document.getElementById("filterTrade").addEventListener("change", applyFilters);
+  document.getElementById("filterCategory").addEventListener("change", applyFilters);
+
+  loadTradeOptions();
+  loadTradeFilter();
+  autoComputePreview();
+  render();
+  updateDashboard();
 </script>
 
 </body>
