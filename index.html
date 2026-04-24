@@ -3,231 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inventory Management System</title>
+<title>PPRX Financial Tracking System</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
-  background:linear-gradient(180deg,#eef6ff,#e2e8f0);
-  color:#0f172a;
-  padding:18px;
-}
-
-.app-shell{
-  max-width:1350px;
-  margin:auto;
-}
-
-/* TOP BAR */
-.top-nav{
-  background:rgba(15,23,42,.96);
+  background:radial-gradient(circle at top,#0c2340,#071a33,#040712);
   color:#fff;
-  border-radius:16px;
-  padding:14px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  box-shadow:0 10px 28px rgba(15,23,42,.22);
+  padding:12px;
 }
 
-.brand small{
-  display:block;
-  font-size:11px;
-  letter-spacing:1px;
-  opacity:.75;
-}
-
-.brand h1{
-  font-size:22px;
-  margin-top:3px;
-}
-
-.system-pill{
-  background:linear-gradient(135deg,#1e40af,#2563eb);
-  padding:8px 13px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-/* HERO */
-.command-header{
-  margin:16px 0 28px;
-  background:linear-gradient(135deg,#1d4ed8,#38bdf8);
-  color:white;
-  border-radius:22px;
-  padding:42px 20px;
-  text-align:center;
-  border:1px solid rgba(255,255,255,.28);
-  box-shadow:0 22px 45px rgba(30,58,138,.28);
-}
-
-.command-header small{
-  display:block;
-  font-size:12px;
-  letter-spacing:1px;
-  opacity:.9;
-  margin-bottom:8px;
-}
-
-.command-header h2{
-  font-size:34px;
-  margin-bottom:8px;
-}
-
-.command-header p{
-  font-size:14px;
-  opacity:.95;
-}
-
-/* SECTIONS */
-.section{
-  margin-bottom:32px;
-}
-
-.section-title{
-  font-size:13px;
-  letter-spacing:1px;
-  color:#334155;
-  font-weight:bold;
-  margin-bottom:12px;
-}
-
-/* GRIDS */
-.main-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.proc-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-}
-
-.master-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-}
-
-/* CARDS */
-.card{
-  background:rgba(255,255,255,.84);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.7);
+/* ================= HEADER ================= */
+.header{
+  background:
+    radial-gradient(circle at 22% 50%, rgba(255,170,0,.35), transparent 35%),
+    linear-gradient(135deg,#030712,#07111f,#0b1f3a);
+    
+  padding:16px 10px;
   border-radius:18px;
-  padding:20px;
-  min-height:155px;
-  height:100%;
-  box-shadow:0 8px 20px rgba(15,23,42,.08);
+
+  min-height:200px;
+
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-}
-
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 18px 38px rgba(15,23,42,.16);
-  border-color:rgba(147,197,253,.75);
-}
-
-.card-top{
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-}
-
-.icon{
-  width:46px;
-  height:46px;
-  min-width:46px;
-  min-height:46px;
-  border-radius:14px;
-  background:linear-gradient(145deg,#dbeafe,#bfdbfe);
-  display:flex;
   align-items:center;
   justify-content:center;
-  font-size:22px;
-  line-height:1;
-  flex-shrink:0;
-  box-shadow:inset 0 2px 4px rgba(255,255,255,.8),0 4px 10px rgba(15,23,42,.10);
-}
-
-.card h3{
-  font-size:18px;
-  color:#0f172a;
-  margin-bottom:7px;
-}
-
-.card p{
-  font-size:13px;
-  line-height:1.5;
-  color:#64748b;
-}
-
-.card-footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:18px;
-  gap:10px;
-}
-
-.badge{
-  font-size:11px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-weight:bold;
-}
-
-.badge-core{background:#dbeafe;color:#1e3a8a}
-.badge-proc{background:#dcfce7;color:#166534}
-.badge-report{background:#fee2e2;color:#991b1b}
-.badge-master{background:#e0e7ff;color:#3730a3}
-
-.btn{
-  text-decoration:none;
-  color:#fff;
-  padding:10px 16px;
-  border-radius:12px;
-  font-weight:bold;
-  font-size:13px;
-  transition:all .18s ease;
-}
-
-.btn:hover{
-  transform:scale(1.05);
-  box-shadow:0 10px 18px rgba(15,23,42,.18);
-}
-
-.btn-blue{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
-.btn-green{background:linear-gradient(135deg,#047857,#10b981)}
-.btn-red{background:linear-gradient(135deg,#dc2626,#ef4444)}
-.btn-dark{background:linear-gradient(135deg,#334155,#1e293b)}
-
-.footer-note{
   text-align:center;
-  color:#64748b;
-  font-size:12px;
-  padding:18px;
+
+  position:relative;
+  overflow:hidden;
+
+  border:1px solid rgba(255,179,71,.25);
+  box-shadow:0 15px 40px rgba(0,0,0,.5);
 }
 
-@media(max-width:950px){
-  .main-grid,
-  .proc-grid,
-  .master-grid{
+/* SHINE */
+.header::before{
+  content:"";
+  position:absolute;
+  top:-50%;
+  left:-80%;
+  width:60%;
+  height:200%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.3),transparent);
+  transform:rotate(25deg);
+  animation:shine 4s ease-in-out infinite;
+}
+
+/* LOGO */
+.main-logo{
+  max-width:170px;
+  width:100%;
+  margin-bottom:8px;
+  position:relative;
+  z-index:5;
+
+  filter:
+    drop-shadow(0 10px 25px rgba(0,0,0,.6))
+    drop-shadow(0 0 18px rgba(255,170,0,.4));
+
+  animation:pulse 3s ease-in-out infinite;
+}
+
+/* TEXT FIXED */
+.system-title{
+  display:block;
+  position:relative;
+  z-index:5;
+
+  margin-top:8px;
+
+  color:#ffffff;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+
+  text-shadow:
+    0 0 8px rgba(255,255,255,.9),
+    0 0 18px rgba(255,179,71,.5);
+}
+
+/* ================= KPI ================= */
+.kpi{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+
+.card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  padding:12px;
+  border-radius:14px;
+  text-align:center;
+}
+
+.income{border-left:4px solid #00ff9d}
+.expense{border-left:4px solid #ff4d4d}
+.net{border-left:4px solid #ffb300}
+
+/* ================= GRID ================= */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+
+.module{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  padding:12px;
+  border-radius:14px;
+}
+
+/* INPUT */
+input,select{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#0f2a52;
+  color:#fff;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#ff9800,#ffb347);
+  color:#111;
+  font-weight:bold;
+}
+
+/* ================= REPORT ================= */
+.report-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.report-box,.chart{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  padding:12px;
+  border-radius:14px;
+}
+
+.item{
+  background:rgba(255,255,255,.06);
+  padding:10px;
+  margin-top:8px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.chart{margin-top:12px}
+
+/* ================= ANIMATION ================= */
+@keyframes shine{
+  0%{left:-80%;opacity:0}
+  30%{opacity:1}
+  100%{left:130%;opacity:0}
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  .grid,.kpi,.report-grid{
     grid-template-columns:1fr;
   }
 
-  .command-header h2{
-    font-size:25px;
+  .header{
+    min-height:180px;
+  }
+
+  .main-logo{
+    max-width:140px;
+  }
+
+  .system-title{
+    font-size:11px;
   }
 }
 </style>
@@ -235,182 +205,126 @@ body{
 
 <body>
 
-<div class="app-shell">
+<!-- HEADER -->
+<div class="header">
+  <img src="logo.png" class="main-logo">
+  <div class="system-title">FINANCIAL TRACKING SYSTEM</div>
+</div>
 
-  <!-- TOP SYSTEM BAR -->
-  <div class="top-bar">
-    <div class="left">IMS</div>
+<!-- KPI -->
+<div class="kpi">
+  <div class="card income">INCOME<br><b id="incomeTotal">₱0</b></div>
+  <div class="card expense">EXPENSE<br><b id="expenseTotal">₱0</b></div>
+  <div class="card net">NET<br><b id="netTotal">₱0</b></div>
+  <div class="card">ENTRIES<br><b id="entryTotal">0</b></div>
+</div>
 
-    <div class="right">
-      <span>🔔</span>
-      <span>⚙️</span>
-      <span class="user">RL</span>
-    </div>
-  </div>
+<!-- INPUT -->
+<div class="grid">
 
-  <!-- MAIN HEADER -->
-  <div class="main-header">
-    <small>PROPERTY MANAGEMENT OFFICE</small>
-    <h1>Stock Control Department</h1>
-    <p>Inventory Management System</p>
-  </div>
+<div class="module">
+<h3>INCOME</h3>
 
-  <!-- COMMAND HEADER -->
-  <div class="command-header">
-    <small>OPERATIONS COMMAND CENTER</small>
-    <h2>Inventory Control Dashboard</h2>
-    <p>Item Master • Stock Receipt • Stock Issuance • Purchase Requisition • Reports</p>
-  </div>
+<select id="incomeType">
+<option selected disabled>Select Income</option>
+<option>Corporate Event</option>
+<option>Wedding</option>
+<option>Birthday</option>
+<option>LED Wall & Visual Display</option>
+<option>Stage & Production</option>
+<option>Full Event Services</option>
+</select>
 
-  <!-- MAIN OPERATIONS -->
-  <div class="section">
+<input id="incomeEvent" placeholder="Event / Client">
+<input id="incomeAmount" type="number" placeholder="Amount">
+<input id="incomeDate" type="date">
 
-    <div class="main-grid">
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📦</div>
-          <div>
-            <h3>Master List</h3>
-            <p>Manage item records, stock profile, annual forecast, reorder point, and balances.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-core">CORE DATA</span>
-          <a href="./master-list.html" class="btn btn-blue">Open</a>
-        </div>
-      </div>
+<button onclick="addIncome()">ADD INCOME</button>
+</div>
 
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">⬇️</div>
-          <div>
-            <h3>Deliveries</h3>
-            <p>Record incoming deliveries, MRR/RMS transactions, and update IN quantities.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-core">INBOUND</span>
-          <a href="./deliveries.html" class="btn btn-blue">Open</a>
-        </div>
-      </div>
+<div class="module">
+<h3>EXPENSE</h3>
 
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">⬆️</div>
-          <div>
-            <h3>Issuance</h3>
-            <p>Record released items, MIS/AIF references, and update OUT quantities.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-core">OUTBOUND</span>
-          <a href="./issuance.html" class="btn btn-blue">Open</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<select id="expenseType">
+<option selected disabled>Select Expense</option>
+<option>Fuel</option>
+<option>Salary</option>
+<option>Repair</option>
+<option>Office Supplies</option>
+<option>Bills</option>
+</select>
 
-  <div class="section">
-    <div class="section-title">PROCUREMENT & REPORTS</div>
+<input id="expenseNotes" placeholder="Notes">
+<input id="expenseAmount" type="number" placeholder="Amount">
+<input id="expenseDate" type="date">
 
-    <div class="proc-grid">
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">🧾</div>
-          <div>
-            <h3>Requisitions</h3>
-            <p>Create purchase requests based on shortage and items with quantity for PR.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-proc">PR CONTROL</span>
-          <a href="./requisitions.html" class="btn btn-green">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📄</div>
-          <div>
-            <h3>Report Generation</h3>
-            <p>Generate stock status, movement, reorder, and exportable inventory reports.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-report">REPORTS</span>
-          <a href="./reports.html" class="btn btn-green">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📊</div>
-          <div>
-            <h3>Analytics</h3>
-            <p>View graphs, percentage of consumption, trends, and visual inventory insights.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-report">ANALYTICS</span>
-          <a href="./analytics.html" class="btn btn-green">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">⚠️</div>
-          <div>
-            <h3>Hazardous Report</h3>
-            <p>Monitor hazardous and safety-critical inventory items for separate reporting.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-report">CRITICAL</span>
-          <a href="./hazardous.html" class="btn btn-red">Open</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">MASTER DATA</div>
-
-    <div class="master-grid">
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">🏷️</div>
-          <div>
-            <h3>Trade / Department</h3>
-            <p>Maintain centralized group and trade / department choices used by the system.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-master">REFERENCE</span>
-          <a href="./trade-dept.html" class="btn btn-dark">Open</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="icon">📍</div>
-          <div>
-            <h3>Location Master</h3>
-            <p>Maintain storage locations, location codes, racks, and stock room references.</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <span class="badge badge-master">STORAGE</span>
-          <a href="./locations.html" class="btn btn-dark">Open</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-note">
-    Inventory Management System • Property Management Office
-  </div>
+<button onclick="addExpense()">ADD EXPENSE</button>
+</div>
 
 </div>
 
+<div class="report-grid">
+<div class="report-box"><h3>INCOME</h3><div id="incomeReport"></div></div>
+<div class="report-box"><h3>EXPENSE</h3><div id="expenseReport"></div></div>
+</div>
+
+<div class="chart">
+<canvas id="chartCanvas"></canvas>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("pprxData")) || [];
+let income = 0, expense = 0, chart;
+
+function save(){localStorage.setItem("pprxData", JSON.stringify(data));}
+
+function addIncome(){
+if(!incomeAmount.value)return;
+data.push({type:"Income",category:incomeType.value,event:incomeEvent.value,amount:+incomeAmount.value});
+reset();save();update();
+}
+
+function addExpense(){
+if(!expenseAmount.value)return;
+data.push({type:"Expense",category:expenseType.value,event:expenseNotes.value,amount:+expenseAmount.value});
+reset();save();update();
+}
+
+function reset(){document.querySelectorAll("input").forEach(i=>i.value="");}
+
+function update(){
+income=0;expense=0;
+incomeReport.innerHTML="";expenseReport.innerHTML="";
+
+data.forEach(d=>{
+if(d.type==="Income"){
+income+=d.amount;
+incomeReport.innerHTML+=`<div class="item">${d.category}<br>₱${d.amount}</div>`;
+}
+if(d.type==="Expense"){
+expense+=d.amount;
+expenseReport.innerHTML+=`<div class="item">${d.category}<br>₱${d.amount}</div>`;
+}
+});
+
+incomeTotal.innerText="₱"+income;
+expenseTotal.innerText="₱"+expense;
+netTotal.innerText="₱"+(income-expense);
+entryTotal.innerText=data.length;
+
+drawChart();
+}
+
+function drawChart(){
+if(chart) chart.destroy();
+chart=new Chart(chartCanvas,{
+type:"doughnut",
+data:{labels:["Income","Expense"],datasets:[{data:[income,expense],backgroundColor:["#00ff9d","#ff4d4d"]}]}
+});
+}
+
+update();
+</script>
+
 </body>
-</html> 
+</html>
