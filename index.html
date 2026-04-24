@@ -33,15 +33,8 @@ body{
   box-shadow:0 10px 28px rgba(15,23,42,.22);
 }
 
-.top-bar .left{
-  font-weight:bold;
-}
-
-.top-bar .right{
-  display:flex;
-  gap:14px;
-  align-items:center;
-}
+.top-bar .left{font-weight:bold}
+.top-bar .right{display:flex;gap:14px;align-items:center}
 
 .user{
   background:#1e40af;
@@ -111,10 +104,7 @@ body{
   opacity:.95;
 }
 
-/* SECTIONS */
-.section{
-  margin-bottom:24px;
-}
+.section{margin-bottom:24px}
 
 .section-title{
   font-size:12px;
@@ -125,18 +115,8 @@ body{
 }
 
 /* GRIDS */
-.main-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.proc-grid,
-.master-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
+.main-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.proc-grid,.master-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 
 /* CARDS */
 .card{
@@ -158,30 +138,17 @@ body{
   box-shadow:0 14px 28px rgba(15,23,42,.14);
 }
 
-.card-top{
-  display:flex;
-  gap:12px;
-}
+.card-top{display:flex;gap:12px}
 
 .icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
+  width:40px;height:40px;border-radius:12px;
   background:#dbeafe;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   font-size:18px;
 }
 
-.card h3{
-  font-size:15px;
-}
-
-.card p{
-  font-size:12px;
-  color:#64748b;
-}
+.card h3{font-size:15px}
+.card p{font-size:12px;color:#64748b}
 
 .card-footer{
   display:flex;
@@ -221,9 +188,7 @@ body{
 
 /* MOBILE */
 @media(max-width:900px){
-  .main-grid,
-  .proc-grid,
-  .master-grid{
+  .main-grid,.proc-grid,.master-grid{
     grid-template-columns:1fr;
   }
 }
@@ -237,9 +202,7 @@ body{
 <!-- TOP BAR -->
 <div class="top-bar">
   <div class="left">IMS</div>
-  <div class="right">
-    🔔 ⚙️ <span class="user">RL</span>
-  </div>
+  <div class="right">🔔 ⚙️ <span class="user">RL</span></div>
 </div>
 
 <!-- HEADER -->
@@ -256,61 +219,50 @@ body{
   <p>Item Master • Stock Receipt • Stock Issuance • Purchase Requisition • Reports</p>
 </div>
 
-<!-- MAIN -->
+<!-- MAIN OPERATIONS -->
 <div class="section">
+<div class="section-title">MAIN OPERATIONS</div>
 <div class="main-grid">
 
-<div class="card">
-  <div class="card-top">
-    <div class="icon">📦</div>
-    <div>
-      <h3>Item Master</h3>
-      <p>Manage items and stock data</p>
-    </div>
-  </div>
-  <div class="card-footer">
-    <span class="badge badge-core">CORE</span>
-    <a href="#" class="btn btn-blue">Open</a>
-  </div>
-</div>
+<div class="card"><div class="card-top"><div class="icon">📦</div><div><h3>Item Master</h3><p>Manage items, forecast, reorder points.</p></div></div><div class="card-footer"><span class="badge badge-core">CORE</span><a href="./master-list.html" class="btn btn-blue">Open</a></div></div>
 
-<div class="card">
-  <div class="card-top">
-    <div class="icon">⬇️</div>
-    <div>
-      <h3>Stock Receipt</h3>
-      <p>Record incoming stock</p>
-    </div>
-  </div>
-  <div class="card-footer">
-    <span class="badge badge-core">IN</span>
-    <a href="#" class="btn btn-blue">Open</a>
-  </div>
-</div>
+<div class="card"><div class="card-top"><div class="icon">⬇️</div><div><h3>Stock Receipt</h3><p>Record incoming stock.</p></div></div><div class="card-footer"><span class="badge badge-core">IN</span><a href="./deliveries.html" class="btn btn-blue">Open</a></div></div>
 
-<div class="card">
-  <div class="card-top">
-    <div class="icon">⬆️</div>
-    <div>
-      <h3>Stock Issuance</h3>
-      <p>Record outgoing stock</p>
-    </div>
-  </div>
-  <div class="card-footer">
-    <span class="badge badge-core">OUT</span>
-    <a href="#" class="btn btn-blue">Open</a>
-  </div>
-</div>
+<div class="card"><div class="card-top"><div class="icon">⬆️</div><div><h3>Stock Issuance</h3><p>Record outgoing stock.</p></div></div><div class="card-footer"><span class="badge badge-core">OUT</span><a href="./issuance.html" class="btn btn-blue">Open</a></div></div>
 
 </div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer-note">
-Inventory Management System
-</div>
+<!-- PROCUREMENT -->
+<div class="section">
+<div class="section-title">PROCUREMENT & REPORTS</div>
+<div class="proc-grid">
+
+<div class="card"><div class="card-top"><div class="icon">🧾</div><div><h3>Purchase Requisition</h3><p>Create PR based on stock needs.</p></div></div><div class="card-footer"><span class="badge badge-proc">PR</span><a href="./requisitions.html" class="btn btn-green">Open</a></div></div>
+
+<div class="card"><div class="card-top"><div class="icon">📄</div><div><h3>Report Generation</h3><p>Generate inventory reports.</p></div></div><div class="card-footer"><span class="badge badge-report">REPORT</span><a href="./reports.html" class="btn btn-green">Open</a></div></div>
+
+<div class="card"><div class="card-top"><div class="icon">📊</div><div><h3>Analytics</h3><p>View charts and trends.</p></div></div><div class="card-footer"><span class="badge badge-report">DATA</span><a href="./analytics.html" class="btn btn-green">Open</a></div></div>
+
+<div class="card"><div class="card-top"><div class="icon">⚠️</div><div><h3>Hazardous Report</h3><p>Monitor hazardous items.</p></div></div><div class="card-footer"><span class="badge badge-report">CRITICAL</span><a href="./hazardous.html" class="btn btn-red">Open</a></div></div>
 
 </div>
+</div>
 
+<!-- MASTER DATA -->
+<div class="section">
+<div class="section-title">MASTER DATA</div>
+<div class="master-grid">
+
+<div class="card"><div class="card-top"><div class="icon">🏷️</div><div><h3>Departments</h3><p>Manage trade and departments.</p></div></div><div class="card-footer"><span class="badge badge-master">REF</span><a href="./trade-dept.html" class="btn btn-dark">Open</a></div></div>
+
+<div class="card"><div class="card-top"><div class="icon">📍</div><div><h3>Locations</h3><p>Manage storage locations.</p></div></div><div class="card-footer"><span class="badge badge-master">STORAGE</span><a href="./locations.html" class="btn btn-dark">Open</a></div></div>
+
+</div>
+</div>
+
+<div class="footer-note">Inventory Management System</div>
+
+</div>
 </body>
 </html>
