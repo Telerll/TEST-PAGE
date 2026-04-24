@@ -6,90 +6,153 @@
 <title>Reports - Inventory System</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#f4f7fb;padding:20px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f7fb;padding:20px;color:#1f2937}
 .container{max-width:1700px;margin:auto}
 
 .topbar{
-display:flex;justify-content:space-between;align-items:center;
-margin-bottom:20px;flex-wrap:wrap
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+  gap:12px;
 }
 
 .title h1{color:#172554}
 
 .nav a{
-text-decoration:none;background:#e5e7eb;
-padding:10px;border-radius:8px;margin-right:6px;font-weight:bold;color:#111827
+  display:inline-block;
+  text-decoration:none;
+  background:#e5e7eb;
+  color:#111827;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:bold;
+  margin-right:8px;
+  font-size:14px;
 }
 
 .section{
-background:#fff;padding:18px;border-radius:14px;
-margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.05)
+  background:#fff;
+  padding:18px;
+  border-radius:16px;
+  margin-bottom:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+}
+
+.section h2{
+  margin-bottom:14px;
+  color:#172554;
+  font-size:20px;
 }
 
 .cards{
-display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
 }
 
 .card{
-background:#f8fafc;padding:14px;border-radius:10px;border:1px solid #cbd5e1
+  background:#f8fafc;
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  padding:16px;
 }
 
-.card h3{font-size:12px;color:#64748b}
-.card .value{font-size:24px;font-weight:bold;color:#172554}
+.card h3{
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:8px;
+}
+
+.card .value{
+  font-size:28px;
+  font-weight:bold;
+  color:#172554;
+}
 
 .filters{
-display:grid;grid-template-columns:repeat(5,1fr);gap:10px
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
 }
 
 select,input{
-padding:10px;border-radius:8px;border:1px solid #cbd5e1
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+  font-size:14px;
+  background:#fff;
 }
 
 .btn-row{
-margin-top:12px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-.btn{
-border:none;
-padding:10px 14px;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-color:#fff;
+button{
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+  color:#fff;
 }
 
 .btn-blue{background:#1e3a8a}
 .btn-green{background:#16a34a}
 .btn-gray{background:#64748b}
 
+.table-wrap{overflow:auto}
+
 table{
-width:100%;border-collapse:collapse;margin-top:10px
+  width:100%;
+  min-width:1500px;
+  border-collapse:collapse;
+  margin-top:10px;
 }
 
 th,td{
-border:1px solid #334155;padding:8px;font-size:13px
+  border:1px solid #334155;
+  padding:8px 10px;
+  font-size:13px;
+  vertical-align:middle;
 }
 
-th{background:#a9c0d7;color:#c00000}
+th{
+  background:#a9c0d7;
+  color:#c00000;
+  text-align:center;
+}
+
 tbody tr:nth-child(even){background:#f8fafc}
 
+.center{text-align:center}
+.right{text-align:right}
 .pr{color:#dc2626;font-weight:bold}
 .ok{color:#166534;font-weight:bold}
 
 .pr-item{
-padding:12px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-margin-bottom:10px;
-background:#f8fafc;
+  padding:12px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  margin-bottom:10px;
+  background:#f8fafc;
+}
+
+.note{
+  margin-top:10px;
+  font-size:12px;
+  color:#64748b;
+  line-height:1.5;
 }
 
 @media(max-width:1000px){
-.cards,.filters{grid-template-columns:1fr}
+  .cards,.filters{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -98,280 +161,360 @@ background:#f8fafc;
 
 <div class="container">
 
-<div class="topbar">
-<div class="title">
-<h1>REPORTS</h1>
-</div>
+  <div class="topbar">
+    <div class="title">
+      <h1>REPORTS</h1>
+    </div>
 
-<div class="nav">
-<a href="./index.html">Home</a>
-<a href="./master-list.html">Master List</a>
-<a href="./deliveries.html">Deliveries</a>
-<a href="./issuance.html">Issuance</a>
-</div>
-</div>
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+      <a href="./deliveries.html">Deliveries</a>
+      <a href="./issuance.html">Issuance</a>
+      <a href="./trade-dept.html">Trade Master</a>
+    </div>
+  </div>
 
-<div class="section">
-<h2>PR Summary (FAST-MOVING)</h2>
+  <div class="section">
+    <h2>Report Summary</h2>
 
-<div style="margin:10px 0;">
-<button onclick="generatePR()" class="btn btn-blue">
-Generate PR List
-</button>
-</div>
+    <div class="cards">
+      <div class="card">
+        <h3>Items for PR</h3>
+        <div class="value" id="itemsForPR">0</div>
+      </div>
 
-<div class="cards">
-<div class="card">
-<h3>FM Items for PR</h3>
-<div class="value" id="fmItemsPR">0</div>
-</div>
+      <div class="card">
+        <h3>FM Items for PR</h3>
+        <div class="value" id="fmItemsPR">0</div>
+      </div>
 
-<div class="card">
-<h3>FM Qty for PR</h3>
-<div class="value" id="fmQtyPR">0</div>
-</div>
+      <div class="card">
+        <h3>HK FM Items for PR</h3>
+        <div class="value" id="hkFMItemsPR">0</div>
+      </div>
 
-<div class="card">
-<h3>Total FM Items</h3>
-<div class="value" id="totalFM">0</div>
-</div>
-</div>
-</div>
+      <div class="card">
+        <h3>Office Supplies FM for PR</h3>
+        <div class="value" id="officeFMItemsPR">0</div>
+      </div>
+    </div>
 
-<div class="section">
-<h2>Filters</h2>
+    <div class="btn-row">
+      <button onclick="generatePR()" class="btn-blue">Generate PR List</button>
+    </div>
+  </div>
 
-<div class="filters">
+  <div class="section">
+    <h2>Filters</h2>
 
-<select id="filterGroup">
-<option value="">ALL GROUP</option>
-<option value="ENGINEERING">ENGINEERING</option>
-<option value="OFFICE">OFFICE</option>
-</select>
+    <div class="filters">
+      <select id="filterGroup">
+        <option value="">ALL GROUP</option>
+        <option value="ENGINEERING">ENGINEERING</option>
+        <option value="HOUSEKEEPING">HOUSEKEEPING</option>
+        <option value="OFFICE SUPPLIES">OFFICE SUPPLIES</option>
+        <option value="OTHERS">OTHERS</option>
+      </select>
 
-<select id="filterCategory">
-<option value="">ALL CATEGORY</option>
-<option value="FAST-MOVING">FAST-MOVING</option>
-<option value="ON-NEED">ON-NEED</option>
-<option value="TOOLS">TOOLS</option>
-</select>
+      <select id="filterTrade">
+        <option value="">ALL TRADE / DEPARTMENT</option>
+      </select>
 
-<select id="filterTrade">
-<option value="">ALL TRADE / DEPARTMENT</option>
-</select>
+      <select id="filterCategory">
+        <option value="">ALL CATEGORY</option>
+        <option value="FAST-MOVING">FAST-MOVING</option>
+        <option value="ON-NEED">ON-NEED</option>
+        <option value="TOOLS">TOOLS</option>
+      </select>
 
-<select id="filterClassification">
-<option value="">ALL CLASSIFICATION</option>
-<option value="ENGINEERING CONSUMABLE">ENGINEERING CONSUMABLE</option>
-<option value="HAZARDOUS">HAZARDOUS</option>
-<option value="SAFEKEEPING">SAFEKEEPING</option>
-<option value="TOOLS">TOOLS</option>
-<option value="EQUIPMENT">EQUIPMENT</option>
-<option value="PROJECT">PROJECT</option>
-<option value="OFFICE SUPPLY">OFFICE SUPPLY</option>
-<option value="UNIFORM">UNIFORM</option>
-<option value="OFFICE TOOLS">OFFICE TOOLS</option>
-<option value="GIVEAWAY">GIVEAWAY</option>
-<option value="PANTRY SUPPLY">PANTRY SUPPLY</option>
-<option value="RAFFLE ITEMS">RAFFLE ITEMS</option>
-<option value="MEDICINE">MEDICINE</option>
-<option value="OFFICE FURNITURES">OFFICE FURNITURES</option>
-</select>
+      <select id="filterStatus">
+        <option value="">ALL STATUS</option>
+        <option value="FOR PR">FOR PR ONLY</option>
+        <option value="OK">OK ONLY</option>
+      </select>
 
-<input id="search" placeholder="Search item...">
+      <input id="search" placeholder="Search item...">
+    </div>
 
-</div>
+    <div class="btn-row">
+      <button onclick="render()" class="btn-blue">Generate Report</button>
+      <button onclick="exportExcel()" class="btn-green">Export to Excel</button>
+      <button onclick="refreshReport()" class="btn-gray">Refresh</button>
+    </div>
 
-<div class="btn-row">
-<button onclick="render()" class="btn btn-blue">Generate Report</button>
-<button onclick="exportExcel()" class="btn btn-green">Export to Excel</button>
-<button onclick="refreshReport()" class="btn btn-gray">Refresh</button>
-</div>
+    <div class="note">
+      Report reads from saved Master List data. For PR is computed per line item.
+    </div>
+  </div>
 
-</div>
+  <div class="section">
+    <h2>Report Table</h2>
 
-<div class="section">
-<h2>Report Table</h2>
+    <div class="table-wrap">
+      <table id="reportTable">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Group</th>
+            <th>Trade / Department</th>
+            <th>Category</th>
+            <th>UOM</th>
+            <th>Ending Balance</th>
+            <th>Annual Forecast</th>
+            <th>Inventory Level</th>
+            <th>Delivery In Transit</th>
+            <th>Reorder Point</th>
+            <th>For PR</th>
+            <th>Status</th>
+          </tr>
+        </thead>
 
-<table id="reportTable">
-<thead>
-<tr>
-<th>Item</th>
-<th>Group</th>
-<th>Trade</th>
-<th>Category</th>
-<th>Classification</th>
-<th>Ending</th>
-<th>Reorder</th>
-<th>For PR</th>
-<th>Status</th>
-</tr>
-</thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
 
-<tbody id="tableBody"></tbody>
-</table>
-</div>
-
-<div class="section">
-<h2>Generated PR List</h2>
-<div id="prList"></div>
-</div>
+  <div class="section">
+    <h2>Generated PR List</h2>
+    <div id="prList"></div>
+  </div>
 
 </div>
 
 <script>
 let masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-function num(v){ return Number(v) || 0; }
+function num(v){
+  return Number(v) || 0;
+}
+
+function getTradeDeptList(){
+  return JSON.parse(localStorage.getItem("tradeDeptList")) || [];
+}
 
 function getInventoryLevel(category, group){
-if(category === "FAST-MOVING" && group === "ENGINEERING") return 6;
-if(category === "FAST-MOVING" && group === "OFFICE") return 4;
-return 0;
+  if(category !== "FAST-MOVING") return 0;
+
+  if(group === "ENGINEERING") return 6;
+  if(group === "HOUSEKEEPING") return 4;
+  if(group === "OFFICE SUPPLIES") return 4;
+
+  return 0;
 }
 
 function compute(item){
-const inv = getInventoryLevel(item.category, item.group);
-const adj = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
-const ending = adj + num(item.inQty) - num(item.outQty);
-const reorder = inv > 0 ? (num(item.forecast) / 12) * inv : 0;
-const forPR = Math.max(reorder - ending - num(item.deliveryInTransit), 0);
+  const inventoryLevel = getInventoryLevel(item.category, item.group);
 
-return {...item, ending, reorder, forPR};
+  const adjustedBalance =
+    num(item.qtyBook) +
+    num(item.countVariance) +
+    num(item.reconAdj);
+
+  const endingBalance =
+    adjustedBalance +
+    num(item.inQty) -
+    num(item.outQty);
+
+  const reorderPoint =
+    inventoryLevel > 0
+      ? (num(item.forecast) / 12) * inventoryLevel
+      : 0;
+
+  const forPR =
+    Math.max(
+      reorderPoint -
+      endingBalance -
+      num(item.deliveryInTransit),
+      0
+    );
+
+  const status = forPR > 0 ? "FOR PR" : "OK";
+
+  return {
+    ...item,
+    inventoryLevel,
+    adjustedBalance,
+    endingBalance,
+    reorderPoint,
+    forPR,
+    status
+  };
 }
 
-function loadTradeFilter() {
-const select = document.getElementById("filterTrade");
-const trades = [...new Set(masterItems.map(i => i.trade).filter(Boolean).sort())];
+function loadTradeFilter(){
+  const select = document.getElementById("filterTrade");
+  const list = getTradeDeptList();
 
-select.innerHTML = `<option value="">ALL TRADE / DEPARTMENT</option>`;
-trades.forEach(t => {
-select.innerHTML += `<option value="${t}">${t}</option>`;
-});
+  let trades = [...new Set(
+    list
+      .filter(i => i.status === "ACTIVE")
+      .map(i => i.name)
+      .filter(Boolean)
+  )];
+
+  if(!trades.includes("OTHERS")){
+    trades.push("OTHERS");
+  }
+
+  trades.sort();
+
+  select.innerHTML = `<option value="">ALL TRADE / DEPARTMENT</option>`;
+
+  trades.forEach(t => {
+    const option = document.createElement("option");
+    option.value = t;
+    option.textContent = t;
+    select.appendChild(option);
+  });
+}
+
+function getFilteredItems(){
+  const group = document.getElementById("filterGroup").value;
+  const trade = document.getElementById("filterTrade").value;
+  const category = document.getElementById("filterCategory").value;
+  const status = document.getElementById("filterStatus").value;
+  const search = document.getElementById("search").value.toLowerCase();
+
+  let items = masterItems.map(compute);
+
+  items = items.filter(i =>
+    (group === "" || i.group === group) &&
+    (trade === "" || i.trade === trade) &&
+    (category === "" || i.category === category) &&
+    (status === "" || i.status === status) &&
+    ((i.name || "").toLowerCase().includes(search))
+  );
+
+  return items;
 }
 
 function render(){
-const group = filterGroup.value;
-const cat = filterCategory.value;
-const trade = filterTrade.value;
-const classification = filterClassification.value;
-const search = searchInput.value.toLowerCase();
+  const items = getFilteredItems();
 
-let items = masterItems.map(compute);
+  const tbody = document.getElementById("tableBody");
+  tbody.innerHTML = "";
 
-items = items.filter(i =>
-(group === "" || i.group === group) &&
-(cat === "" || i.category === cat) &&
-(trade === "" || i.trade === trade) &&
-(classification === "" || i.classification === classification) &&
-((i.name || "").toLowerCase().includes(search))
-);
+  items.forEach(i => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${i.name || ""}</td>
+        <td class="center">${i.group || ""}</td>
+        <td class="center">${i.trade || ""}</td>
+        <td class="center">${i.category || ""}</td>
+        <td class="center">${i.uom || ""}</td>
+        <td class="right">${num(i.endingBalance).toLocaleString()}</td>
+        <td class="right">${num(i.forecast).toLocaleString()}</td>
+        <td class="center">${i.inventoryLevel}</td>
+        <td class="right">${num(i.deliveryInTransit).toLocaleString()}</td>
+        <td class="right">${i.reorderPoint.toFixed(2)}</td>
+        <td class="right">${i.forPR > 0 ? i.forPR.toFixed(2) : "-"}</td>
+        <td class="center ${i.status === "FOR PR" ? "pr" : "ok"}">${i.status}</td>
+      </tr>
+    `;
+  });
 
-tableBody.innerHTML = "";
-
-items.forEach(i => {
-tableBody.innerHTML += `
-<tr>
-<td>${i.name || ""}</td>
-<td>${i.group || ""}</td>
-<td>${i.trade || ""}</td>
-<td>${i.category || ""}</td>
-<td>${i.classification || ""}</td>
-<td>${i.ending}</td>
-<td>${i.reorder.toFixed(2)}</td>
-<td>${i.forPR > 0 ? i.forPR.toFixed(2) : "-"}</td>
-<td class="${i.forPR > 0 ? 'pr' : 'ok'}">
-${i.forPR > 0 ? 'FOR PR' : 'OK'}
-</td>
-</tr>`;
-});
-
-updateSummary();
+  updateSummary();
 }
 
 function updateSummary(){
-const items = masterItems.map(compute);
-const fm = items.filter(i => i.category === "FAST-MOVING");
-const fmPR = fm.filter(i => i.forPR > 0);
+  const items = masterItems.map(compute);
 
-fmItemsPR.textContent = fmPR.length;
-fmQtyPR.textContent = fmPR.reduce((s,x) => s + num(x.forPR), 0).toFixed(2);
-totalFM.textContent = fm.length;
+  const forPR = items.filter(i => i.forPR > 0);
+
+  const fmForPR = items.filter(i =>
+    i.category === "FAST-MOVING" &&
+    i.forPR > 0
+  );
+
+  const hkFMForPR = items.filter(i =>
+    i.group === "HOUSEKEEPING" &&
+    i.category === "FAST-MOVING" &&
+    i.forPR > 0
+  );
+
+  const officeFMForPR = items.filter(i =>
+    i.group === "OFFICE SUPPLIES" &&
+    i.category === "FAST-MOVING" &&
+    i.forPR > 0
+  );
+
+  document.getElementById("itemsForPR").textContent = forPR.length;
+  document.getElementById("fmItemsPR").textContent = fmForPR.length;
+  document.getElementById("hkFMItemsPR").textContent = hkFMForPR.length;
+  document.getElementById("officeFMItemsPR").textContent = officeFMForPR.length;
 }
 
 function generatePR(){
-const items = masterItems.map(compute);
-const fmPR = items.filter(i => i.category === "FAST-MOVING" && i.forPR > 0);
+  const items = masterItems
+    .map(compute)
+    .filter(i => i.forPR > 0)
+    .sort((a,b) => b.forPR - a.forPR);
 
-prList.innerHTML = "";
+  const container = document.getElementById("prList");
+  container.innerHTML = "";
 
-if(fmPR.length === 0){
-prList.innerHTML = "<p>No items for PR</p>";
-return;
-}
+  if(items.length === 0){
+    container.innerHTML = "<p>No items for PR.</p>";
+    return;
+  }
 
-fmPR.forEach(i => {
-prList.innerHTML += `
-<div class="pr-item">
-<strong>${i.name}</strong><br>
-<small>${i.group || ""} | ${i.trade || ""}</small><br>
-<small>${i.category || ""} | ${i.classification || ""}</small><br>
-<span style="color:#dc2626;font-weight:bold;">
-Qty for PR: ${i.forPR.toFixed(2)}
-</span>
-</div>`;
-});
+  items.forEach(i => {
+    container.innerHTML += `
+      <div class="pr-item">
+        <strong>${i.name || ""}</strong><br>
+        <small>${i.group || ""} | ${i.trade || ""} | ${i.category || ""}</small><br>
+        <small>Ending: ${num(i.endingBalance).toLocaleString()} ${i.uom || ""} | Reorder Point: ${i.reorderPoint.toFixed(2)}</small><br>
+        <span style="color:#dc2626;font-weight:bold;">
+          Qty for PR: ${i.forPR.toFixed(2)} ${i.uom || ""}
+        </span>
+      </div>
+    `;
+  });
 }
 
 function exportExcel(){
-let rows = document.querySelectorAll("#reportTable tr");
-let csv = [];
+  const table = document.getElementById("reportTable");
+  const rows = table.querySelectorAll("tr");
+  let csv = [];
 
-rows.forEach(r => {
-let cols = r.querySelectorAll("th,td");
-let data = [];
-cols.forEach(c => data.push('"' + c.innerText.replace(/"/g, '""') + '"'));
-csv.push(data.join(","));
-});
+  rows.forEach(row => {
+    const cols = row.querySelectorAll("th,td");
+    let rowData = [];
 
-let blob = new Blob([csv.join("\n")], {type:"text/csv"});
-let a = document.createElement("a");
-let today = new Date().toISOString().slice(0,10);
-a.href = URL.createObjectURL(blob);
-a.download = `report_${today}.csv`;
-a.click();
+    cols.forEach(col => {
+      rowData.push('"' + col.innerText.replace(/"/g, '""') + '"');
+    });
+
+    csv.push(rowData.join(","));
+  });
+
+  const blob = new Blob([csv.join("\n")], {type:"text/csv"});
+  const a = document.createElement("a");
+  const today = new Date().toISOString().slice(0,10);
+
+  a.href = URL.createObjectURL(blob);
+  a.download = `inventory_report_${today}.csv`;
+  a.click();
 }
 
 function refreshReport(){
-masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
+  masterItems = JSON.parse(localStorage.getItem("masterItems")) || [];
 
-filterGroup.value = "";
-filterCategory.value = "";
-filterTrade.value = "";
-filterClassification.value = "";
-searchInput.value = "";
+  document.getElementById("filterGroup").value = "";
+  document.getElementById("filterTrade").value = "";
+  document.getElementById("filterCategory").value = "";
+  document.getElementById("filterStatus").value = "";
+  document.getElementById("search").value = "";
 
-loadTradeFilter();
-render();
-prList.innerHTML = "";
+  loadTradeFilter();
+  render();
+  document.getElementById("prList").innerHTML = "";
 }
-
-const filterGroup = document.getElementById("filterGroup");
-const filterCategory = document.getElementById("filterCategory");
-const filterTrade = document.getElementById("filterTrade");
-const filterClassification = document.getElementById("filterClassification");
-const searchInput = document.getElementById("search");
-
-const tableBody = document.getElementById("tableBody");
-const prList = document.getElementById("prList");
-
-const fmItemsPR = document.getElementById("fmItemsPR");
-const fmQtyPR = document.getElementById("fmQtyPR");
-const totalFM = document.getElementById("totalFM");
 
 loadTradeFilter();
 render();
 </script>
 
 </body>
-</html>.
+</html>
