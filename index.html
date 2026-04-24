@@ -6,12 +6,7 @@
 <title>Inventory Management System</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
   background:#eef2f7;
@@ -58,32 +53,19 @@ body{
   font-weight:bold;
 }
 
-/* COMMAND HEADER */
+/* CENTER HEADER */
 .command-header{
   margin:16px 0 24px;
   background:linear-gradient(135deg,#1e3a8a,#2563eb);
   color:white;
   border-radius:18px;
-  padding:30px 24px;
+  padding:42px 20px;
   text-align:center;
-  box-shadow:0 10px 22px rgba(30,58,138,.22);
-}
-
-.logo-box{
-  width:78px;
-  height:78px;
-  margin:0 auto 12px;
-  border-radius:50%;
-  background:rgba(255,255,255,.16);
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-}
-
-.logo-box img{
-  width:58px;
-  height:58px;
-  object-fit:contain;
+  box-shadow:0 10px 22px rgba(30,58,138,.22);
 }
 
 .command-header small{
@@ -91,11 +73,11 @@ body{
   font-size:12px;
   letter-spacing:1px;
   opacity:.9;
-  margin-bottom:6px;
+  margin-bottom:8px;
 }
 
 .command-header h2{
-  font-size:30px;
+  font-size:32px;
   margin-bottom:8px;
 }
 
@@ -104,10 +86,7 @@ body{
   opacity:.95;
 }
 
-/* SECTIONS */
-.section{
-  margin-bottom:28px;
-}
+.section{margin-bottom:28px}
 
 .section-title{
   font-size:13px;
@@ -117,14 +96,12 @@ body{
   margin-bottom:12px;
 }
 
-/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:16px;
 }
 
-/* CARD */
 .card{
   background:#fff;
   border:1px solid #d4deea;
@@ -135,12 +112,6 @@ body{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  transition:.18s ease;
-}
-
-.card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 24px rgba(15,23,42,.13);
 }
 
 .card-top{
@@ -215,13 +186,8 @@ body{
 }
 
 @media(max-width:950px){
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .command-header h2{
-    font-size:24px;
-  }
+  .grid{grid-template-columns:1fr}
+  .command-header h2{font-size:24px}
 }
 </style>
 </head>
@@ -240,10 +206,6 @@ body{
   </div>
 
   <div class="command-header">
-    <div class="logo-box">
-      <img src="logo.png" alt="Company Logo">
-    </div>
-
     <small>CENTRALIZED INVENTORY CONTROL</small>
     <h2>Operations Dashboard</h2>
     <p>Master data • Deliveries • Issuance • Reports • Requisitions</p>
@@ -298,7 +260,7 @@ body{
   </div>
 
   <div class="section">
-    <div class="section-title">PROCUREMENT</div>
+    <div class="section-title">PROCUREMENT & REPORTS</div>
 
     <div class="grid">
       <div class="card">
