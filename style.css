@@ -42,10 +42,6 @@ top-nav{
   margin-top:4px;
 }
 
-.system-pill{
-  display:none;
-}
-
 .command-header{
   margin:14px 0 22px;
   background:linear-gradient(135deg,#1d4ed8,#38bdf8);
