@@ -104,6 +104,7 @@
       font-size:13px;
       color:var(--muted);
       margin-bottom:8px;
+      line-height:1.4;
     }
 
     .card .value{
@@ -199,10 +200,10 @@
     <h2>Analytics Summary</h2>
     <div class="cards">
       <div class="card"><h3>Total Items</h3><div class="value" id="totalItems">0</div></div>
-      <div class="card"><h3>Total Stock On Hand</h3><div class="value" id="totalSOH">0</div></div>
-      <div class="card"><h3>Total For PR</h3><div class="value" id="totalPR">0</div></div>
-      <div class="card"><h3>Hazardous Items</h3><div class="value" id="hazardCount">0</div></div>
-      <div class="card"><h3>Fast-Moving Items</h3><div class="value" id="fmCount">0</div></div>
+      <div class="card"><h3>Overall Consumption %</h3><div class="value" id="overallConsumption">0%</div></div>
+      <div class="card"><h3>Engineering Consumables For PR</h3><div class="value" id="engPR">0</div></div>
+      <div class="card"><h3>Office Supplies For PR</h3><div class="value" id="officePR">0</div></div>
+      <div class="card"><h3>Housekeeping Consumables For PR</h3><div class="value" id="housePR">0</div></div>
     </div>
   </div>
 
@@ -274,11 +275,33 @@
 
   const items = masterItems.map(computeItem);
 
+  const totalOut = items.reduce((s,x)=>s+num(x.outQty),0);
+  const totalForecast = items.reduce((s,x)=>s+num(x.forecast),0);
+  const overallConsumption = totalForecast > 0 ? ((totalOut / totalForecast) * 100).toFixed(1) + "%" : "0%";
+
   document.getElementById("totalItems").textContent = items.length;
-  document.getElementById("totalSOH").textContent = items.reduce((s,x)=>s+num(x.endingBalance),0).toLocaleString();
-  document.getElementById("totalPR").textContent = items.reduce((s,x)=>s+num(x.forPR),0).toFixed(2);
-  document.getElementById("hazardCount").textContent = items.filter(x=>x.classification==="HAZARDOUS").length;
-  document.getElementById("fmCount").textContent = items.filter(x=>x.category==="FAST-MOVING").length;
+  document.getElementById("overallConsumption").textContent = overallConsumption;
+
+  document.getElementById("engPR").textContent =
+    items.filter(x =>
+      x.forPR > 0 &&
+      x.group === "ENGINEERING" &&
+      x.category === "FAST-MOVING"
+    ).length;
+
+  document.getElementById("officePR").textContent =
+    items.filter(x =>
+      x.forPR > 0 &&
+      x.group === "OFFICE SUPPLY" &&
+      x.category === "FAST-MOVING"
+    ).length;
+
+  document.getElementById("housePR").textContent =
+    items.filter(x =>
+      x.forPR > 0 &&
+      x.group === "HOUSEKEEPING" &&
+      x.category === "FAST-MOVING"
+    ).length;
 
   function countBy(key){
     const map = {};
@@ -308,6 +331,7 @@
   });
 
   const topPR = [...items]
+    .filter(x => x.forPR > 0)
     .sort((a,b)=>b.forPR-a.forPR)
     .slice(0,10);
 
