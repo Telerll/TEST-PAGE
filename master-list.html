@@ -436,7 +436,8 @@
       Reorder Point is computed based on the provided Annual Forecasted Quantity.<br>
       FAST-MOVING + ENGINEERING group = 6 months equivalent of consumption.<br>
       FAST-MOVING + OFFICE SUPPLY / HOUSEKEEPING group = 4 months equivalent of consumption.<br>
-      For PR = Reorder Point - Ending Balance - Delivery In Transit, minimum 0.
+      For PR = Reorder Point - Ending Balance - Delivery In Transit, minimum 0.<br>
+      Usage % = OUT ÷ Annual Forecast Qty × 100.
     </div>
   </div>
 
@@ -818,7 +819,11 @@
     const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
     const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
     const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
-    const usagePercent = num(item.forecast) > 0 ? ((num(item.outQty) / num(item.forecast)) * 100).toFixed(0) + "%" : "";
+
+    const usagePercent = num(item.forecast) > 0
+      ? ((num(item.outQty) / num(item.forecast)) * 100).toFixed(0) + "%"
+      : "";
+
     const status = forPR > 0 ? "FOR REORDER" : "COVERED";
 
     return {
@@ -924,7 +929,10 @@
     const endingBalance = adjustedBalance + inQty - outQty;
     const reorderPoint = inventoryLevel > 0 ? (forecast / 12) * inventoryLevel : 0;
     const forPR = Math.max(reorderPoint - endingBalance - deliveryInTransit, 0);
-    const usagePercent = forecast > 0 ? ((outQty / forecast) * 100).toFixed(0) + "%" : "";
+
+    const usagePercent = forecast > 0
+      ? ((outQty / forecast) * 100).toFixed(0) + "%"
+      : "";
 
     document.getElementById("inventoryLevel").value = inventoryLevel;
     document.getElementById("adjustedBalance").value = adjustedBalance;
