@@ -51,6 +51,24 @@
       line-height:1.5;
     }
 
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-bottom:16px;
+    }
+
+    .nav a{
+      text-decoration:none;
+      background:#e5e7eb;
+      color:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      font-size:14px;
+    }
+
     .toolbar{
       display:grid;
       grid-template-columns:1fr auto;
@@ -138,6 +156,11 @@
       background:#f8fafc;
     }
 
+    .supplier-name{
+      font-weight:600;
+      line-height:1.4;
+    }
+
     .remove-btn{
       background:#dc2626;
       color:#fff;
@@ -146,6 +169,7 @@
       border-radius:8px;
       cursor:pointer;
       font-size:12px;
+      white-space:nowrap;
     }
 
     .remove-btn:hover{
@@ -191,6 +215,13 @@
       </p>
     </div>
 
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+      <a href="./requisitions.html">Requisitions</a>
+      <a href="./reports.html">Reports</a>
+    </div>
+
     <div class="toolbar">
       <input type="text" id="searchInput" placeholder="Search supplier...">
       <button onclick="sortSuppliers()">Sort A–Z</button>
@@ -210,7 +241,7 @@
   </div>
 
   <script>
-    let suppliers = [
+    const defaultSuppliers = [
       "ABENSON VENTURES, INC",
       "ACG BUILDER'S CENTRE, INC.",
       "ACHIEVERS INDUSTRIES, INC.",
@@ -278,17 +309,49 @@
       "WINFIELD ENTERPRISES"
     ];
 
+    let suppliers = JSON.parse(localStorage.getItem("supplierMasterList")) || defaultSuppliers;
+
     const supplierList = document.getElementById("supplierList");
     const searchInput = document.getElementById("searchInput");
     const newSupplier = document.getElementById("newSupplier");
 
-    function renderSuppliers(list = suppliers){
+    function saveSuppliers(){
+      localStorage.setItem("supplierMasterList", JSON.stringify(suppliers));
+    }
+
+    function getFilteredSuppliers(){
+      const keyword = searchInput.value.toLowerCase().trim();
+
+      if(!keyword){
+        return suppliers;
+      }
+
+      return suppliers.filter(supplier =>
+        supplier.toLowerCase().includes(keyword)
+      );
+    }
+
+    function renderSuppliers(){
+      const list = getFilteredSuppliers();
+
       supplierList.innerHTML = "";
-      list.forEach((supplier, index) => {
+
+      if(list.length === 0){
+        supplierList.innerHTML = `
+          <li>
+            <span class="supplier-name">No supplier found.</span>
+          </li>
+        `;
+        return;
+      }
+
+      list.forEach((supplier) => {
+        const actualIndex = suppliers.indexOf(supplier);
+
         const li = document.createElement("li");
         li.innerHTML = `
-          <span>${supplier}</span>
-          <button class="remove-btn" onclick="removeSupplier(${index})">Remove</button>
+          <span class="supplier-name">${supplier}</span>
+          <button class="remove-btn" onclick="removeSupplier(${actualIndex})">Remove</button>
         `;
         supplierList.appendChild(li);
       });
@@ -296,7 +359,11 @@
 
     function addSupplier(){
       const value = newSupplier.value.trim().toUpperCase();
-      if(!value) return;
+
+      if(!value){
+        alert("Please enter supplier name.");
+        return;
+      }
 
       if(suppliers.includes(value)){
         alert("Supplier already exists.");
@@ -304,28 +371,35 @@
       }
 
       suppliers.push(value);
+      suppliers.sort((a,b)=>a.localeCompare(b));
+      saveSuppliers();
+
       newSupplier.value = "";
+      searchInput.value = "";
+
       renderSuppliers();
     }
 
     function removeSupplier(index){
+      if(index < 0 || index >= suppliers.length) return;
+
       if(confirm("Remove this supplier?")){
         suppliers.splice(index, 1);
+        saveSuppliers();
         renderSuppliers();
       }
     }
 
     function sortSuppliers(){
       suppliers.sort((a,b)=>a.localeCompare(b));
+      saveSuppliers();
       renderSuppliers();
     }
 
-    searchInput.addEventListener("input", function(){
-      const keyword = this.value.toLowerCase();
-      const filtered = suppliers.filter(s => s.toLowerCase().includes(keyword));
-      renderSuppliers(filtered);
-    });
+    searchInput.addEventListener("input", renderSuppliers);
 
+    suppliers.sort((a,b)=>a.localeCompare(b));
+    saveSuppliers();
     renderSuppliers();
   </script>
 
