@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supplier Master List</title>
+  <meta name="theme-color" content="#0f172a" />
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f1f5f9;
+      color:#0f172a;
+      padding:16px;
+    }
+
+    .page{
+      max-width:1100px;
+      margin:auto;
+    }
+
+    .header{
+      background:#0f172a;
+      color:#fff;
+      padding:22px;
+      border-radius:16px;
+      margin-bottom:18px;
+      text-align:center;
+    }
+
+    .header h1{
+      font-size:26px;
+      margin-bottom:6px;
+    }
+
+    .header p{
+      opacity:.8;
+      font-size:14px;
+    }
+
+    .note{
+      margin-top:10px;
+      font-size:13px;
+      color:#cbd5e1;
+      line-height:1.5;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .toolbar input{
+      padding:12px 14px;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      font-size:14px;
+      width:100%;
+    }
+
+    .toolbar button,
+    .add-box button{
+      background:#0f172a;
+      color:#fff;
+      border:none;
+      padding:12px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .toolbar button:hover,
+    .add-box button:hover{
+      background:#1e293b;
+    }
+
+    .add-box{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .add-box input{
+      padding:12px 14px;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      font-size:14px;
+      width:100%;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 8px 20px rgba(15,23,42,.08);
+      overflow:hidden;
+      border:1px solid #e2e8f0;
+    }
+
+    .card h2{
+      background:#1e293b;
+      color:#fff;
+      padding:14px;
+      font-size:16px;
+      text-align:center;
+    }
+
+    ul{
+      list-style:none;
+      max-height:70vh;
+      overflow:auto;
+    }
+
+    li{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-bottom:1px solid #e2e8f0;
+      font-size:14px;
+    }
+
+    li:last-child{
+      border-bottom:none;
+    }
+
+    li:hover{
+      background:#f8fafc;
+    }
+
+    .remove-btn{
+      background:#dc2626;
+      color:#fff;
+      border:none;
+      padding:6px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:12px;
+    }
+
+    .remove-btn:hover{
+      background:#b91c1c;
+    }
+
+    .footer-note{
+      margin-top:12px;
+      font-size:12px;
+      color:#64748b;
+      text-align:right;
+    }
+
+    @media(max-width:700px){
+      .toolbar,
+      .add-box{
+        grid-template-columns:1fr;
+      }
+
+      .header h1{
+        font-size:22px;
+      }
+
+      li{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .remove-btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <div class="header">
+      <h1>Supplier Master List</h1>
+      <p>Search, add, and manage supplier master list.</p>
+      <p class="note">
+        Use <strong>OTHERS</strong> for one-time, emergency, cash purchase, or non-accredited suppliers not listed in the master file.
+      </p>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="Search supplier...">
+      <button onclick="sortSuppliers()">Sort A–Z</button>
+    </div>
+
+    <div class="add-box">
+      <input type="text" id="newSupplier" placeholder="Add new supplier...">
+      <button onclick="addSupplier()">Add Supplier</button>
+    </div>
+
+    <div class="card">
+      <h2>Suppliers</h2>
+      <ul id="supplierList"></ul>
+    </div>
+
+    <div class="footer-note">Supplier Master Reference</div>
+  </div>
+
+  <script>
+    let suppliers = [
+      "ABENSON VENTURES, INC",
+      "ACG BUILDER'S CENTRE, INC.",
+      "ACHIEVERS INDUSTRIES, INC.",
+      "ADECS INTERNATIONAL CORP.",
+      "ADMWORKS TRADING AND SERVICES CORP.",
+      "AGS-PHILS BUILDING MATERIALS INC.",
+      "C & F-3 FRUITS TRADING",
+      "CASH N CARRY",
+      "CITISPAN",
+      "COMBINED ELECTRO-MECHANICAL SUPPLY, INC.",
+      "CONMASTER",
+      "CONTRADE INTEGRATED DEPOT, INC.",
+      "CRV AIRCON & PLUMBING SERVICES",
+      "DSL GAM ENTERPRISES INCORPORATED",
+      "DYNADVANCE TRADING AND DISTRIBUTION (DTDI) INC",
+      "EAST ASIA LUMIERE CO.",
+      "ECO-HYGIENE INSTITUTIONAL SALES CORP.",
+      "ERGO CONTRACTS PHILS., INC.",
+      "ESJ LANDSCAPING",
+      "FAIR N SQUARE EMPORIUM INC",
+      "FASTBUILD CORPORATION",
+      "FEDERAL CONSTRUCTION SUPPLY CORP.",
+      "FIL-AMERICAN HARDWARE CO., INC.",
+      "FILAIRCO INC.",
+      "FLEURDELYS ORNAMENTAL PLANT FARMING",
+      "GA PRINTING, INC.",
+      "HOSPECO PHILIPPINES INC.",
+      "HOCHENG PHILIPPINES CORPORATION",
+      "HKR EQUIPMENT CORPORATION",
+      "IEEI",
+      "INNOVATIVE ENTERPRISES INC.",
+      "IWORX MARKETING SERVICES",
+      "JCM GAS STATION",
+      "JJED PHILS. INC.",
+      "JMD INT'L CORP.",
+      "KARCHER INC.",
+      "KENLEEN INTERNATIONAL DISTRIBUTION INC.",
+      "KHOL",
+      "LANDMARK",
+      "L.T.S LUGGAGE TRADING & SERVICES, INC.",
+      "MAGNIFICENT",
+      "MAXICOM",
+      "MERCURY DRUG",
+      "MILKYWAY CONTROL & POWER SERVICES CORP.",
+      "NATY'S ORNAMENTAL PLANT TRADING",
+      "NEW GOLD",
+      "OFFICE WAREHOUSE",
+      "OSP-ESCO INTERNATIONAL INC.",
+      "OTHERS",
+      "PACKAGEMAKERS, INC.",
+      "PALMER-ASIA INC.",
+      "PHILIPPINE INTEGRATED ADVERTISING AGENCY, INC.",
+      "PING AN WINDOWS AND DOORS SUPPLY",
+      "PRESTIGE ADVANCE SYSTEMS, INC.",
+      "PX EXPRESS",
+      "RENLETTE TRADING",
+      "RUSSELL PRINTING CORPORATION",
+      "SOUTH-EASTERN TRADING & INDUSTRIAL SERVICES CO. INC.",
+      "SUMOMETRICS INDUSTRIES, INC.",
+      "SYSTEMS DIMENSIONS TECHNOLOGY CORP.",
+      "TECHROM",
+      "TORR EQUIPMENT INC.",
+      "TRENDCOM I.T. & SOFTWARE SOLUTIONS INC.",
+      "WILCON DEPOT",
+      "WINFIELD ENTERPRISES"
+    ];
+
+    const supplierList = document.getElementById("supplierList");
+    const searchInput = document.getElementById("searchInput");
+    const newSupplier = document.getElementById("newSupplier");
+
+    function renderSuppliers(list = suppliers){
+      supplierList.innerHTML = "";
+      list.forEach((supplier, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span>${supplier}</span>
+          <button class="remove-btn" onclick="removeSupplier(${index})">Remove</button>
+        `;
+        supplierList.appendChild(li);
+      });
+    }
+
+    function addSupplier(){
+      const value = newSupplier.value.trim().toUpperCase();
+      if(!value) return;
+
+      if(suppliers.includes(value)){
+        alert("Supplier already exists.");
+        return;
+      }
+
+      suppliers.push(value);
+      newSupplier.value = "";
+      renderSuppliers();
+    }
+
+    function removeSupplier(index){
+      if(confirm("Remove this supplier?")){
+        suppliers.splice(index, 1);
+        renderSuppliers();
+      }
+    }
+
+    function sortSuppliers(){
+      suppliers.sort((a,b)=>a.localeCompare(b));
+      renderSuppliers();
+    }
+
+    searchInput.addEventListener("input", function(){
+      const keyword = this.value.toLowerCase();
+      const filtered = suppliers.filter(s => s.toLowerCase().includes(keyword));
+      renderSuppliers(filtered);
+    });
+
+    renderSuppliers();
+  </script>
+
+</body>
+</html>
