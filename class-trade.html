@@ -1,235 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trade / Department Master List</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Master List - Inventory Management System</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial, sans-serif;
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+    :root{
+      --blue-main:#1e3a8a;
+      --blue-dark:#172554;
+      --bg:#f4f7fb;
+      --white:#ffffff;
+      --line:#cbd5e1;
+      --muted:#64748b;
+      --head-bg:#a9c0d7;
+      --head-text:#c00000;
+      --green-dark:#2f8f2f;
+      --green-mid:#8bc34a;
+      --green-light:#00c853;
+      --danger:#dc2626;
     }
 
-    body{
-      background:#f1f5f9;
-      color:#0f172a;
-      padding:16px;
+    body{background:var(--bg);padding:20px;color:#1f2937}
+    .container{max-width:2200px;margin:auto}
+
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:20px;flex-wrap:wrap;gap:12px;
     }
 
-    .page{
-      max-width:1200px;
-      margin:auto;
+    .title small{
+      display:block;font-size:12px;color:var(--muted);
+      font-weight:bold;letter-spacing:1px;
     }
 
-    .header{
-      background:#0f172a;
-      color:white;
-      padding:22px;
-      border-radius:16px;
-      margin-bottom:18px;
-      text-align:center;
+    .title h1{
+      margin-top:4px;font-size:28px;color:var(--blue-dark);
     }
 
-    .header h1{
-      font-size:26px;
-      margin-bottom:6px;
+    .nav a{
+      display:inline-block;text-decoration:none;background:#e5e7eb;
+      color:#111827;padding:10px 14px;border-radius:10px;
+      font-weight:bold;margin-right:8px;font-size:14px;
     }
 
-    .header p{
-      opacity:.8;
-      font-size:14px;
+    .section{
+      background:var(--white);border-radius:16px;padding:18px;
+      margin-bottom:18px;box-shadow:0 4px 12px rgba(0,0,0,.06);
     }
 
-    .search-box{
-      margin-bottom:18px;
+    .section h2{
+      margin:0 0 14px;color:var(--blue-dark);font-size:20px;
     }
 
-    .search-box input{
-      width:100%;
-      padding:13px 15px;
-      border:1px solid #cbd5e1;
-      border-radius:12px;
-      font-size:15px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(5, 1fr);
-      gap:14px;
+    .cards{
+      display:grid;grid-template-columns:repeat(5,1fr);gap:14px;
     }
 
     .card{
-      background:white;
-      border-radius:16px;
-      box-shadow:0 8px 20px rgba(15,23,42,.08);
-      overflow:hidden;
-      border:1px solid #e2e8f0;
+      background:#f8fafc;border:1px solid var(--line);
+      border-radius:14px;padding:16px;
     }
 
-    .card h2{
-      background:#1e293b;
-      color:white;
-      font-size:15px;
-      padding:12px;
-      text-align:center;
-      letter-spacing:.4px;
+    .card h3{
+      font-size:13px;color:var(--muted);margin-bottom:8px;
     }
 
-    .card ul{
-      list-style:none;
-      padding:10px;
+    .card .value{
+      font-size:28px;font-weight:bold;color:var(--blue-dark);
     }
 
-    .card li{
-      padding:10px;
-      border-bottom:1px solid #e2e8f0;
-      font-size:14px;
-      line-height:1.3;
+    .grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
     }
 
-    .card li:last-child{
-      border-bottom:none;
+    .field{display:flex;flex-direction:column}
+
+    .field label{
+      font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:6px;
     }
 
-    .card li:hover{
-      background:#f8fafc;
-      font-weight:bold;
+    .field input,.field select{
+      padding:10px 12px;border:1px solid var(--line);
+      border-radius:10px;font-size:14px;background:#fff;
     }
 
-    .hazard{
-      color:#b91c1c;
-      font-weight:bold;
+    .readonly{background:#f1f5f9 !important;font-weight:bold}
+
+    .actions{
+      margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;
     }
 
-    @media(max-width:1000px){
-      .grid{
-        grid-template-columns:repeat(2, 1fr);
-      }
+    button{
+      border:none;padding:10px 14px;border-radius:10px;
+      font-weight:bold;cursor:pointer;font-size:14px;
     }
 
-    @media(max-width:600px){
-      .grid{
-        grid-template-columns:1fr;
-      }
+    .btn-primary{background:var(--blue-main);color:#fff}
+    .btn-secondary{background:#e5e7eb;color:#111827}
+    .btn-danger{background:var(--danger);color:#fff}
 
-      .header h1{
-        font-size:21px;
-      }
+    .table-wrap{overflow:auto}
+
+    table{
+      width:100%;min-width:3200px;border-collapse:collapse;
+    }
+
+    th,td{
+      border:1px solid #334155;padding:8px 10px;
+      font-size:13px;vertical-align:middle;
+    }
+
+    th{
+      background:var(--head-bg);color:var(--head-text);text-align:center;
+    }
+
+    tbody tr:nth-child(even){background:#f8fafc}
+
+    .center{text-align:center}
+    .qty-book,.adjusted,.ending{
+      background:var(--green-dark);color:#fff;font-weight:bold;text-align:center;
+    }
+    .in-col{background:var(--green-mid);text-align:center}
+    .out-col{background:var(--green-light);text-align:center}
+
+    .ok{color:#166534;font-weight:bold}
+    .pr{color:var(--danger);font-weight:bold}
+
+    .note{
+      margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5;
+    }
+
+    @media (max-width:1400px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (max-width:700px){
+      .cards,.grid{grid-template-columns:1fr}
+      .title h1{font-size:22px}
     }
   </style>
 </head>
 <body>
+<div class="container">
 
-  <div class="page">
-
-    <div class="header">
-      <h1>Item Classification per Trade / Department Master List</h1>
-      <p>Reference list for Group, Category, Classification, Trade / Department, and Unique Classification.</p>
+  <div class="topbar">
+    <div class="title">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>MASTER LIST</h1>
     </div>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search master list...">
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./deliveries.html">Deliveries</a>
+      <a href="./issuance.html">Issuance</a>
+      <a href="./requisitions.html">Requisitions</a>
+      <a href="./reports.html">Reports</a>
     </div>
-
-    <div class="grid" id="masterList">
-
-      <div class="card">
-        <h2>GROUP</h2>
-        <ul>
-          <li>ENGINEERING</li>
-          <li>OFFICE SUPPLY</li>
-          <li>HOUSEKEEPING</li>
-          <li>OTHERS</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>CATEGORY</h2>
-        <ul>
-          <li>FAST-MOVING</li>
-          <li>ON-NEED</li>
-          <li>TOOLS & EQUIPMENT</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>CLASSIFICATION</h2>
-        <ul>
-          <li>ENGINEERING CONSUMABLES</li>
-          <li>HOUSEKEEPING CONSUMABLES</li>
-          <li>TOOLS</li>
-          <li>EQUIPMENT</li>
-          <li>OFFICE TOOLS</li>
-          <li>OFFICE SUPPLY</li>
-          <li>PROJECT</li>
-          <li>PANTRY SUPPLY</li>
-          <li>MEDICINE</li>
-          <li>UNIFORM</li>
-          <li>GIVEAWAY</li>
-          <li>RAFFLE ITEM</li>
-          <li>OFFICE FURNITURES</li>
-          <li>SAFEKEEPING</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>TRADE / DEPARTMENT</h2>
-        <ul>
-          <li>ENGINEERING</li>
-          <li>CIVIL WORK</li>
-          <li>PLUMBING</li>
-          <li>ELECTRICAL</li>
-          <li>ELECTRO-MECHANICAL</li>
-          <li>FDAS</li>
-          <li>BMS</li>
-          <li>HVAC</li>
-          <li>TECHNICAL</li>
-          <li>ACCOUNTING CORP.</li>
-          <li>ACCOUNTING CONDO</li>
-          <li>TRD</li>
-          <li>TREASURY</li>
-          <li>PURCHASING</li>
-          <li>STOCK CONTROL</li>
-          <li>CPR</li>
-          <li>HUMAN RESOURCE</li>
-          <li>SECURITY</li>
-          <li>PARKING</li>
-          <li>SAFETY</li>
-          <li>IT DEPARTMENT</li>
-          <li>OFFICE OF THE GENERAL MANAGER</li>
-          <li>OFFICE OF THE ASSISTANT GENERAL MANAGER</li>
-          <li>CONTRACTOR</li>
-          <li>TENANT</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>UNIQUE CLASSIFICATION</h2>
-        <ul>
-          <li class="hazard">HAZARDOUS</li>
-        </ul>
-      </div>
-
-    </div>
-
   </div>
 
-  <script>
-    const searchInput = document.getElementById("searchInput");
-    const items = document.querySelectorAll("#masterList li");
+  <div class="section">
+    <h2>Dashboard Summary</h2>
+    <div class="cards">
+      <div class="card"><h3>Total FM Items</h3><div class="value" id="dashFM">0</div></div>
+      <div class="card"><h3>Total On-Need Items</h3><div class="value" id="dashOnNeed">0</div></div>
+      <div class="card"><h3>Total Tools</h3><div class="value" id="dashTools">0</div></div>
+      <div class="card"><h3>Total Office Supplies</h3><div class="value" id="dashOffice">0</div></div>
+      <div class="card"><h3>Total Hazardous Items</h3><div class="value" id="dashHazardous">0</div></div>
+    </div>
+  </div>
 
-    searchInput.addEventListener("input", function(){
-      const keyword = this.value.toLowerCase();
+  <!-- KEEP YOUR EXISTING FORM / FILTER / TABLE BLOCKS BELOW EXACTLY AS IS -->
 
-      items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(keyword) ? "" : "none";
-      });
-    });
-  </script>
+</div>
+
+<script>
+  const groupOptions = ["ENGINEERING","OFFICE SUPPLY","HOUSEKEEPING","OTHERS"];
+
+  const tradeMap = {
+    "ENGINEERING":["ENGINEERING","CIVIL WORK","PLUMBING","ELECTRICAL","ELECTRO-MECHANICAL","FDAS","BMS","HVAC","TECHNICAL"],
+    "OFFICE SUPPLY":["ACCOUNTING CORP.","ACCOUNTING CONDO","TRD","TREASURY","PURCHASING","STOCK CONTROL","CPR","HUMAN RESOURCE","SECURITY","PARKING","SAFETY","IT DEPARTMENT","OFFICE OF THE GENERAL MANAGER","OFFICE OF THE ASSISTANT GENERAL MANAGER"],
+    "HOUSEKEEPING":["HOUSEKEEPING"],
+    "OTHERS":["CONTRACTOR","TENANT","OTHERS"]
+  };
+
+  const categoryOptions = ["FAST-MOVING","ON-NEED","TOOLS & EQUIPMENT"];
+
+  const classificationOptions = [
+    "ENGINEERING CONSUMABLES","HOUSEKEEPING CONSUMABLES","TOOLS","EQUIPMENT",
+    "OFFICE TOOLS","OFFICE SUPPLY","PROJECT","PANTRY SUPPLY","MEDICINE",
+    "UNIFORM","GIVEAWAY","RAFFLE ITEM","OFFICE FURNITURES","SAFEKEEPING","HAZARDOUS"
+  ];
+
+  function getInventoryLevel(category, group) {
+    if (category === "FAST-MOVING" && group === "ENGINEERING") return 6;
+    if (category === "FAST-MOVING" && group === "OFFICE SUPPLY") return 4;
+    if (category === "FAST-MOVING" && group === "HOUSEKEEPING") return 4;
+    return 0;
+  }
+
+  function updateDashboard() {
+    const items = masterItems.map(computeItem);
+
+    document.getElementById("dashFM").textContent =
+      items.filter(x => x.category === "FAST-MOVING").length;
+
+    document.getElementById("dashOnNeed").textContent =
+      items.filter(x => x.category === "ON-NEED").length;
+
+    document.getElementById("dashTools").textContent =
+      items.filter(x =>
+        x.category === "TOOLS & EQUIPMENT" ||
+        x.classification === "TOOLS" ||
+        x.classification === "EQUIPMENT" ||
+        x.classification === "OFFICE TOOLS"
+      ).length;
+
+    document.getElementById("dashOffice").textContent =
+      items.filter(x =>
+        x.group === "OFFICE SUPPLY" ||
+        x.classification === "OFFICE SUPPLY"
+      ).length;
+
+    document.getElementById("dashHazardous").textContent =
+      items.filter(x => x.classification === "HAZARDOUS").length;
+  }
+</script>
 
 </body>
 </html>
