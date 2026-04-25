@@ -214,6 +214,7 @@
       <a href="./reports.html">Reports</a>
       <button onclick="exportAnalyticsCSV()">Export Analytics CSV</button>
       <button onclick="exportWatchlistCSV()">Export Watchlist CSV</button>
+      <button onclick="exportEngineeringTradeCSV()">Export Trade Usage CSV</button>
     </div>
   </div>
 
@@ -221,10 +222,10 @@
     <h2>Analytics Summary</h2>
     <div class="cards">
       <div class="card"><h3>Total Items</h3><div class="value" id="totalItems">0</div></div>
-      <div class="card"><h3>Overall Consumption %</h3><div class="value" id="overallConsumption">0%</div></div>
       <div class="card"><h3>Engineering Consumables For PR</h3><div class="value" id="engPR">0</div></div>
       <div class="card"><h3>Office Supplies For PR</h3><div class="value" id="officePR">0</div></div>
       <div class="card"><h3>Housekeeping Consumables For PR</h3><div class="value" id="housePR">0</div></div>
+      <div class="card"><h3>Critical Items For Reorder</h3><div class="value" id="criticalPR">0</div></div>
     </div>
   </div>
 
@@ -250,6 +251,11 @@
         <h3>Stock Movement (IN vs OUT)</h3>
         <canvas id="movementChart"></canvas>
       </div>
+
+      <div class="chart-box">
+        <h3>Engineering Trade Issuance %</h3>
+        <canvas id="engineeringTradeChart"></canvas>
+      </div>
     </div>
   </div>
 
@@ -261,6 +267,7 @@
           <tr>
             <th>Item Name</th>
             <th>Group</th>
+            <th>Trade / Department</th>
             <th>Category</th>
             <th>Ending Balance</th>
             <th>Reorder Point</th>
@@ -290,17 +297,18 @@
     const inventoryLevel = getInventoryLevel(item.category, item.group);
     const adjustedBalance = num(item.qtyBook) + num(item.countVariance) + num(item.reconAdj);
     const endingBalance = adjustedBalance + num(item.inQty) - num(item.outQty);
-    const reorderPoint = inventoryLevel > 0 ? (num(item.forecast)/12)*inventoryLevel : 0;
+    const reorderPoint = inventoryLevel > 0 ? (num(item.forecast) / 12) * inventoryLevel : 0;
     const forPR = Math.max(reorderPoint - endingBalance - num(item.deliveryInTransit), 0);
 
-    return {...item, endingBalance, reorderPoint, forPR};
+    return {
+      ...item,
+      endingBalance,
+      reorderPoint,
+      forPR
+    };
   }
 
   const items = masterItems.map(computeItem);
-
-  const totalOut = items.reduce((s,x)=>s+num(x.outQty),0);
-  const totalForecast = items.reduce((s,x)=>s+num(x.forecast),0);
-  const overallConsumption = totalForecast > 0 ? ((totalOut / totalForecast) * 100).toFixed(1) + "%" : "0%";
 
   const engPRCount = items.filter(x =>
     x.forPR > 0 &&
@@ -320,51 +328,87 @@
     x.category === "FAST-MOVING"
   ).length;
 
+  const criticalPRCount = items.filter(x => x.forPR > 0).length;
+
   document.getElementById("totalItems").textContent = items.length;
-  document.getElementById("overallConsumption").textContent = overallConsumption;
   document.getElementById("engPR").textContent = engPRCount;
   document.getElementById("officePR").textContent = officePRCount;
   document.getElementById("housePR").textContent = housePRCount;
+  document.getElementById("criticalPR").textContent = criticalPRCount;
 
   function countBy(key){
     const map = {};
-    items.forEach(i => map[i[key]] = (map[i[key]]||0)+1);
+    items.forEach(i => {
+      const label = i[key] || "UNSPECIFIED";
+      map[label] = (map[label] || 0) + 1;
+    });
+    return map;
+  }
+
+  function sumEngineeringOutByTrade(){
+    const map = {};
+
+    items
+      .filter(x => x.group === "ENGINEERING")
+      .forEach(x => {
+        const trade = x.trade || "UNSPECIFIED";
+        map[trade] = (map[trade] || 0) + num(x.outQty);
+      });
+
     return map;
   }
 
   const categoryData = countBy("category");
   const groupData = countBy("group");
+  const engineeringTradeOutData = sumEngineeringOutByTrade();
 
   new Chart(document.getElementById("categoryChart"), {
     type:"bar",
     data:{
       labels:Object.keys(categoryData),
-      datasets:[{label:"Items", data:Object.values(categoryData)}]
+      datasets:[{
+        label:"Items",
+        data:Object.values(categoryData)
+      }]
     },
-    options:{responsive:true, maintainAspectRatio:false}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false
+    }
   });
 
   new Chart(document.getElementById("groupChart"), {
     type:"pie",
     data:{
       labels:Object.keys(groupData),
-      datasets:[{data:Object.values(groupData)}]
+      datasets:[{
+        data:Object.values(groupData)
+      }]
     },
-    options:{responsive:true, maintainAspectRatio:false}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false
+    }
   });
 
   const topPR = [...items]
     .filter(x => x.forPR > 0)
-    .sort((a,b)=>b.forPR-a.forPR)
+    .sort((a,b) => b.forPR - a.forPR)
     .slice(0,10);
 
   new Chart(document.getElementById("prChart"), {
     type:"bar",
     data:{
-      labels:topPR.map(x=>x.name.length>18?x.name.slice(0,18)+"...":x.name),
-      datasets:[{label:"For PR", data:topPR.map(x=>x.forPR)}]
+      labels:topPR.map(x => x.name && x.name.length > 18 ? x.name.slice(0,18) + "..." : x.name),
+      datasets:[{
+        label:"For PR",
+        data:topPR.map(x => x.forPR)
+      }]
     },
-    options:{responsive:true, maintainAspectRatio:false}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false
+    }
   });
 
   new Chart(document.getElementById("movementChart"), {
@@ -374,26 +418,57 @@
       datasets:[{
         label:"Qty",
         data:[
-          items.reduce((s,x)=>s+num(x.inQty),0),
-          items.reduce((s,x)=>s+num(x.outQty),0)
+          items.reduce((s,x) => s + num(x.inQty), 0),
+          items.reduce((s,x) => s + num(x.outQty), 0)
         ]
       }]
     },
-    options:{responsive:true, maintainAspectRatio:false}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false
+    }
+  });
+
+  new Chart(document.getElementById("engineeringTradeChart"), {
+    type:"pie",
+    data:{
+      labels:Object.keys(engineeringTradeOutData),
+      datasets:[{
+        data:Object.values(engineeringTradeOutData)
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        tooltip:{
+          callbacks:{
+            label:function(context){
+              const total = context.dataset.data.reduce((s,v) => s + Number(v), 0);
+              const value = Number(context.raw) || 0;
+              const percent = total > 0 ? ((value / total) * 100).toFixed(1) : "0.0";
+              return `${context.label}: ${value} OUT qty (${percent}%)`;
+            }
+          }
+        }
+      }
+    }
   });
 
   const watchTable = document.getElementById("watchTable");
+
   const watchlistItems = [...items]
-    .filter(x=>x.forPR>0)
-    .sort((a,b)=>b.forPR-a.forPR)
+    .filter(x => x.forPR > 0)
+    .sort((a,b) => b.forPR - a.forPR)
     .slice(0,15);
 
-  watchlistItems.forEach(x=>{
+  watchlistItems.forEach(x => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${x.name}</td>
-      <td>${x.group}</td>
-      <td>${x.category}</td>
+      <td>${x.name || ""}</td>
+      <td>${x.group || ""}</td>
+      <td>${x.trade || ""}</td>
+      <td>${x.category || ""}</td>
       <td>${x.endingBalance}</td>
       <td>${x.reorderPoint.toFixed(2)}</td>
       <td>${x.forPR.toFixed(2)}</td>
@@ -403,37 +478,40 @@
   });
 
   function downloadCSV(filename, rows){
-    const processRow = row => row.map(value => `"${String(value).replace(/"/g,'""')}"`).join(",");
+    const processRow = row => row.map(value => `"${String(value ?? "").replace(/"/g,'""')}"`).join(",");
     const csvContent = rows.map(processRow).join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob([csvContent], { type:"text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = filename;
     link.click();
+    URL.revokeObjectURL(link.href);
   }
 
   function exportAnalyticsCSV(){
     const rows = [
       ["Metric","Value"],
       ["Total Items", items.length],
-      ["Overall Consumption %", overallConsumption],
       ["Engineering Consumables For PR", engPRCount],
       ["Office Supplies For PR", officePRCount],
-      ["Housekeeping Consumables For PR", housePRCount]
+      ["Housekeeping Consumables For PR", housePRCount],
+      ["Critical Items For Reorder", criticalPRCount]
     ];
+
     downloadCSV("inventory_analytics_summary.csv", rows);
   }
 
   function exportWatchlistCSV(){
     const rows = [
-      ["Item Name","Group","Category","Ending Balance","Reorder Point","For PR","Status"]
+      ["Item Name","Group","Trade / Department","Category","Ending Balance","Reorder Point","For PR","Status"]
     ];
 
-    watchlistItems.forEach(x=>{
+    watchlistItems.forEach(x => {
       rows.push([
-        x.name,
-        x.group,
-        x.category,
+        x.name || "",
+        x.group || "",
+        x.trade || "",
+        x.category || "",
         x.endingBalance,
         x.reorderPoint.toFixed(2),
         x.forPR.toFixed(2),
@@ -442,6 +520,21 @@
     });
 
     downloadCSV("inventory_watchlist.csv", rows);
+  }
+
+  function exportEngineeringTradeCSV(){
+    const totalOut = Object.values(engineeringTradeOutData).reduce((s,v) => s + Number(v), 0);
+
+    const rows = [
+      ["Engineering Trade / Department","Total OUT Qty","Issuance %"]
+    ];
+
+    Object.entries(engineeringTradeOutData).forEach(([trade, outQty]) => {
+      const percent = totalOut > 0 ? ((Number(outQty) / totalOut) * 100).toFixed(1) + "%" : "0.0%";
+      rows.push([trade, outQty, percent]);
+    });
+
+    downloadCSV("engineering_trade_issuance.csv", rows);
   }
 </script>
 </body>
