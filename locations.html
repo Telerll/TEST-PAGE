@@ -1,143 +1,434 @@
-<section class="location-section">
-  <h2>Location Code Directory</h2>
-  <p>Search location or code below.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Locations - Inventory Management System</title>
 
-  <input type="text" id="locationSearch" placeholder="Search location or code...">
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
 
-  <div class="location-table-wrap">
-    <table id="locationTable">
-      <thead>
-        <tr>
-          <th>Location</th>
-          <th>Code</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>PODIUM 3 - STOCK CONTROL OFFICE</td><td>P3T2-SCO</td></tr>
-        <tr><td>BASEMENT 2, TOWER 2</td><td>B2T2</td></tr>
-        <tr><td>BASEMENT 2, TOWER 2, 1</td><td>B2T2-1</td></tr>
-        <tr><td>BASEMENT 2, TOWER 2, 2</td><td>B2T2-2</td></tr>
-        <tr><td>BASEMENT 3, TOWER 1 AHU</td><td>B3T1-A</td></tr>
-        <tr><td>BASEMENT 3, TOWER 1 CYCLONE</td><td>B3T1-C</td></tr>
-        <tr><td>BASEMENT 3, TOWER 2 AHU</td><td>B3T2-A</td></tr>
-        <tr><td>BASEMENT 4, TOWER 1 AHU</td><td>B4T1-A</td></tr>
-        <tr><td>BASEMENT 4, TOWER 1 CYCLONE 1</td><td>B4T1-C1</td></tr>
-        <tr><td>BASEMENT 4, TOWER 1 CYCLONE 2</td><td>B4T1-C2</td></tr>
-        <tr><td>BASEMENT 4, TOWER 2 AHU</td><td>B4T2-A</td></tr>
-        <tr><td>BASEMENT 4, TOWER 2 CYCLONE</td><td>B4T2-C</td></tr>
-        <tr><td>BASEMENT 5, TOWER 1 AHU</td><td>B5T1-A</td></tr>
-        <tr><td>BASEMENT 5, TOWER 1 CYCLONE</td><td>B5T1-C</td></tr>
-        <tr><td>BASEMENT 5, TOWER 2 AHU</td><td>B5T2-A</td></tr>
-        <tr><td>BASEMENT 5, TOWER 2 CYCLONE</td><td>B5T2-C</td></tr>
-        <tr><td>BASEMENT 2 - GLOBE ROOM</td><td>GLOBE ROOM</td></tr>
-        <tr><td>BASEMENT 1, TOWER 2</td><td>B1T2</td></tr>
-        <tr><td>BASEMENT 6, TOWER 1 AHU</td><td>B6T1-A</td></tr>
-        <tr><td>BASEMENT 6, TOWER 1 CYCLONE</td><td>B6T1-C</td></tr>
-        <tr><td>BASEMENT 6, TOWER 2 CYCLONE</td><td>B6T2-C</td></tr>
-        <tr><td>BASEMENT 6, TOWER 2 AHU</td><td>B6T2-A</td></tr>
-        <tr><td>BASEMENT 7, TOWER 1 AHU</td><td>B7T1-A</td></tr>
-        <tr><td>BASEMENT 7, TOWER 1 CYCLONE</td><td>B7T1-C</td></tr>
-        <tr><td>BASEMENT 7, TOWER 2 AHU</td><td>B7T2-A</td></tr>
-        <tr><td>BASEMENT 7, TOWER 2 CYCLONE</td><td>B7T2-C</td></tr>
-        <tr><td>LEVEL 10, TOWER 1</td><td>L10-T1</td></tr>
-        <tr><td>LEVEL 11, TOWER 2</td><td>L11-T2</td></tr>
-        <tr><td>PODIUM 3 LIBRARY 1, TOWER 1</td><td>P3T1-L1</td></tr>
-        <tr><td>PODIUM 3 LIBRARY 2, TOWER 1</td><td>P3T1-L2</td></tr>
-        <tr><td>PODIUM 3 LIBRARY 3, TOWER 1</td><td>P3T1-L3</td></tr>
-        <tr><td>DELIVERED DIRECTLY</td><td>DIRECT</td></tr>
-      </tbody>
-    </table>
+    body{
+      background:#f1f5f9;
+      color:#0f172a;
+      padding:20px;
+    }
+
+    .page{
+      max-width:1000px;
+      margin:auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .title small{
+      display:block;
+      font-size:12px;
+      color:#64748b;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .title h1{
+      font-size:28px;
+      color:#172554;
+      margin-top:4px;
+    }
+
+    .nav a{
+      display:inline-block;
+      text-decoration:none;
+      background:#e5e7eb;
+      color:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      margin-left:6px;
+      font-size:14px;
+    }
+
+    .section{
+      background:#fff;
+      border-radius:16px;
+      padding:20px;
+      margin-bottom:18px;
+      box-shadow:0 8px 24px rgba(15,23,42,.10);
+    }
+
+    .section h2{
+      margin-bottom:6px;
+      color:#0f172a;
+    }
+
+    .section p{
+      color:#64748b;
+      margin-bottom:14px;
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .field label{
+      font-size:12px;
+      font-weight:bold;
+      color:#64748b;
+      margin-bottom:6px;
+    }
+
+    .field input{
+      padding:12px 14px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      font-size:15px;
+    }
+
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    .btn-primary{
+      background:#1e3a8a;
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .btn-danger{
+      background:#dc2626;
+      color:#fff;
+    }
+
+    #locationSearch{
+      width:100%;
+      padding:12px 14px;
+      margin-bottom:16px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      font-size:15px;
+    }
+
+    .location-table-wrap{
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      border-radius:12px;
+      overflow:hidden;
+      min-width:700px;
+    }
+
+    th{
+      background:#0f172a;
+      color:#fff;
+      text-align:left;
+      padding:12px;
+    }
+
+    td{
+      padding:11px 12px;
+      border-bottom:1px solid #e2e8f0;
+      font-size:14px;
+    }
+
+    td.code{
+      font-weight:bold;
+      color:#2563eb;
+      white-space:nowrap;
+    }
+
+    tr:hover{
+      background:#f8fafc;
+    }
+
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      color:#64748b;
+      line-height:1.5;
+    }
+
+    @media(max-width:700px){
+      body{
+        padding:14px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .title h1{
+        font-size:22px;
+      }
+
+      td,th{
+        font-size:13px;
+        padding:10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="topbar">
+    <div class="title">
+      <small>PROPERTY MANAGEMENT OFFICE</small>
+      <h1>LOCATION CODE DIRECTORY</h1>
+    </div>
+
+    <div class="nav">
+      <a href="./index.html">Home</a>
+      <a href="./master-list.html">Master List</a>
+    </div>
   </div>
-</section>
 
-<style>
-.location-section{
-  max-width:900px;
-  margin:30px auto;
-  padding:20px;
-  font-family:Arial, sans-serif;
-  background:#f8fafc;
-  border-radius:16px;
-  box-shadow:0 8px 24px rgba(15,23,42,.12);
-}
+  <div class="section">
+    <h2>Add / Update Location</h2>
+    <p>Add new storage locations. These will be saved and used by the Master List location dropdown.</p>
 
-.location-section h2{
-  margin-bottom:6px;
-  color:#0f172a;
-}
+    <div class="grid">
+      <div class="field">
+        <label>Location Name</label>
+        <input type="text" id="locationName" placeholder="Example: BASEMENT 8, TOWER 1 AHU">
+      </div>
 
-.location-section p{
-  color:#64748b;
-  margin-bottom:14px;
-}
+      <div class="field">
+        <label>Location Code</label>
+        <input type="text" id="locationCode" placeholder="Example: B8T1-A">
+      </div>
+    </div>
 
-#locationSearch{
-  width:100%;
-  padding:12px 14px;
-  margin-bottom:16px;
-  border:1px solid #cbd5e1;
-  border-radius:10px;
-  font-size:15px;
-}
+    <div class="actions">
+      <button class="btn-primary" id="saveBtn">Add Location</button>
+      <button class="btn-secondary" id="clearBtn">Clear Form</button>
+      <button class="btn-secondary" id="loadDefaultsBtn">Load Default Locations</button>
+      <button class="btn-danger" id="clearAllBtn">Clear All</button>
+    </div>
 
-.location-table-wrap{
-  overflow-x:auto;
-}
+    <div class="note">
+      This page saves data to <strong>localStorage.storageList</strong>.  
+      The Master List reads from the same storageList source.
+    </div>
+  </div>
 
-.location-section table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-}
+  <div class="section">
+    <h2>Location Code Directory</h2>
+    <p>Search location or code below.</p>
 
-.location-section th{
-  background:#0f172a;
-  color:#fff;
-  text-align:left;
-  padding:12px;
-}
+    <input type="text" id="locationSearch" placeholder="Search location or code...">
 
-.location-section td{
-  padding:11px 12px;
-  border-bottom:1px solid #e2e8f0;
-  font-size:14px;
-}
+    <div class="location-table-wrap">
+      <table id="locationTable">
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Code</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="locationBody"></tbody>
+      </table>
+    </div>
+  </div>
 
-.location-section td:last-child{
-  font-weight:bold;
-  color:#2563eb;
-  white-space:nowrap;
-}
-
-.location-section tr:hover{
-  background:#f1f5f9;
-}
-
-@media(max-width:600px){
-  .location-section{
-    padding:14px;
-  }
-
-  .location-section td,
-  .location-section th{
-    font-size:13px;
-    padding:10px;
-  }
-}
-</style>
+</div>
 
 <script>
-const searchInput = document.getElementById("locationSearch");
-const rows = document.querySelectorAll("#locationTable tbody tr");
+  const defaultLocations = [
+    { code: "P3T2-SCO", location: "PODIUM 3 - STOCK CONTROL OFFICE" },
+    { code: "B2T2", location: "BASEMENT 2, TOWER 2" },
+    { code: "B2T2-1", location: "BASEMENT 2, TOWER 2, 1" },
+    { code: "B2T2-2", location: "BASEMENT 2, TOWER 2, 2" },
+    { code: "B3T1-A", location: "BASEMENT 3, TOWER 1 AHU" },
+    { code: "B3T1-C", location: "BASEMENT 3, TOWER 1 CYCLONE" },
+    { code: "B3T2-A", location: "BASEMENT 3, TOWER 2 AHU" },
+    { code: "B4T1-A", location: "BASEMENT 4, TOWER 1 AHU" },
+    { code: "B4T1-C1", location: "BASEMENT 4, TOWER 1 CYCLONE 1" },
+    { code: "B4T1-C2", location: "BASEMENT 4, TOWER 1 CYCLONE 2" },
+    { code: "B4T2-A", location: "BASEMENT 4, TOWER 2 AHU" },
+    { code: "B4T2-C", location: "BASEMENT 4, TOWER 2 CYCLONE" },
+    { code: "B5T1-A", location: "BASEMENT 5, TOWER 1 AHU" },
+    { code: "B5T1-C", location: "BASEMENT 5, TOWER 1 CYCLONE" },
+    { code: "B5T2-A", location: "BASEMENT 5, TOWER 2 AHU" },
+    { code: "B5T2-C", location: "BASEMENT 5, TOWER 2 CYCLONE" },
+    { code: "GLOBE ROOM", location: "BASEMENT 2 - GLOBE ROOM" },
+    { code: "B1T2", location: "BASEMENT 1, TOWER 2" },
+    { code: "B6T1-A", location: "BASEMENT 6, TOWER 1 AHU" },
+    { code: "B6T1-C", location: "BASEMENT 6, TOWER 1 CYCLONE" },
+    { code: "B6T2-C", location: "BASEMENT 6, TOWER 2 CYCLONE" },
+    { code: "B6T2-A", location: "BASEMENT 6, TOWER 2 AHU" },
+    { code: "B7T1-A", location: "BASEMENT 7, TOWER 1 AHU" },
+    { code: "B7T1-C", location: "BASEMENT 7, TOWER 1 CYCLONE" },
+    { code: "B7T2-A", location: "BASEMENT 7, TOWER 2 AHU" },
+    { code: "B7T2-C", location: "BASEMENT 7, TOWER 2 CYCLONE" },
+    { code: "L10-T1", location: "LEVEL 10, TOWER 1" },
+    { code: "L11-T2", location: "LEVEL 11, TOWER 2" },
+    { code: "P3T1-L1", location: "PODIUM 3 LIBRARY 1, TOWER 1" },
+    { code: "P3T1-L2", location: "PODIUM 3 LIBRARY 2, TOWER 1" },
+    { code: "P3T1-L3", location: "PODIUM 3 LIBRARY 3, TOWER 1" },
+    { code: "DIRECT", location: "DELIVERED DIRECTLY" }
+  ];
 
-searchInput.addEventListener("input", function(){
-  const keyword = this.value.toLowerCase();
+  let storageList = JSON.parse(localStorage.getItem("storageList")) || [];
+  let editingCode = null;
 
-  rows.forEach(row => {
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(keyword) ? "" : "none";
-  });
-});
+  if (!storageList.length) {
+    storageList = defaultLocations;
+    saveLocations();
+  }
+
+  function saveLocations(){
+    localStorage.setItem("storageList", JSON.stringify(storageList));
+  }
+
+  function clearForm(){
+    editingCode = null;
+    document.getElementById("saveBtn").textContent = "Add Location";
+    document.getElementById("locationName").value = "";
+    document.getElementById("locationCode").value = "";
+  }
+
+  function saveLocation(){
+    const location = document.getElementById("locationName").value.trim().toUpperCase();
+    const code = document.getElementById("locationCode").value.trim().toUpperCase();
+
+    if (!location || !code) {
+      alert("Location Name and Location Code are required.");
+      return;
+    }
+
+    const duplicate = storageList.find(x => x.code === code && x.code !== editingCode);
+    if (duplicate) {
+      alert("Location Code already exists.");
+      return;
+    }
+
+    const item = { code, location };
+
+    if (editingCode) {
+      storageList = storageList.map(x => x.code === editingCode ? item : x);
+    } else {
+      storageList.push(item);
+    }
+
+    storageList.sort((a,b) => a.code.localeCompare(b.code));
+    saveLocations();
+    renderLocations();
+    clearForm();
+  }
+
+  function editLocation(code){
+    const item = storageList.find(x => x.code === code);
+    if (!item) return;
+
+    editingCode = code;
+    document.getElementById("saveBtn").textContent = "Update Location";
+    document.getElementById("locationName").value = item.location;
+    document.getElementById("locationCode").value = item.code;
+
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+
+  function deleteLocation(code){
+    if (!confirm("Delete this location?")) return;
+
+    storageList = storageList.filter(x => x.code !== code);
+    saveLocations();
+    renderLocations();
+    clearForm();
+  }
+
+  function loadDefaults(){
+    if (!confirm("Load default locations? This will replace current location list.")) return;
+
+    storageList = defaultLocations;
+    saveLocations();
+    renderLocations();
+    clearForm();
+  }
+
+  function clearAll(){
+    if (!confirm("Clear all locations?")) return;
+
+    storageList = [];
+    saveLocations();
+    renderLocations();
+    clearForm();
+  }
+
+  function renderLocations(){
+    const tbody = document.getElementById("locationBody");
+    const keyword = document.getElementById("locationSearch").value.toLowerCase();
+
+    tbody.innerHTML = "";
+
+    storageList
+      .filter(item =>
+        item.location.toLowerCase().includes(keyword) ||
+        item.code.toLowerCase().includes(keyword)
+      )
+      .forEach(item => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.location}</td>
+            <td class="code">${item.code}</td>
+            <td>
+              <button class="btn-secondary" onclick="editLocation('${item.code}')">Edit</button>
+              <button class="btn-danger" onclick="deleteLocation('${item.code}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+  }
+
+  document.getElementById("saveBtn").addEventListener("click", saveLocation);
+  document.getElementById("clearBtn").addEventListener("click", clearForm);
+  document.getElementById("loadDefaultsBtn").addEventListener("click", loadDefaults);
+  document.getElementById("clearAllBtn").addEventListener("click", clearAll);
+  document.getElementById("locationSearch").addEventListener("input", renderLocations);
+
+  renderLocations();
 </script>
+
+</body>
+</html>
