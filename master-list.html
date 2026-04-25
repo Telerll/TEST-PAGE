@@ -1124,6 +1124,92 @@
     renderFMForPR();
   });
 </script>
+<script>
+  const classTradeMaster = JSON.parse(localStorage.getItem("classTradeMaster")) || {
+    groups: ["ENGINEERING","OFFICE SUPPLY","HOUSEKEEPING","OTHERS"],
+    categories: ["FAST-MOVING","ON-NEED","TOOLS & EQUIPMENT"],
+    classifications: [
+      "ENGINEERING CONSUMABLES","HOUSEKEEPING CONSUMABLES","TOOLS","EQUIPMENT",
+      "OFFICE TOOLS","OFFICE SUPPLY","PROJECT","PANTRY SUPPLY","MEDICINE",
+      "UNIFORM","GIVEAWAY","RAFFLE ITEM","OFFICE FURNITURES","SAFEKEEPING"
+    ],
+    trades: [
+      "ENGINEERING","CIVIL WORK","PLUMBING","ELECTRICAL","ELECTRO-MECHANICAL",
+      "FDAS","BMS","HVAC","TECHNICAL","ACCOUNTING CORP.","ACCOUNTING CONDO",
+      "TRD","TREASURY","PURCHASING","STOCK CONTROL","CPR","HUMAN RESOURCE",
+      "SECURITY","PARKING","SAFETY","IT DEPARTMENT",
+      "OFFICE OF THE GENERAL MANAGER",
+      "OFFICE OF THE ASSISTANT GENERAL MANAGER",
+      "CONTRACTOR","TENANT"
+    ],
+    uniqueClassifications: ["HAZARDOUS"]
+  };
 
+  const groupOptions = classTradeMaster.groups;
+  const categoryOptions = classTradeMaster.categories;
+  const classificationOptions = [
+    ...classTradeMaster.classifications,
+    ...classTradeMaster.uniqueClassifications
+  ];
+
+  const tradeMap = {
+    "ENGINEERING": [
+      "ENGINEERING","CIVIL WORK","PLUMBING","ELECTRICAL","ELECTRO-MECHANICAL",
+      "FDAS","BMS","HVAC","TECHNICAL"
+    ],
+    "OFFICE SUPPLY": [
+      "ACCOUNTING CORP.","ACCOUNTING CONDO","TRD","TREASURY","PURCHASING",
+      "STOCK CONTROL","CPR","HUMAN RESOURCE","SECURITY","PARKING","SAFETY",
+      "IT DEPARTMENT","OFFICE OF THE GENERAL MANAGER",
+      "OFFICE OF THE ASSISTANT GENERAL MANAGER"
+    ],
+    "HOUSEKEEPING": ["HOUSEKEEPING"],
+    "OTHERS": ["CONTRACTOR","TENANT","OTHERS"]
+  };
+
+  function getInventoryLevel(category, group) {
+    if (category === "FAST-MOVING" && group === "ENGINEERING") return 6;
+    if (category === "FAST-MOVING" && group === "OFFICE SUPPLY") return 4;
+    if (category === "FAST-MOVING" && group === "HOUSEKEEPING") return 4;
+    return 0;
+  }
+
+  function updateDashboard() {
+    const items = masterItems.map(computeItem);
+
+    document.getElementById("dashFM").textContent =
+      items.filter(x => x.category === "FAST-MOVING").length;
+
+    document.getElementById("dashOnNeed").textContent =
+      items.filter(x => x.category === "ON-NEED").length;
+
+    document.getElementById("dashTools").textContent =
+      items.filter(x =>
+        x.category === "TOOLS & EQUIPMENT" ||
+        x.classification === "TOOLS" ||
+        x.classification === "EQUIPMENT" ||
+        x.classification === "OFFICE TOOLS"
+      ).length;
+
+    document.getElementById("dashOffice").textContent =
+      items.filter(x =>
+        x.group === "OFFICE SUPPLY" ||
+        x.classification === "OFFICE SUPPLY"
+      ).length;
+
+    document.getElementById("dashHazardous").textContent =
+      items.filter(x => x.classification === "HAZARDOUS").length;
+  }
+
+  /* DITO ITULOY YUNG ORIGINAL SCRIPT MO:
+     storageList
+     defaultItems
+     computeItem
+     saveItem
+     render
+     filters
+     DOMContentLoaded
+  */
+</script>
 </body>
 </html>
