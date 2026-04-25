@@ -243,6 +243,20 @@
       line-height:1.5;
     }
 
+    .fm-pr-item{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      margin-bottom:10px;
+      background:#f8fafc;
+    }
+
+    .fm-pr-item .qty{
+      margin-top:8px;
+      font-weight:bold;
+      color:var(--danger);
+    }
+
     @media (max-width:1400px){
       .cards{
         grid-template-columns:repeat(2,1fr);
@@ -284,26 +298,31 @@
     <h2>Dashboard Summary</h2>
     <div class="cards">
       <div class="card">
-        <h3>Total FM Items</h3>
+        <h3>Total Items</h3>
+        <div class="value" id="dashTotal">0</div>
+      </div>
+      <div class="card">
+        <h3>Fast-Moving Items</h3>
         <div class="value" id="dashFM">0</div>
       </div>
       <div class="card">
-        <h3>Total On-Need Items</h3>
-        <div class="value" id="dashOnNeed">0</div>
+        <h3>Total Stock On Hand</h3>
+        <div class="value" id="dashSOH">0</div>
       </div>
       <div class="card">
-        <h3>Total Tools</h3>
-        <div class="value" id="dashTools">0</div>
+        <h3>FM Items for PR</h3>
+        <div class="value" id="dashFMItemsPR">0</div>
       </div>
       <div class="card">
-        <h3>Total Office Supplies</h3>
-        <div class="value" id="dashOffice">0</div>
-      </div>
-      <div class="card">
-        <h3>Total Hazardous Items</h3>
-        <div class="value" id="dashHazardous">0</div>
+        <h3>FM Qty for PR</h3>
+        <div class="value" id="dashFMQtyPR">0</div>
       </div>
     </div>
+  </div>
+
+  <div class="section">
+    <h2>FM Items for PR (per item)</h2>
+    <div id="fmPRList"></div>
   </div>
 
   <div class="section">
@@ -431,7 +450,7 @@
     <div class="note">
       Reorder Point is computed based on the provided Annual Forecasted Quantity.<br>
       FAST-MOVING + ENGINEERING group = 6 months equivalent of consumption.<br>
-      FAST-MOVING + OFFICE SUPPLY / HOUSEKEEPING group = 4 months equivalent of consumption.<br>
+      FAST-MOVING + OFFICE group = 4 months equivalent of consumption.<br>
       For PR = Reorder Point - Ending Balance - Delivery In Transit, minimum 0.
     </div>
   </div>
@@ -519,72 +538,57 @@
 </div>
 
 <script>
-  const classTradeMaster = JSON.parse(localStorage.getItem("classTradeMaster")) || {
-    groups: ["ENGINEERING","OFFICE SUPPLY","HOUSEKEEPING","OTHERS"],
-    categories: ["FAST-MOVING","ON-NEED","TOOLS & EQUIPMENT"],
-    classifications: [
-      "ENGINEERING CONSUMABLES",
-      "HOUSEKEEPING CONSUMABLES",
-      "TOOLS",
-      "EQUIPMENT",
-      "OFFICE TOOLS",
-      "OFFICE SUPPLY",
-      "PROJECT",
-      "PANTRY SUPPLY",
-      "MEDICINE",
-      "UNIFORM",
-      "GIVEAWAY",
-      "RAFFLE ITEM",
-      "OFFICE FURNITURES",
-      "SAFEKEEPING"
-    ],
-    uniqueClassifications: ["HAZARDOUS"]
-  };
-
-  const groupOptions = classTradeMaster.groups;
-  const categoryOptions = classTradeMaster.categories;
-  const classificationOptions = [
-    ...classTradeMaster.classifications,
-    ...classTradeMaster.uniqueClassifications
-  ];
+  const groupOptions = ["ENGINEERING", "OFFICE"];
 
   const tradeMap = {
     "ENGINEERING": [
       "ENGINEERING",
-      "CIVIL WORK",
-      "PLUMBING",
       "ELECTRICAL",
-      "ELECTRO-MECHANICAL",
-      "FDAS",
-      "BMS",
+      "CIVIL-WORK",
+      "PLUMBING",
       "HVAC",
-      "TECHNICAL"
+      "ELECTRO-MECH",
+      "FDAS",
+      "PLAN ATTENDANT",
+      "BMS"
     ],
-    "OFFICE SUPPLY": [
-      "ACCOUNTING CORP.",
-      "ACCOUNTING CONDO",
-      "TRD",
+    "OFFICE": [
       "TREASURY",
-      "PURCHASING",
-      "STOCK CONTROL",
+      "TRD",
+      "HOUSEKEEPING",
       "CPR",
-      "HUMAN RESOURCE",
-      "SECURITY",
-      "PARKING",
-      "SAFETY",
       "IT DEPARTMENT",
+      "PARKING",
+      "PURCHASING",
+      "SAFETY",
+      "HUMAN RESOURCE",
       "OFFICE OF THE GENERAL MANAGER",
-      "OFFICE OF THE ASSISTANT GENERAL MANAGER"
-    ],
-    "HOUSEKEEPING": [
-      "HOUSEKEEPING"
-    ],
-    "OTHERS": [
-      "CONTRACTOR",
-      "TENANT",
-      "OTHERS"
+      "OFFICE OF THE ASSISTANT GENERAL MANAGER",
+      "STOCK CONTROL"
     ]
   };
+
+  const categoryOptions = [
+    "FAST-MOVING",
+    "ON-NEED",
+    "TOOLS"
+  ];
+
+  const classificationOptions = [
+    "HAZARDOUS",
+    "SAFEKEEPING",
+    "TOOLS",
+    "EQUIPMENT",
+    "PROJECT",
+    "OFFICE SUPPLY",
+    "UNIFORM",
+    "OFFICE TOOLS",
+    "GIVEAWAY",
+    "PANTRY SUPPLY",
+    "RAFFLE ITEMS",
+    "MEDICINE",
+    "OFFICE FURNITURES"
+  ];
 
   const defaultStorageList = [
     { code: "P3T2-SCO", location: "PODIUM 3- STOCK CONTROL OFFICE" },
@@ -615,9 +619,9 @@
     { code: "B7T2-C", location: "BASEMENT 7, TOWER 2 CYCLONE" },
     { code: "L19-T1", location: "LEVEL 19, TOWER 1" },
     { code: "L11-T2", location: "LEVEL 11, TOWER 2" },
-    { code: "P3T1-L1", location: "PODIUM 3 LIBRARY 1, TOWER 1" },
-    { code: "P3T1-L2", location: "PODIUM 3 LIBRARY 2, TOWER 1" },
-    { code: "P3T1-L3", location: "PODIUM 3 LIBRARY 3, TOWER 1" },
+    { code: "P3T1-L1", location: "PODIUM 3 LIBRIRARY 1, TOWER 1" },
+    { code: "P3T1-L2", location: "PODIUM 3 LIBRIRARY 2, TOWER 1" },
+    { code: "P3T1-L3", location: "PODIUM 3 LIBRIRARY 3, TOWER 1" },
     { code: "DIRECT", location: "DELIVERED DIRECTLY" }
   ];
 
@@ -625,7 +629,7 @@
     {
       id: 1,
       group: "ENGINEERING",
-      trade: "CIVIL WORK",
+      trade: "CIVIL-WORK",
       category: "FAST-MOVING",
       classification: "HAZARDOUS",
       locationCode: "B2T2-1",
@@ -644,7 +648,7 @@
     {
       id: 2,
       group: "ENGINEERING",
-      trade: "CIVIL WORK",
+      trade: "CIVIL-WORK",
       category: "FAST-MOVING",
       classification: "SAFEKEEPING",
       locationCode: "B2T2-1",
@@ -662,8 +666,8 @@
     },
     {
       id: 3,
-      group: "OFFICE SUPPLY",
-      trade: "STOCK CONTROL",
+      group: "OFFICE",
+      trade: "HOUSEKEEPING",
       category: "FAST-MOVING",
       classification: "OFFICE SUPPLY",
       locationCode: "P3T2-SCO",
@@ -696,38 +700,27 @@
 
   function getInventoryLevel(category, group) {
     if (category === "FAST-MOVING" && group === "ENGINEERING") return 6;
-    if (category === "FAST-MOVING" && group === "OFFICE SUPPLY") return 4;
-    if (category === "FAST-MOVING" && group === "HOUSEKEEPING") return 4;
     if (category === "FAST-MOVING" && group === "OFFICE") return 4;
     return 0;
   }
 
   function normalizeItems(items) {
-    return items.map(item => {
-      let group = item.group || "";
-      let trade = item.trade || "";
-
-      if (group === "OFFICE") group = "OFFICE SUPPLY";
-      if (trade === "CIVIL-WORK") trade = "CIVIL WORK";
-      if (trade === "ELECTRO-MECH") trade = "ELECTRO-MECHANICAL";
-
-      return {
-        ...item,
-        qtyBook: num(item.qtyBook),
-        countVariance: num(item.countVariance),
-        reconAdj: num(item.reconAdj),
-        inQty: num(item.inQty),
-        outQty: num(item.outQty),
-        forecast: num(item.forecast),
-        deliveryInTransit: num(item.deliveryInTransit),
-        group,
-        trade,
-        category: item.category || "",
-        classification: item.classification || "",
-        locationCode: item.locationCode || "",
-        locationName: item.locationName || ""
-      };
-    });
+    return items.map(item => ({
+      ...item,
+      qtyBook: num(item.qtyBook),
+      countVariance: num(item.countVariance),
+      reconAdj: num(item.reconAdj),
+      inQty: num(item.inQty),
+      outQty: num(item.outQty),
+      forecast: num(item.forecast),
+      deliveryInTransit: num(item.deliveryInTransit),
+      group: item.group || "",
+      trade: item.trade || "",
+      category: item.category || "",
+      classification: item.classification || "",
+      locationCode: item.locationCode || "",
+      locationName: item.locationName || ""
+    }));
   }
 
   function computeItem(item) {
@@ -891,6 +884,7 @@
     saveItems();
     render();
     updateDashboard();
+    renderFMForPR();
     clearForm();
   }
 
@@ -928,6 +922,7 @@
     saveItems();
     render();
     updateDashboard();
+    renderFMForPR();
   }
 
   function clearForm() {
@@ -965,6 +960,7 @@
     saveItems();
     render();
     updateDashboard();
+    renderFMForPR();
     clearForm();
   }
 
@@ -974,6 +970,7 @@
     saveItems();
     render();
     updateDashboard();
+    renderFMForPR();
     clearForm();
   }
 
@@ -1046,29 +1043,48 @@
 
   function updateDashboard() {
     const items = masterItems.map(computeItem);
+    const fmItems = items.filter(x => x.category === "FAST-MOVING");
+    const fmItemsForPR = fmItems.filter(x => Number(x.forPR) > 0);
+    const fmQtyForPR = fmItemsForPR.reduce((sum, x) => sum + (Number(x.forPR) || 0), 0);
 
-    document.getElementById("dashFM").textContent =
-      items.filter(x => x.category === "FAST-MOVING").length;
+    document.getElementById("dashTotal").textContent = items.length;
+    document.getElementById("dashFM").textContent = fmItems.length;
+    document.getElementById("dashSOH").textContent = items.reduce((s, x) => s + num(x.endingBalance), 0).toLocaleString();
+    document.getElementById("dashFMItemsPR").textContent = fmItemsForPR.length;
+    document.getElementById("dashFMQtyPR").textContent = fmQtyForPR.toFixed(2);
+  }
 
-    document.getElementById("dashOnNeed").textContent =
-      items.filter(x => x.category === "ON-NEED").length;
+  function renderFMForPR() {
+    const container = document.getElementById("fmPRList");
+    if (!container) return;
 
-    document.getElementById("dashTools").textContent =
-      items.filter(x =>
-        x.category === "TOOLS & EQUIPMENT" ||
-        x.classification === "TOOLS" ||
-        x.classification === "EQUIPMENT" ||
-        x.classification === "OFFICE TOOLS"
-      ).length;
+    container.innerHTML = "";
 
-    document.getElementById("dashOffice").textContent =
-      items.filter(x =>
-        x.group === "OFFICE SUPPLY" ||
-        x.classification === "OFFICE SUPPLY"
-      ).length;
+    const items = masterItems
+      .map(computeItem)
+      .filter(i => i.category === "FAST-MOVING" && i.forPR > 0);
 
-    document.getElementById("dashHazardous").textContent =
-      items.filter(x => x.classification === "HAZARDOUS").length;
+    if (items.length === 0) {
+      container.innerHTML = `<div class="note">No fast-moving items for PR.</div>`;
+      return;
+    }
+
+    items.forEach(item => {
+      container.innerHTML += `
+        <div class="fm-pr-item">
+          <div><strong>${item.name}</strong></div>
+          <div style="font-size:13px;color:#64748b;margin-top:4px;">
+            Group: ${item.group || ""} | Trade: ${item.trade || ""}
+          </div>
+          <div style="font-size:13px;color:#64748b;margin-top:4px;">
+            Storage: ${item.locationCode || ""}${item.rack ? " | Rack: " + item.rack : ""}
+          </div>
+          <div class="qty">
+            Qty for PR: ${Number(item.forPR).toFixed(2)}
+          </div>
+        </div>
+      `;
+    });
   }
 
   document.getElementById("group").addEventListener("change", function () {
@@ -1105,6 +1121,7 @@
     autoComputePreview();
     render();
     updateDashboard();
+    renderFMForPR();
   });
 </script>
 
