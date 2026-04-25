@@ -178,22 +178,110 @@
 </div>
 
 <script>
-  const groupOptions = ["ENGINEERING","OFFICE SUPPLY","HOUSEKEEPING","OTHERS"];
-
-  const tradeMap = {
-    "ENGINEERING":["ENGINEERING","CIVIL WORK","PLUMBING","ELECTRICAL","ELECTRO-MECHANICAL","FDAS","BMS","HVAC","TECHNICAL"],
-    "OFFICE SUPPLY":["ACCOUNTING CORP.","ACCOUNTING CONDO","TRD","TREASURY","PURCHASING","STOCK CONTROL","CPR","HUMAN RESOURCE","SECURITY","PARKING","SAFETY","IT DEPARTMENT","OFFICE OF THE GENERAL MANAGER","OFFICE OF THE ASSISTANT GENERAL MANAGER"],
-    "HOUSEKEEPING":["HOUSEKEEPING"],
-    "OTHERS":["CONTRACTOR","TENANT","OTHERS"]
+  const classTradeMaster = JSON.parse(localStorage.getItem("classTradeMaster")) || {
+    groups: [
+      "ENGINEERING",
+      "OFFICE SUPPLY",
+      "HOUSEKEEPING",
+      "OTHERS"
+    ],
+    categories: [
+      "FAST-MOVING",
+      "ON-NEED",
+      "TOOLS & EQUIPMENT"
+    ],
+    classifications: [
+      "ENGINEERING CONSUMABLES",
+      "HOUSEKEEPING CONSUMABLES",
+      "TOOLS",
+      "EQUIPMENT",
+      "OFFICE TOOLS",
+      "OFFICE SUPPLY",
+      "PROJECT",
+      "PANTRY SUPPLY",
+      "MEDICINE",
+      "UNIFORM",
+      "GIVEAWAY",
+      "RAFFLE ITEM",
+      "OFFICE FURNITURES",
+      "SAFEKEEPING"
+    ],
+    trades: [
+      "ENGINEERING",
+      "CIVIL WORK",
+      "PLUMBING",
+      "ELECTRICAL",
+      "ELECTRO-MECHANICAL",
+      "FDAS",
+      "BMS",
+      "HVAC",
+      "TECHNICAL",
+      "ACCOUNTING CORP.",
+      "ACCOUNTING CONDO",
+      "TRD",
+      "TREASURY",
+      "PURCHASING",
+      "STOCK CONTROL",
+      "CPR",
+      "HUMAN RESOURCE",
+      "SECURITY",
+      "PARKING",
+      "SAFETY",
+      "IT DEPARTMENT",
+      "OFFICE OF THE GENERAL MANAGER",
+      "OFFICE OF THE ASSISTANT GENERAL MANAGER",
+      "CONTRACTOR",
+      "TENANT"
+    ],
+    uniqueClassifications: [
+      "HAZARDOUS"
+    ]
   };
 
-  const categoryOptions = ["FAST-MOVING","ON-NEED","TOOLS & EQUIPMENT"];
-
+  const groupOptions = classTradeMaster.groups;
+  const categoryOptions = classTradeMaster.categories;
   const classificationOptions = [
-    "ENGINEERING CONSUMABLES","HOUSEKEEPING CONSUMABLES","TOOLS","EQUIPMENT",
-    "OFFICE TOOLS","OFFICE SUPPLY","PROJECT","PANTRY SUPPLY","MEDICINE",
-    "UNIFORM","GIVEAWAY","RAFFLE ITEM","OFFICE FURNITURES","SAFEKEEPING","HAZARDOUS"
+    ...classTradeMaster.classifications,
+    ...classTradeMaster.uniqueClassifications
   ];
+
+  const tradeMap = {
+    "ENGINEERING": [
+      "ENGINEERING",
+      "CIVIL WORK",
+      "PLUMBING",
+      "ELECTRICAL",
+      "ELECTRO-MECHANICAL",
+      "FDAS",
+      "BMS",
+      "HVAC",
+      "TECHNICAL"
+    ],
+    "OFFICE SUPPLY": [
+      "ACCOUNTING CORP.",
+      "ACCOUNTING CONDO",
+      "TRD",
+      "TREASURY",
+      "PURCHASING",
+      "STOCK CONTROL",
+      "CPR",
+      "HUMAN RESOURCE",
+      "SECURITY",
+      "PARKING",
+      "SAFETY",
+      "IT DEPARTMENT",
+      "OFFICE OF THE GENERAL MANAGER",
+      "OFFICE OF THE ASSISTANT GENERAL MANAGER"
+    ],
+    "HOUSEKEEPING": [
+      "HOUSEKEEPING"
+    ],
+    "OTHERS": [
+      "CONTRACTOR",
+      "TENANT",
+      "OTHERS"
+    ]
+  };
 
   function getInventoryLevel(category, group) {
     if (category === "FAST-MOVING" && group === "ENGINEERING") return 6;
@@ -228,6 +316,28 @@
     document.getElementById("dashHazardous").textContent =
       items.filter(x => x.classification === "HAZARDOUS").length;
   }
+
+  /*
+    IMPORTANT:
+    Paste your original master-list script below this comment:
+    - defaultStorageList
+    - defaultItems
+    - storageList
+    - masterItems
+    - num()
+    - normalizeItems()
+    - computeItem()
+    - saveItems()
+    - dropdown functions
+    - form functions
+    - render functions
+    - filter functions
+    - event listeners
+    - DOMContentLoaded
+
+    Do NOT paste CLASS_TRADE_MASTER here.
+    CLASS_TRADE_MASTER belongs only to class-trade.html.
+  */
 </script>
 
 </body>
