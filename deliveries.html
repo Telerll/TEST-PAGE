@@ -278,16 +278,18 @@
   }
 
   function refreshMasterItems() {
-    masterItems = (JSON.parse(localStorage.getItem("masterItems")) || []).map(computeMasterItem);
-  }
+  masterItems = (JSON.parse(localStorage.getItem("masterItems")) || []).map(computeMasterItem);
+}
 
-  function saveDeliveries() {
-    localStorage.setItem("deliveriesData", JSON.stringify(deliveriesData));
-  }
+function saveDeliveries() {
+  localStorage.setItem("deliveriesData", JSON.stringify(deliveriesData));
+}
+
 function loadSuppliersDropdown(){
   const supplierSelect = document.getElementById("supplier");
 
   let suppliersData =
+    JSON.parse(localStorage.getItem("supplierMasterList")) ||
     JSON.parse(localStorage.getItem("suppliersData")) ||
     JSON.parse(localStorage.getItem("supplierData")) ||
     JSON.parse(localStorage.getItem("suppliers")) ||
