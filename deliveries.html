@@ -468,6 +468,7 @@ function loadSuppliersDropdown(){
   document.getElementById("clearBtn").addEventListener("click", clearForm);
   document.getElementById("clearAllBtn").addEventListener("click", clearAll);
 
+  loadSuppliersDropdown();
   loadItemsDropdown();
   renderTable();
   updateDashboard();
