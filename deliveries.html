@@ -284,7 +284,27 @@
   function saveDeliveries() {
     localStorage.setItem("deliveriesData", JSON.stringify(deliveriesData));
   }
+function loadSuppliersDropdown(){
+  const supplierSelect = document.getElementById("supplier");
 
+  let suppliersData =
+    JSON.parse(localStorage.getItem("suppliersData")) ||
+    JSON.parse(localStorage.getItem("supplierData")) ||
+    JSON.parse(localStorage.getItem("suppliers")) ||
+    [];
+
+  supplierSelect.innerHTML = '<option value="">-- Select Supplier / Source --</option>';
+
+  suppliersData.forEach(supplier => {
+    const supplierName =
+      supplier.name ||
+      supplier.supplierName ||
+      supplier.source ||
+      supplier;
+
+    supplierSelect.innerHTML += `<option value="${supplierName}">${supplierName}</option>`;
+  });
+}
   function loadItemsDropdown() {
     refreshMasterItems();
     const select = document.getElementById("itemSelect");
