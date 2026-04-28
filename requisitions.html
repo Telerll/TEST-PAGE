@@ -6,13 +6,132 @@
 <title>Requisitions</title>
 
 <style>
-body{font-family:Arial;background:#f4f7fb;padding:20px}
-.container{max-width:1200px;margin:auto}
-.section{background:white;padding:16px;border-radius:12px;margin-bottom:16px}
-select,input{padding:8px;margin-top:6px;width:100%}
-button{padding:10px;margin-top:10px;background:#1e3a8a;color:white;border:none;border-radius:8px}
-table{width:100%;margin-top:10px;border-collapse:collapse}
-th,td{border:1px solid #ccc;padding:8px;text-align:center}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  padding:20px;
+  color:#0f172a;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.top-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.top-nav a{
+  display:inline-block;
+  text-decoration:none;
+  background:#e5e7eb;
+  color:#111827;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.top-nav a:hover{
+  background:#dbeafe;
+  color:#1e3a8a;
+}
+
+.page-title{
+  background:#0f172a;
+  color:white;
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:16px;
+}
+
+.page-title h2{
+  margin:0 0 4px;
+}
+
+.page-title p{
+  margin:0;
+  font-size:13px;
+  color:#cbd5e1;
+}
+
+.section{
+  background:white;
+  padding:16px;
+  border-radius:12px;
+  margin-bottom:16px;
+  box-shadow:0 4px 12px rgba(15,23,42,.06);
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  color:#475569;
+  margin-top:10px;
+}
+
+select,
+input{
+  padding:10px;
+  margin-top:6px;
+  width:100%;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  font-size:14px;
+}
+
+button{
+  padding:10px 14px;
+  margin-top:14px;
+  background:#1e3a8a;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#172554;
+}
+
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  margin-top:10px;
+  border-collapse:collapse;
+  min-width:600px;
+}
+
+th,td{
+  border:1px solid #cbd5e1;
+  padding:10px;
+  text-align:center;
+  font-size:14px;
+}
+
+th{
+  background:#e2e8f0;
+  color:#0f172a;
+}
+
+tbody tr:nth-child(even){
+  background:#f8fafc;
+}
 </style>
 
 </head>
@@ -20,35 +139,45 @@ th,td{border:1px solid #ccc;padding:8px;text-align:center}
 
 <div class="container">
 
-<h2>Requisitions (PR)</h2>
+  <div class="top-nav">
+    <a href="./index.html">Home</a>
+    <a href="./master-list.html">Master List</a>
+  </div>
 
-<div class="section">
+  <div class="page-title">
+    <h2>Requisitions (PR)</h2>
+    <p>Prepare and monitor purchase requisition requests based on inventory requirements.</p>
+  </div>
 
-<label>Select Item</label>
-<select id="itemSelect"></select>
+  <div class="section">
 
-<label>Qty Requested</label>
-<input type="number" id="qty">
+    <label>Select Item</label>
+    <select id="itemSelect"></select>
 
-<label>Requested By</label>
-<input type="text" id="requestBy">
+    <label>Qty Requested</label>
+    <input type="number" id="qty">
 
-<button onclick="addPR()">Add Request</button>
+    <label>Requested By</label>
+    <input type="text" id="requestBy">
 
-</div>
+    <button onclick="addPR()">Add Request</button>
 
-<div class="section">
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Requested By</th>
-</tr>
-</thead>
-<tbody id="prTable"></tbody>
-</table>
-</div>
+  </div>
+
+  <div class="section">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Requested By</th>
+          </tr>
+        </thead>
+        <tbody id="prTable"></tbody>
+      </table>
+    </div>
+  </div>
 
 </div>
 
@@ -71,11 +200,11 @@ function addPR(){
 
   let id = Number(document.getElementById("itemSelect").value);
   let qty = Number(document.getElementById("qty").value);
-  let by = document.getElementById("requestBy").value;
+  let by = document.getElementById("requestBy").value.trim();
 
   let item = items.find(i=>i.id===id);
 
-  if(!item || !qty){
+  if(!item || !qty || !by){
     alert("Complete fields");
     return;
   }
@@ -87,6 +216,10 @@ function addPR(){
   });
 
   localStorage.setItem("prData",JSON.stringify(prData));
+
+  document.getElementById("itemSelect").value = "";
+  document.getElementById("qty").value = "";
+  document.getElementById("requestBy").value = "";
 
   renderPR();
 }
